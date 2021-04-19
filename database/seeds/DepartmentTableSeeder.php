@@ -36,7 +36,7 @@ class DepartmentTableSeeder extends Seeder
     private function getRandomPreponente()
     {
         static $preponentes;
-        $preponentes = $preponentes != null ? $preponentes : DB::table('user')->where('role', 'proponente')
+        $preponentes = $preponentes != null ? $preponentes : DB::table('users')->where('role', 'proponente')
         ->where('deleted_at', null)->where('blocked', 0)->pluck('id');
         return $preponentes->random();
     }

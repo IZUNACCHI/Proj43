@@ -24,10 +24,10 @@ class DatabaseSeeder extends Seeder
         DB::table('proposta_secretariado_direcao')->delete();
         DB::table('proposta_recursos_humanos')->delete();
         DB::table('proposta')->delete();
-        DB::table('user')->delete();
+        DB::table('users')->delete();
 
 
-        DB::statement('ALTER TABLE user AUTO_INCREMENT = 0');
+        DB::statement('ALTER TABLE users AUTO_INCREMENT = 0');
         DB::statement('ALTER TABLE proposta_proponente_professor AUTO_INCREMENT = 0');
         DB::statement('ALTER TABLE proposta_proponente_assistente AUTO_INCREMENT = 0');
         DB::statement('ALTER TABLE proposta_proponente_monitor AUTO_INCREMENT = 0');
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
 
         DB::statement("SET foreign_key_checks=1"); //Sera preciso??
 
-        $this->call(UserTableSeeder::class);
+        $this->call(UserSeeder::class);
         $this->call(DepartmentTableSeeder::class);
         $this->call(UnidadeCurricularSeeder::class);
         
