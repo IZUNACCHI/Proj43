@@ -1,11 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\config",
-    "\\database",
-    "\\database\\factories",
-    "\\database\\seeds"
+    "\\app",
+    "\\app\\Console",
+    "\\app\\Exceptions",
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
+    "\\app\\Http\\Resources",
+    "\\app\\Providers"
   ],
-  "SelectedNode": "\\database\\seeds\\UserTableSeeder.php",
   "PreviewInSolutionExplorer": false
 }
