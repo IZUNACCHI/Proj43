@@ -32,6 +32,7 @@ Vue.component('estatisticaCTC', require('../components/Estatistica/EstatisticaCT
 Vue.component('estatisticaSecretariadoDirecao', require('../components/Estatistica/EstatisticaSecretariadoDirecao.vue').default);
 Vue.component('estatisticaRecursosHumanos', require('../components/Estatistica/EstatisticaRecursosHumanos.vue').default);
 Vue.component('editarProposta', require('../components/Proponente/EditarProposta.vue').default);
+Vue.component('assinarProposta', require('../components/Proponente/EnviarPropostaAssinada.vue').default);
 const adminDashboard = Vue.component('adminDashboard', require('../components/Backoffice/AdminDashboard.vue').default);
 const adminLogin =  Vue.component('adminLogin', require('../components/Backoffice/AdminLogin.vue').default);
 Vue.component('adicionarCurso', require('../components/Backoffice/AdicionarCurso.vue').default);

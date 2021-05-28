@@ -17,7 +17,7 @@ class PropostaDiretorUO extends JsonResource
         return [
             'reconhecimento' => $this->reconhecimento,
             'parecer' => $this->parecer,
-            'data_assinatura' => $this->data_assinatura
+            'data_assinatura_uo' => $this->data_assinatura_uo
         ];
     }
 }

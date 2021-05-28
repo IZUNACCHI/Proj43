@@ -11,7 +11,7 @@ class PropostaCTC extends Model
 
 
     protected $fillable = [
-        'votos_a_favor', 'votos_contra', 'votos_brancos', 'votos_nulos', 'aprovacao', 'data_assinatura', 'ctc_id'
+        'votos_a_favor', 'votos_contra', 'votos_brancos', 'votos_nulos', 'aprovacao', 'data_assinatura_ctc', 'ctc_id'
     ];
 
     protected $hidden = [];

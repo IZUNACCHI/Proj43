@@ -137,6 +137,15 @@ class PropostaProponenteController extends Controller
         $propostaAAtualizar->segundo_proponente = $request->segundo_proponente;
         $propostaAAtualizar->save();
     }
+    
+    public function inserirPropostaAssinada($propostaProponenteID, Request $request)
+    {
+        $proposta = Proposta::findOrFail($propostaID);
+        $proposta->docente_inseriu_ficheiros = true;
+        $proposta->save();
+        return response()->json($proposta, 200);
+    
+    }
 
     public function apagarPropostasProponente($id, Request $request)
     {

@@ -45,8 +45,13 @@
           <tabela-recursos v-if="user.roleDB == 'recursos_humanos'"></tabela-recursos>
           <resumo-geral v-if="isResumoPropostaVisible" :propostaSelecionada="propostaSelecionada"
             v-on:mostrarProponentes="mostrarProponentes"></resumo-geral>
-          <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada" v-on:voltar="mostrarProponentes"></editarProposta>
-
+          <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada"
+            v-on:voltar="mostrarProponentes"></editarProposta>
+          <assinarProposta v-if="isEnviarPropostaVisible" :propostaSelecionada="propostaSelecionada"
+            v-on:voltar="mostrarProponentes"></assinarProposta>
+          
+          
+          <div id="proposta">
           <div v-if="mostrarTabela">
             <div v-if="user.roleDB == 'proponente_departamento' && !isNovaPropostaVisible">
               COORDENADOR DEPARTAMENTO
@@ -103,6 +108,13 @@
                               v-if="(user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso == null) ||
                               (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento == null)"
                             >Editar</button>
+                            <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="verAssinarCoordenadorCurso(propostaHistorico, index)"
+                              v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
+                              (propostaHistorico.fundamentacao_coordenador_departamento == null)"
+                            >Assinar</button>
                             <button
                               type="button"
                               class="btn btn-info"
@@ -175,7 +187,31 @@
                               type="button"
                               class="btn btn-info"
                               @click="verDetalhesCoordenadorCurso(propostaHistorico, index)"
+                              v-if="(propostaHistorico.fundamentacao_coordenador_curso == null) ||
+                              (propostaHistorico.fundamentacao_coordenador_departamento == null)"
                             >Ver detalhes</button>
+                            <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="verAssinarCoordenadorCurso(propostaHistorico, index)"
+                              v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
+                              (propostaHistorico.fundamentacao_coordenador_departamento == null)"
+                            >Assinar</button>
+                          </td><td>
+                           <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="editarProposta(propostaHistorico, index)"
+                              v-if="(user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso == null) ||
+                              (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento == null)"
+                            >Editar</button>
+                          </td>
+                          <td>
+                           <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="gerarPdfProposta(propostaHistorico, index)"
+                              >Dowload</button>
                           </td>
                         </tr>
                       </tbody>
@@ -184,14 +220,13 @@
                 </b-tabs>
               </div>
             </div>
-          </div>
+          </div></div>
 
           <estatisticaProponente v-if="(user.roleDB == 'proponente_departamento' || user.roleDB == 'proponente_curso') && isDashboardVisible"></estatisticaProponente>
-          <estatisticaDiretorUO v-if="user.roleDB == 'diretor_uo' && isDashboardVisible"></estatisticaDiretorUO>
-          <estatisticaCTC v-if="user.roleDB == 'ctc' && isDashboardVisible"></estatisticaCTC>
+          <estatisticaDiretorUO v-if="user.roleDB == 'diretor_uo' && isDashboardVisible && isResumoPropostaVisible != false"></estatisticaDiretorUO>
+          <estatisticaCTC v-if="user.roleDB == 'ctc' && isDashboardVisible && isResumoPropostaVisible != false"></estatisticaCTC>
           <estatisticaSecretariadoDirecao v-if="user.roleDB == 'secretariado_direcao' && isDashboardVisible"></estatisticaSecretariadoDirecao>
-          <estatisticaRecursosHumanos v-if="user.roleDB == 'recursos_humanos' && isDashboardVisible"></estatisticaRecursosHumanos>
-          
+          <estatisticaRecursosHumanos v-if="user.roleDB == 'recursos_humanos' && isDashboardVisible"></estatisticaRecursosHumanos>  
         </div>
       </div>
     </div>
@@ -199,6 +234,8 @@
 </template>
 
 <script>
+import jsPDF from 'jspdf'
+//import autoTable from 'jspdf-autotable' 
 import VeLine from 'v-charts/lib/line.common'
 import { constants } from 'crypto';
 
@@ -214,6 +251,7 @@ export default {
       isActiveSD: false,
       isActiveRH: false,
       isEditarPropostaVisible: false,
+      isEnviarPropostaVisible: false,
       propostasPendentesCoordenadorDepartamento: "",
       historicoPropostasCoordenadorDepartamento: "",
       propostasPendentesCoordenadorCurso: "",
@@ -236,14 +274,19 @@ export default {
       //* Componente Proponente fica visivel
       this.isNovaPropostaVisible = true;
       this.isDashboardVisible = false;
+      this.isEnviarPropostaVisible = false;
     },
     home() {
       this.isDashboardVisible = true;
       this.isNovaPropostaVisible = false;
       this.isEditarPropostaVisible = false;
+
+      this.isEnviarPropostaVisible = false;
+      this.isEnviarPropostaAssinadaVisible = false;
     },
     verDetalhesCoordenadorCurso(propostaPendenteCoordenadorCurso, index) {
       this.isResumoPropostaVisible = true;
+      this.isEnviarPropostaVisible = false;
       this.isDashboardVisible = false;
       this.propostaSelecionada = Object.assign(
         {},
@@ -251,11 +294,12 @@ export default {
       );
       this.mostrarTabela = false;
       this.isDashboardVisible = false;
-    },
+      },
     verDetalhesCoordenadorDepartamento(
       propostaPendenteCoordenadorDepartamento,
       index
     ) {
+      this.isEnviarPropostaVisible = false;
       this.isResumoPropostaVisible = true;
       this.isDashboardVisible = true;
       this.propostaSelecionada = Object.assign(
@@ -265,9 +309,36 @@ export default {
       this.mostrarTabela = false;
       this.isDashboardVisible = false;
     },
+
+
+    verAssinarCoordenadorCurso(propostaAssinarCoordenadorCurso, index) {
+      this.isEnviarPropostaVisible = true;
+      this.isDashboardVisible = true;
+      this.propostaSelecionada = Object.assign(
+        {},
+        propostaAssinarCoordenadorCurso
+      );
+      this.mostrarTabela = false;
+      this.isDashboardVisible = false;
+      
+    },
+    /*
+    verPdsProposta(pdfsVer, index) {
+      this.isVerPdfsVisible = true;
+      this.isDashboardVisible = true;
+      this.propostaSelecionada = Object.assign(
+        {},
+        pdfsVer
+      );
+      this.mostrarTabela = false;
+      this.isDashboardVisible = false;
+      
+    },*/
+
     editarProposta(propostaParaEditar, index) {
       this.isEditarPropostaVisible = true;
       this.isDashboardVisible = true;
+      this.isEnviarPropostaVisible = false;
       this.mostrarTabela = false;
       this.propostaSelecionada = Object.assign(
         {},
@@ -275,6 +346,65 @@ export default {
       );
       this.isDashboardVisible = false;
     },
+
+
+    gerarPdfProposta(propostaID, index){
+        let pdfName = propostaID.email;
+       
+        var doc = new jsPDF();
+        /*
+        doc.autoTable(proposta);
+        doc.autoTable({
+             head: [['Name', 'Email', 'Country']],
+             body: [
+                ['David', 'david@example.com', 'Sweden'],
+                ['Castille', 'castille@example.com', 'Spain'],
+                 // ...
+            ],
+          });
+        doc.save('table.pdf');*/
+
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(proposta, { 
+                html2canvas: {
+                    scale: 0.25,
+                    scrollY:0
+                },
+                x: 0,
+                y: 0, 
+            callback: function (doc) {
+                doc.save("Proposta Contratação de "+ propostaID.nome_completo +".pdf");
+                }
+            });
+        
+        //Introduz um linha de cada vez
+        /*
+        doc.text("ID: " +propostaID.id_proposta_proponente, 10, 10);
+        doc.text("Nome Completo: " +propostaID.nome_completo, 10, 20);
+        doc.text("Email: " +pdfName, 10, 30);
+        doc.text("Numero Telefone: " +propostaID.numero_telefone, 10, 40);
+        var data = propostaID.data_de_assinatura_coordenador_de_curso;
+        console.log (data);
+        doc.text("Data de Assinatura do coordenado de curso: " + data, 10, 50);
+        doc.text("Data de Assinatura do coordenador de departamento: " +propostaID.data_de_assinatura_coordenador_departamento, 10, 60);
+        doc.text("Tipo Contrato: " +propostaID.tipo_contrato, 10, 70);
+        doc.text("Grau: " +propostaID.grau, 10, 80);
+        doc.text("Curso: " +propostaID.curso, 10, 90, 0, 40, "justify", 55, 12);
+        doc.text("Area Cientifica: " +propostaID.area_cientifica, 10, 100);
+        doc.text("Fudamentação Coordenador de Curso: " +propostaID.fundamentacao_coordenador_curso, 10, 110);
+        doc.text("Fudamentação Coordenador de Departamento: " +propostaID.fundamentacao_coordenador_departamento, 10, 120);
+        doc.text("Primeito Proponente: " +propostaID.primeiro_proponente, 10, 130);
+        doc.text("Segundo Proponente: " +propostaID.segundo_proponente, 10, 140);
+        doc.text("Role: " +propostaID.role, 10, 150);
+        
+        doc.save("Proposta Contratação de "+ propostaID.nome_completo +".pdf");
+        */
+    },
+
+
     mostrarProponentes() {
       this.isNovaPropostaVisible = false;
       this.mostrarTabela = true;

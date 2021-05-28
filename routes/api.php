@@ -52,6 +52,8 @@ Route::put('/propostaProponente/fundamentacaoCoordenadorCurso/{propostaID}', 'Pr
 Route::get('/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/{email}', 'PropostaProponenteController@verificarSeJaExistemPropostasAtivasParaDocenteASerContratado');
 Route::put('/apagarPropostasProponente/{idProposta}', 'PropostaProponenteController@apagarPropostasProponente');
 
+Route::post('/propostaProponente/enviarPropostaAssinada/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinada');
+
 //? Estatisticas
 Route::get('/getPropostasProponente/{idProponente}', 'PropostaProponenteController@getPropostasDoProponente');
 Route::get('/getPropostasPorTipoDeDocente/{idProponente}', 'PropostaProponenteController@getPropostasPorTipoDeDocente');

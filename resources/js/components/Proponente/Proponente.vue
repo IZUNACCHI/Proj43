@@ -17,8 +17,9 @@ abrigo do art. 8.º do ECPDESP, do IPL"
       ></b-form-radio-group>
       <b-form-invalid-feedback id="input-1-live-feedback">O Tipo da Proposta é obrigatória!</b-form-invalid-feedback>
     </b-form-group>
-
+    
     <div v-if="isShow">
+      <span v-if="proposta.tipo_contrato == 'renovacao'">
       <b-form-group label="Propostas existentes" description="Campo opcional">
         <b-form-select
           :options="propostasExistentes"
@@ -33,6 +34,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
           </template>
         </b-form-select>
       </b-form-group>
+      </span>
       <b-form-group label="Currículo (PDF)">
         <b-form-file
           v-model="ficheiroCurriculoModel"

@@ -2,6 +2,8 @@
   <div v-if="mostrarFundamentacaoCurso">
     <div class="jumbotron">
       <h2>Fundamentação Coordenador Curso</h2>
+      
+       
 
       <b-form-group label="Fundamentação" label-for="inputFundCoordCurso">
         <b-form-input
@@ -13,13 +15,15 @@
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a fundamentação</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Data de assinatura" label-for="inputData">
+      <b-form-group label="Data de assinatura!!!!" label-for="inputData">
         <b-form-input
           id="inputData"
           type="date"
           v-model="propostaProponente.data_de_assinatura_coordenador_de_curso"
         ></b-form-input>
       </b-form-group>
+
+
 
       <button
         class="btn btn-success mt-3 font-weight-bold"
@@ -44,17 +48,35 @@ export default {
         segundo_proponente: this.$store.state.user.name,
       },
       mostrarFundamentacaoCurso:true,
+      ficheiro: {
+        proposta: {},
+      },
+      ficheiros:[],
+      propostaAssinada:"",
+      
     };
   },
   validations: {
     propostaProponente: {
-      fundamentacao_coordenador_curso: { required },
+      fundamentacao_coordenador_curso: {  },
       data_de_assinatura_coordenador_de_curso: { required },
+      
     }
   },
   methods: {
+    validateState(ref) {
+      return this.veeErrors.has(ref) ? false : null;
+    },
+    onFileSelected(event) {
+      this.ficheiros[event.target.name] = event.target.files[0];
+    },
     inserirFundamentacao(propostaProponente){
-       
+      this.ficheiro.proposta = new FormData();
+      this.ficheiro.proposta.append("file", this.ficheiros["PropostaAssinada"]);
+      this.ficheiro.proposta.append("descricao", "Proposta Assinada");
+
+
+
         this.$v.propostaProponente.$touch();
         if (!this.$v.propostaProponente.$invalid) {
           this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
@@ -69,11 +91,19 @@ export default {
           axios.put('/api/propostaProponente/fundamentacaoCoordenadorCurso/'+
           this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
             this.mostrarFundamentacaoCurso=false;
-            this.$swal('Sucesso', 'Fundamentação inserida com sucesso', 'success');
+            //this.$swal('Sucesso', 'Fundamentação inserida com sucesso', 'success');
             this.$socket.emit("email-diretor", {
                           msg: "Pedido de email enviado..."
                         });
             this.$emit("voltarProponentes", this.propostaProponente);
+            axios.post("/api/ficheiro", this.ficheiro.proposta).then(response => {});   
+                      this.$swal(
+                                "Sucesso",
+                                "Proposta editada com sucesso!!",
+                                "success"
+                              );
+                              this.isLoading = false;
+                              this.voltar();    
           });
           }
         });

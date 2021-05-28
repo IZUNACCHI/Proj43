@@ -32,7 +32,7 @@ class CTCController extends Controller
          'votos_brancos' => 'required',
          'votos_nulos' => 'required',
          'aprovacao' => 'required',
-         'data_assinatura' => 'required',
+         'data_assinatura_ctc' => 'required',
          'ctc_id' => 'required'
       ]);
       $propostaCTC = new PropostaCTC();

@@ -73,6 +73,11 @@ class InitialMigration extends Migration
             $table->string('fundamentacao_coordenador_departamento')->nullable();
             $table->string('primeiro_proponente');
             $table->string('segundo_proponente')->nullable();
+            //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])
+            //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])->nullable();
+
+            $table->boolean('contrato_assinado_primeiro_proponente')->default(false);
+            $table->boolean('contrato_assinado_segundo_proponente')->default(false);
             $table->enum('role', ['professor', 'assistente', 'monitor']);
             $table->softDeletes();
             $table->timestamps();
@@ -85,6 +90,8 @@ class InitialMigration extends Migration
             $table->integer('percentagem_prestacao_servicos')->nullable();
             $table->string('fundamentacao')->nullable();
             $table->string('periodo');
+            //$table->dateTime('periodo_inicial')->nullable();
+            //$table->dateTime('periodo_final')->nullable();
             $table->string('duracao');
             $table->enum('avaliacao_periodo_anterior', ['positiva', 'negativa'])->nullable();
             //Signature???
@@ -100,6 +107,8 @@ class InitialMigration extends Migration
             $table->integer('percentagem_prestacao_servicos');
             $table->string('fundamentacao')->nullable();
             $table->string('periodo');
+            //$table->dateTime('periodo_inicial')->nullable();
+            //$table->dateTime('periodo_final')->nullable();
             $table->string('duracao');
             $table->enum('avaliacao_periodo_anterior', ['positiva', 'negativa'])->nullable();
             $table->integer('proposta_proponente_id')->unsigned();
@@ -114,6 +123,8 @@ class InitialMigration extends Migration
             $table->enum('regime_prestacao_servicos', ['tempo_parcial']);
             $table->integer('percentagem_prestacao_servicos');
             $table->string('periodo');
+            //$table->dateTime('periodo_inicial')->nullable();
+            //$table->dateTime('periodo_final')->nullable();
             $table->string('duracao');
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
@@ -128,7 +139,7 @@ class InitialMigration extends Migration
             $table->enum('tipo', ['Semestral', 'Anual']);
             $table->integer('horas')->unsigned();
             $table->integer('horas_semestrais')->unsigned();
-            $table->integer('departamento_id')->unsigned()->nullable(); //! Para já
+            $table->integer('departamento_id')->unsigned()->nullable(); //! Para jรก
             $table->foreign('departamento_id')->references('id')->on('departamento');
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
@@ -141,7 +152,8 @@ class InitialMigration extends Migration
             $table->enum('parecer', ['Favoravel', 'Desfavoravel']);
             $table->integer('diretor_uo_id')->unsigned();
             $table->foreign('diretor_uo_id')->references('id')->on('users');
-            $table->dateTime('data_assinatura');
+            $table->dateTime('data_assinatura_uo');
+            $table->boolean('contrato_assinado_uo')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -155,7 +167,8 @@ class InitialMigration extends Migration
             $table->enum('aprovacao', ['Aprovado', 'Nao Aprovado']);
             $table->integer('ctc_id')->unsigned();
             $table->foreign('ctc_id')->references('id')->on('users');
-            $table->dateTime('data_assinatura');
+            $table->dateTime('data_assinatura_ctc');
+            $table->boolean('contrato_assinado_ctc')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -178,6 +191,8 @@ class InitialMigration extends Migration
             $table->string('nome_uo')->nullable();
             $table->integer('tempo_parcial_uo')->nullable()->unsigned();
             $table->string('periodo_uo')->nullable();
+            //$table->dateTime('periodo_inicial_uo')->nullable();
+            //$table->dateTime('periodo_final_uo')->nullable();
             $table->integer('numero_funcionario')->unsigned();
             $table->enum('inscricao', ['seguranca_social', 'CGA']);
             $table->boolean('contratacao_comunicada')->default(false);
@@ -223,7 +238,7 @@ class InitialMigration extends Migration
             $table->integer('proposta_id')->unsigned();
             $table->foreign('proposta_id')->references('id')->on('proposta');
         });
-		
+
 		Schema::create('proposta_log', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
@@ -277,6 +292,7 @@ class InitialMigration extends Migration
 			DELIMITER ;
         ");
     }
+    }
 
     /**
      * Reverse the migrations.
@@ -300,8 +316,8 @@ class InitialMigration extends Migration
         Schema::dropIfExists('unidade_curricular');
         Schema::dropIfExists('users');
 		Schema::dropIfExists('proposta_log');
-		Schema::dropIfExists('ai_data')
-		Schema::dropIfExists('au_data')
+		Schema::dropIfExists('ai_data');
+		Schema::dropIfExists('au_data');
 		Schema::dropIfExists('ad_data');
     }
 }

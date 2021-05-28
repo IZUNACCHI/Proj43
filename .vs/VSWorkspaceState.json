@@ -2,12 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\Console",
-    "\\app\\Exceptions",
-    "\\app\\Http",
-    "\\app\\Http\\Controllers",
-    "\\app\\Http\\Resources",
-    "\\app\\Providers"
+    "\\resources",
+    "\\resources\\js",
+    "\\resources\\js\\components",
+    "\\resources\\js\\components\\NovosDocentes",
+    "\\resources\\js\\components\\utils",
+    "\\routes",
+    "\\storage\\app",
+    "\\storage\\app\\public"
   ],
+  "SelectedNode": "\\app\\Http\\Controllers\\PropostaProponenteController.php",
   "PreviewInSolutionExplorer": false
 }

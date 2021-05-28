@@ -624,14 +624,14 @@ export default {
                 axios.put("/api/updatePropostaProponente/" + this.proposta.id_proposta_proponente, this.proposta)
                   .then(response => {
                     this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
-
+                    //-----------------------------------
                     //? Eliminar UCs Proponentes  Antigas
-                    axios.get('api/getUcsPropostaProponente/' + this.proposta.id_proposta_proponente)
+                    /*axios.get('api/getUcsPropostaProponente/' + this.proposta.id_proposta_proponente)
                     .then(response => {
                       response.data.forEach(unidadeCurricular => {
                         axios.delete("/api/ucsPropostaProponente/" + unidadeCurricular.id_ucs_proposta_proponente).then(response => {});
                       });
-                    })
+                    })*/
 
                     //? Criar UCs Proponentes Novas
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
@@ -669,8 +669,10 @@ export default {
                       }
 
                       this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
-
-                      axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
+                      //----------
+                      /*if (this.proposta.tipo_contrato == "renovacao") {
+                        axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
+                      }*/
 
                       axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
                     

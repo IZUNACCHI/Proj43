@@ -18,9 +18,9 @@ class UnidadeCurricularSeeder extends Seeder
 
         $this->faker = Faker\Factory::create('pt_PT');
 
-        $this->addUnidadeCurricular($this->faker, 'Programação 1', $this->getIdDepartamentoInformatica(), 'Diurno', 'Semestral', 'PL1');
-        $this->addUnidadeCurricular($this->faker, 'Programação 1', $this->getIdDepartamentoInformatica(), 'Diurno', 'Semestral', 6, 85);
-        $this->addUnidadeCurricular($this->faker, 'Analise Matematica', $this->getIdDepartamentoMatematica(), 'Diurno', 'Semestral', 5, 75);
+        //$this->addUnidadeCurricular($this->faker, 'Programação 1', $this->getIdDepartamentoInformatica(), 'Diurno', 'Semestral', 'PL1');
+        //$this->addUnidadeCurricular($this->faker, 'Programação 1', $this->getIdDepartamentoInformatica(), 'Diurno', 'Semestral', 6, 85);
+        //$this->addUnidadeCurricular($this->faker, 'Analise Matematica', $this->getIdDepartamentoMatematica(), 'Diurno', 'Semestral', 5, 75);
 
     }
 

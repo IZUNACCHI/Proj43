@@ -95,6 +95,8 @@ export default {
       this.propostaSelecionada = Object.assign({}, propostaPendenteDiretor);
       this.mostrarDiretorComponent = false;
       this.isResumoChecked = true;
+      
+      this.mostrarTabela = false;
 
     },
     mostrarDiretor(){

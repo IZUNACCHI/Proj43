@@ -2,353 +2,762 @@
   <div>
     <div v-if="this.$store.state.user.roleDB == 'proponente_departamento'">
       <button class="btn btn-danger" @click="voltarProponentes">Voltar</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfPropostaProponente()">Dowload</button>
       <h3>Resumo da proposta de contratação</h3>
     </div>
-
     <div v-if="this.$store.state.user.roleDB == 'proponente_curso'">
       <button class="btn btn-danger" @click="voltarProponentes">Voltar</button>
-      <h3>Resumo da proposta de contratação</h3>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfProposta()">Dowload</button>
+      <h3 aling=right>Resumo da proposta de contratação</h3>
     </div>
 
     <div v-if="this.$store.state.user.roleDB == 'diretor_uo'">
       <button class="btn btn-danger" @click="voltarDiretor">Voltar</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfUo()">Dowload</button>
       <h3>Resumo da proposta de contratação</h3>
     </div>
 
     <div v-if="this.$store.state.user.roleDB == 'ctc'">
       <button class="btn btn-danger" @click="voltarCTC">Voltar</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfCtc()">Dowload</button>
       <h3>Resumo da proposta de contratação</h3>
     </div>
 
     <div v-if="this.$store.state.user.roleDB == 'secretariado_direcao'">
       <button class="btn btn-danger" @click="voltarSecretariado">Voltar</button>
+      <button class="btn btn-danger" v-on:click.prevent="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Proposta Contratação', propostaSelecionada.nome_completo)">Dowload</button>
       <h3>Resumo da proposta de contratação</h3>
     </div>
 
     <div v-if="this.$store.state.user.roleDB == 'recursos_humanos'">
       <h3>Resumo da proposta de contratação</h3>
       <button class="btn btn-danger" @click="voltarRecursosHumanos">Voltar</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfRecursosHumanos()">Download</button>
     </div>
-    <div id="proposta">
-      <label><strong>Unidade Orgânica:</strong> {{ propostaSelecionada.unidade_organica }}</label>
-      <br />
-      <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.nome_completo}}</label>
-      <br />
-      <label><strong>Tipo de Contratação:</strong> {{ propostaSelecionada.tipo_contrato }}</label>
-      <br />
-      <label><strong>Email do docente:</strong> {{ propostaSelecionada.email }}</label>
-      <br />
-      <label><strong>Número de telefone do docente:</strong> {{ propostaSelecionada.numero_telefone }}</label>
-      <br />
-      <label><strong>Unidades Curriculares:</strong></label>
-      <br />
-      <b-form-group>
-        <table class="table mt-3">
-          <thead>
-            <th>Codigo UC</th>
-            <th>Turno</th>
-            <th>Regime</th>
-            <th>Horas</th>
-            <th>Horas Semestrais</th>
-            <th>Tipo</th>
-          </thead>
-          <tbody>
-            <tr v-for="uc in ucsDaPropostaSelecionada" :key="uc.ID">
-              <td>{{ uc.codigo_uc }}</td>
-              <td>{{ uc.turno }}</td>
-              <td>{{ uc.regime }}</td>
-              <td>{{ uc.horas }}</td>
-              <td>{{ uc.horas_semestrais }}</td>
-              <td>{{ uc.tipo }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </b-form-group>
-      <label><strong>Grau de Habilitações Académicas:</strong> {{ propostaSelecionada.grau }}</label>
-      <br />
-      <label><strong>Área Científica: </strong>{{ propostaSelecionada.area_cientifica }}</label>
-      <br />
-      <label><strong>Curso:</strong> {{ propostaSelecionada.curso }}</label>
-      <br />
-      <label><strong>Papel a desempenhar:</strong> {{ propostaSelecionada.role }}</label>
-      <br />
-      <div v-if="propostaSelecionada.role == 'professor'">
-        <label><strong>Categoria de professor:</strong> {{ tipoPropostaRole.role_professor }}</label>
-        <br />
-        <label><strong>Regime de prestação de serviços:</strong> {{ tipoPropostaRole.regime_prestacao_servicos }}</label>
-        <br />
-        <label><strong>Percentagem de prestação de serviços:</strong> {{ tipoPropostaRole.percentagem_prestacao_servicos }}</label>
-        <br />
-        <label><strong>Período: </strong>{{ tipoPropostaRole.periodo }}</label>
-        <br />
-        <label><strong>Duração:</strong> {{ tipoPropostaRole.duracao }}</label>
-        <br />
-        <div v-if="tipoPropostaRole.avaliacao_periodo_anterior != null">
-          <label><strong>Avaliação período anterior:</strong> {{ tipoPropostaRole.avaliacao_periodo_anterior }}</label>        
+    <div>
         </div>
-        <br />
-      </div>
-      
-      <div v-if="propostaSelecionada.role == 'assistente'">
-        <label><strong>Regime de prestação de serviços:</strong> {{ tipoPropostaRole.regime_prestacao_servicos }}</label>
-        <br />
-        <label><strong>Percentagem de prestação de serviços:</strong> {{ tipoPropostaRole.percentagem_prestacao_servicos }}</label>
-        <br />
-        <label><strong>Período: </strong>{{ tipoPropostaRole.periodo }}</label>
-        <br />
-        <label><strong>Duração:</strong> {{ tipoPropostaRole.duracao }}</label>
-        <br />
-        <label><strong>Avaliação período anterior:</strong> {{ tipoPropostaRole.avaliacao_periodo_anterior }}</label>        
-      </div>
 
-      <div v-if="propostaSelecionada.role == 'monitor'">
-        <label><strong>Categoria de professor:</strong> {{ tipoPropostaRole.role_professor }}</label>
-        <br />
-        <label><strong>Regime de prestação de serviços:</strong> {{ tipoPropostaRole.regime_prestacao_servicos }}</label>
-        <br />
-        <label><strong>Percentagem de prestação de serviços:</strong> {{ tipoPropostaRole.percentagem_prestacao_servicos }}</label>
-        <br />
-        <label><strong>Período: </strong>{{ tipoPropostaRole.periodo }}</label>
-        <br />
-        <label><strong>Duração:</strong> {{ tipoPropostaRole.duracao }}</label>
-        <br />
-      </div>
-
-      <label><strong>Primeiro Proponente (criador da proposta):</strong> {{ propostaSelecionada.primeiro_proponente }}</label>
-      <br />
-      <label><strong>Fundamentação do Coordenador de Curso:</strong> {{ propostaSelecionada.fundamentacao_coordenador_curso }}</label>
-      <br />
-      <label><strong>Segundo Proponente:</strong> {{ propostaSelecionada.segundo_proponente }}</label>
-      <br />
-      <label><strong>Fundamentação do Coordenador de Departamento:</strong> {{ propostaSelecionada.fundamentacao_coordenador_departamento }}</label>
-      <b-form-group>
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroCurriculo"
-          @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado')"
-        >
-          <i class="far fa-file-pdf"></i> Clique para ver o currículo do docente proposto
-        </b-button>
-      </b-form-group>
-      <b-form-group>
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroCertificadoHabilitacoes"
-          @click="downloadFicheiro(ficheiroCertificadoHabilitacoes.proposta_id, 'Habilitacoes do docente a ser contratado')"
-        >
-          <i class="far fa-file-pdf"></i>Clique aqui para ver o certificado de habilitações do docente proposto
-        </b-button>
-      </b-form-group>
-      
-      <b-form-group>
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroRelatorioProponentes"
-          @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Relatorio dos 2 proponentes')"
-        >
-          <i class="far fa-file-pdf"></i> Clique aqui para ver o relatório dos proponentes
-        </b-button>
-      </b-form-group>
-      
-      <div
-        v-if="propostaSelecionada.proposta_diretor_uo_id != null &&(this.$store.state.user.roleDB == 'diretor_uo' 
-    || this.$store.state.user.roleDB == 'ctc' || this.$store.state.user.roleDB == 'secretariado_direcao' || 
-    this.$store.state.user.roleDB == 'recursos_humanos' )"
-      >
-        <label><strong>Parecer sobre a proposta do Diretor da Unidade Orgânica: </strong>{{ propostaSelecionada.parecer }}</label>
-        <br />
-      </div>
-      <div
-        v-if="propostaSelecionada.proposta_ctc_id != null &&
-        (this.$store.state.user.roleDB == 'ctc'
-        || this.$store.state.user.roleDB == 'secretariado_direcao' 
-        || this.$store.state.user.roleDB == 'recursos_humanos')"
-      >
-        <label><strong>Votos a favor do Conselho Tecnico-Cientifico:</strong> {{ propostaSelecionada.votos_a_favor }}</label>
-        <br />
-        <label><strong>Votos contra do Conselho Tecnico-Cientifico: </strong>{{ propostaSelecionada.votos_contra }}</label>
-        <br />
-        <label><strong>Votos brancos do Conselho Tecnico-Cientifico:</strong> {{ propostaSelecionada.votos_brancos }}</label>
-        <br />
-        <label><strong>Votos nulos do Conselho Tecnico-Cientifico:</strong> {{ propostaSelecionada.votos_nulos }}</label>
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ataCTC"
-          @click="downloadFicheiro(ataCTC.proposta_id, 'Ata do CTC')"
-        >
-          <i class="far fa-file-pdf"></i> Ata do CTC
-        </b-button>
-      </div>
-
-      <div
-        v-if="propostaSelecionada.docente_inseriu_ficheiros == 1 && propostaSelecionada.proposta_recursos_humanos_id == null &&
-      this.$store.state.user.roleDB == 'recursos_humanos'"
-      >
-
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroNIF"
-          @click="downloadFicheiro(ficheiroNIF.proposta_id, 'Ficheiro NIF')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro NIF
-        </b-button>
-        <br />
-        <br />
-
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroCGA"
-          @click="downloadFicheiro(ficheiroCGA.proposta_id, 'Ficheiro Nº CGA/SS')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro CGA
-        </b-button>
-        <br />
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroCC"
-          @click="downloadFicheiro(ficheiroCC.proposta_id, 'Ficheiro Cópia CC')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Cartão Cidadão
-        </b-button>
-        <br />
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroIBAN"
-          @click="downloadFicheiro(ficheiroIBAN.proposta_id, 'Ficheiro Cópia IBAN')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Cópia IBAN
-        </b-button>
-        <br />
-        <br />
-
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroCertificadoRegistoCriminal"
-          @click="downloadFicheiro(ficheiroCertificadoRegistoCriminal.proposta_id, 'Ficheiro Registo Criminal')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Registo Criminal
-        </b-button>
-
-        <br />
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroDeclaracaoRobustezFisica"
-          @click="downloadFicheiro(ficheiroDeclaracaoRobustezFisica.proposta_id, 'Ficheiro Robustez Física')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Robustez Física
-        </b-button>
-
-        <br />
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroBoletimVacinas"
-          @click="downloadFicheiro(ficheiroBoletimVacinas.proposta_id, 'Ficheiro Boletim Vacinas')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Boletim Vacinas
-        </b-button>
-
-         <br />
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroFichaIdentificacao"
-          @click="downloadFicheiro(ficheiroFichaIdentificacao.proposta_id, 'Ficheiro Ficha Identificacao')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Ficha Identificacao
-        </b-button>
-        <br />
-        <br />
-
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroDeclaracaoRenuncia"
-          @click="downloadFicheiro(ficheiroDeclaracaoRenuncia.proposta_id, 'Ficheiro Renuncia ADSE')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Renuncia ADSE
-        </b-button>
-        <br />
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroDeclaracaoArtigo99"
-          @click="downloadFicheiro(ficheiroDeclaracaoArtigo99.proposta_id, 'Ficheiro Declaracao IRS')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Declaracao IRS
-        </b-button>
-        <br />
-        <br />
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroConsultaOutrasEscolas"
-          @click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Resposta Consulta Outras Escolas')"
-        >
-          <i class="far fa-file-pdf"></i> Ficheiro Resposta Consulta Outras Escolas
-        </b-button>
-        <br />
+   <div id="tes" class="total1">
+   <div id="teste">
+        <div class="total" v-if="this.$store.state.user.roleDB != 'recursos_humanos'" style ="width:100%; position: relative;">
+            <pdf :src="fichAssinado"></pdf>
         </div>
-        <div
-        v-if="propostaSelecionada.proposta_recursos_humanos_id != null && this.$store.state.user.roleDB == 'recursos_humanos'"
-      >
-        <label><strong>Remuneração: </strong>{{ propostaSelecionada.remuneracao }} €</label>
-        <br />
-        <label><strong>Índice: </strong>{{ propostaSelecionada.indice }}</label>
-        <br />
-        <label><strong>Escalão: </strong>{{ propostaSelecionada.escalao }}</label>
-        <br />
-        <label><strong>Número do funcionário dos Recursos Humanos: </strong>{{ propostaSelecionada.numero_funcionario }}</label>
-        <br />
-        <label><strong>O docente já se encontra/foi convidado a exercer noutras UO?: </strong>{{ propostaSelecionada.verificacao_outras_uo }}</label>
-        <br />
-        <div v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
-          <label><strong>Unidade Orgânica: </strong>{{ propostaSelecionada.nome_uo }}</label>
-          <br />
-          <label><strong>Tempo Parcial: </strong>{{ propostaSelecionada.tempo_parcial_uo }}</label>
-          <br />
-          <label><strong>Período: </strong>{{ propostaSelecionada.periodo_uo }}</label>
+        <div class="pdfRecursosHumanos" v-if="this.$store.state.user.roleDB == 'recursos_humanos'">
+            <pdf :src="fichAssinado"></pdf>
         </div>
-        <label><strong>Inscrição (CGA ou SS): </strong>{{ propostaSelecionada.inscricao }}</label>
-        <br />
-        <label><strong>Despacho Sr. Presidente do IPL: </strong>{{ propostaSelecionada.despacho_presidente_ipl }}</label>
-        <br />
-        <label><strong>NISS ou nº CGA:</strong> {{ propostaSelecionada.NISS_ou_numero_CGA }}</label>
-        <br />
-        <label><strong>Data de nascimento:</strong> {{ propostaSelecionada.data_nascimento }}</label>
-        <br />
-        <label><strong>Número Cartão de Cidadão:</strong> {{ propostaSelecionada.numeroCC }}</label>
-        <br />
-        <label><strong>Email RH: </strong>{{ propostaSelecionada.email_recursos_humanos }}</label>
-        <br />
-        <label><strong>Dados carregados no GIAF por: </strong>{{ propostaSelecionada.dados_GIAF_carregados_por }}</label>
-        <br />
-        <label><strong>Data de carregamento de dados no GIAF: </strong>{{ propostaSelecionada.data_carregamento_dados_GIAF }}</label>
-        <br />
+        <div class="tabelaCabecalho" v-if="propostaSelecionada.verificacao_outras_uo == 'sim'"><table>
+            <td><img src="" alt="Instituto Politécnico de Leiria" class="pr-5">
+        </td><td width="50%"><p style='text-align:center; font-size: 20px'><b>Proposta de contratação<br>
+            Docentes convidados<br></b></p>
 
-        <b-button size="md" variant="dark" @click="exportarPDF()">
-          <i class="far fa-file-pdf"></i> Exportar para PDF
-        </b-button>
-      </div>
-    </div>
+            <p style="font-size: 10px">Legislação: art. 8.º do ECPDESP na redacção que lhe foi dada pelo Decreto-Lei n.º
+                207/2009, de 31 de Agosto, alterado pela Lei nº 7/2010, de 13 de Maio e
+                Regulamento de Contratação de Pessoal Docente Especialmente Contratado ao
+                abrigo do art. 8.º do ECPDESP, do IPL</p>
+        </td></table></div>
+        <div class="tabelaRecursosHumanos" v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
+            <table width="100%" border="1px">
+                <tr bgcolor=#be5b59>
+                   <th colspan="3"><font color=#ffffff>A Preencher pelo DSRH</font></th>
+                </tr>
+                <tr>
+                    <td><b>Número de Funcionário:</b>{{propostaSelecionada.numero_funcionario}}<br>
+                    <b>Contratação Comunidada</b><br>
+                    <b>Inscrição na Seg. Social ou CGA</b>{{propostaSelecionada.inscricao}}<br>
+                    <b>Despacho do Sr.Presidente do IPL: </b>{{propostaSelecionada.despacho_presidente_ipl}}</td>
+                    <td><b>Contrato Redigido</b><br>
+                    <b>Contrato Anexo</b><br>
+                    <b>Cessação Social</b></td>
+                    <td><b>NISS ou Nº CGA </b>{{propostaSelecionada.NISS_ou_numero_CGA}}<br>
+                    <b>Data de Nascimento: </b>{{propostaSelecionada.data_nascimento}}<br>
+                    <b>Nº CC: </b>{{propostaSelecionada.numeroCC}}<br>
+                    <b>E-mail Pessoal: {{propostaSelecionada.email_recursos_humanos}} </b></td>
+                </tr><tr>
+                 <td colspan="3"><b>Dados carregados/atualizadors no GIAF por </b>{{propostaSelecionada.dados_GIAF_carregados_por}} <b>Data: {{propostaSelecionada.data_carregamento_dados_GIAF}} </b></td>
+                </tr>
+           </table></div>
+           <br>
+           <div class="proponente" v-if="(this.$store.state.user.roleDB == 'proponente_departamento' ||
+                this.$store.state.user.roleDB == 'proponente_curso')">
+           <table v-if="fichAssinado" width="100%" border="1px">
+                <tr  bgcolor=#be5b59><th colspan="3"><font color=#ffffff>A preencher pelo/s proponente/s</font></th></tr>
+                <tr>
+                    <td><b>Nome Completo</b></td><td colspan="2">{{propostaSelecionada.nome_completo}}</td>
+                </tr>
+                    <td><b>Departamento/Área Científica/Curso</b></td><td colspan="2" width="75%">{{propostaSelecionada.area_cientifica}}</td>
+                <tr><td><b>Serviço Docente Atribuido</b></td><td colspan="2">Anexo à presente proposta</td></tr>
+                <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
+                <tr width="100%">
+                    <td><b>Grau: </b>{{propostaSelecionada.grau}}</td>
+                    <td><b>Curso: </b>{{propostaSelecionada.curso}}</td>
+                    <td><b>Area Cientifica: </b>{{propostaSelecionada.area_cientifica}}</td>
+                </tr>
+          </table>
+          <br>
+          <table v-if="propostaSelecionada.role == 'professor' && 'fichAssinado'" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Professor</font></th></tr>
+                <tr>
+                    <td colspan="2" v-if="tipoPropostaRole.role_professor == 'coordenador'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="2" v-if="tipoPropostaRole.role_professor == 'adjunto'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="2" v-if="tipoPropostaRole.role_professor == 'visitante'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior != null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>
+                                {{tipoPropostaRole.avaliacao_periodo_anterior}}
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior == null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>Não Aplicavel
+                    </td>
+                </tr><tr>
+                    <td rowspan="2"><b>Tempo Parcial: </b>{{tipoPropostaRole.percentagem_prestacao_servicos}}%</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='tempo_integral'">Tempo Integral</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='contratacao_inicial'">Contratação inicial</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='adjunto'">Adjunto</td></tr>
+                    <td><b>Fundamentação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        (cfr. acta do CTC – art. 5.º, n.º 3)
+                        N.B. Contrato e renovações não podem ter duração superior a 4 anos</td>
+                <tr><td><b>Duração:</b></td><td>{{tipoPropostaRole.duracao}}</td></tr>
+                <tr><td><b>Periodo:</b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
+          </table>
+
+
+          <table v-if="propostaSelecionada.role == 'assistente' && 'fichAssinado'" width="100%" border="1px">
+                
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Assistente</font></th></tr>
+                <tr>
+                    <td colspan="2" v-if="propostaSelecionada.tipo_contrato == 'contratacao_inicial'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="2" v-if="propostaSelecionada.tipo_contrato == 'renovacao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label></td>
+                    <td colspan="2" v-if="propostaSelecionada.tipo_contrato == 'alteracao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label></td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior != null">
+                        <b>Avaliação do desempenho no periodo anterior</b><br>
+                        <input type="checkbox" onclick="return false;"  checked> Positiva
+                        <input type="checkbox" onclick="return false;"> Negativa
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior == null">
+                        <b>Avaliação do desempenho no periodo anterior</b><br>
+                        <input type="checkbox" onclick="return false;"> Positiva
+                        <input type="checkbox" onclick="return false;"  checked> Negativa
+                    </td>
+                </tr><tr>
+                    <td><b>Tempo Parcial: </b>{{ tipoPropostaRole.percentagem_prestacao_servicos }} %</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='tempo_integral'">Tempo Integral</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='contratacao_inicial'">Contratação inicial</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='adjunto'">Adjunto</td></tr>
+                    <td colspan="2" style='text-align:center; font-size: 14px'><b>Fundamentação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        (cfr. acta do CTC – art. 5.º, n.º 3)
+                        N.B. Contrato e renovações não podem ter duração superior a 4 anos</td>
+                <tr><td><b>Duração:</b></td><td>{{tipoPropostaRole.duracao}}</td></tr>
+                <tr><td><b>Periodo:</b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
+          </table>
+          <table v-if="propostaSelecionada.role == 'monitor' && 'fichAssinado'" width="100%" border="1px">
+                <tr><th colspan="5" bgcolor=#be5b59><font color=#ffffff>Monitor</font></th></tr>
+                <tr>
+                    <td colspan="5" v-if="propostaSelecionada.tipo_contrato == 'contratacao_inicial'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                    </td>
+                    <td colspan="5" v-if="propostaSelecionada.tipo_contrato == 'renovacao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                    <td colspan="3" v-if="propostaSelecionada.tipo_contrato == 'alteracao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                </tr><tr>
+                    <td><b>Regime de prestação de serviços</b><br>
+                        Tempo Parcial: {{tipoPropostaRole.percentagem_prestacao_servicos}}%</td>
+                    <td><b>Duração: </b></td><td>{{tipoPropostaRole.duracao}}</td>
+                    <td><b>Periodo: </b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
+          </table></div>
+          <br>
+          <div class="proponenteFudamentacao" v-if="propostaSelecionada.id_proposta_proponente != null
+                &&(this.$store.state.user.roleDB == 'proponente_departamento' ||
+                this.$store.state.user.roleDB == 'proponente_curso') && 'fichAssinado'">
+          <table v-if="fichAssinado" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
+                <tr>
+                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                </tr><tr>
+                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
+          </table>
+          <br>
+          <table width="100%" border="1px">
+                <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Proponente/s</font></th></tr>
+                <tr bgcolor=#be5b59>
+                    <td><font color=#ffffff>Coordenador de Departamento/Unidade Funcional</font></td>
+                    <td><font color=#ffffff>Coordenador de Curso</font></td>
+                </tr><tr>
+                    <td>
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        Ass.: _______________________________
+                        Nome: {{propostaSelecionada.primeiro_proponente}}
+                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                    <td v-if="propostaSelecionada.segundo_proponente=='proponente_departamento'">
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        Ass.: _______________________________
+                        Nome: {{propostaSelecionada.segundo_proponente}}
+                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                    <td>
+                    <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        Nome: {{propostaSelecionada.segundo_proponente}}
+                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                    <td v-if="propostaSelecionada.primeiro_proponente=='proponente_curso'">
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        Nome: {{propostaSelecionada.primeiro_proponente}}
+                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                </tr>
+          </table></div>
+          <br>
+          <div class="diretoruo" v-if="propostaSelecionada.proposta_diretor_uo_id != null
+                &&(this.$store.state.user.roleDB == 'diretor_uo')">
+          <table width="100%" border="1px">
+                <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Diretor da UO</font></th></tr>
+                <tr>
+                    <td v-if="propostaSelecionada.reconhecimento=='1'"><b>Reconheço interesse e a necessidade da contratação/renovação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                    </td>
+                    <td rowspan="2" width="60%"><b>Data: </b>{{propostaSelecionada.data_assinatura}}<br> <b>Assinatura: </b>____________________</td>
+                </tr><tr>
+                    <td v-if="propostaSelecionada.parecer=='Favoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Favorável
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Desfavorável
+                    </td>
+                    <td v-if="propostaSelecionada.parecer=='Desfavoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Favorável
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Desfavorável
+                    </td>
+                </tr>
+          </table></div>
+          <br>
+          <div class="ctc" v-if="propostaSelecionada.proposta_ctc_id != null &&
+                this.$store.state.user.roleDB == 'ctc'">
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Conselho Técnico Cientifico</font></th></tr>
+                <tr>
+                    <td><b>Votos a Favor: </b>{{propostaSelecionada.votos_a_favor}}</td>
+                    <td><b>Votos Contra: </b>{{propostaSelecionada.votos_contra}}</td>
+                    <td rowspan="3"><b>Data: </b>{{propostaSelecionada.data_assinatura}}  <br>Assinatura:____________________</td>
+                </tr><tr>
+                    <td><b>Votos em branco: </b>{{propostaSelecionada.votos_brancos}}</td>
+                    <td><b>Votos Nulos: </b>{{propostaSelecionada.votos_nulos}}</td>
+                    </tr>
+                <tr  v-if="propostaSelecionada.aprovacao=='Aprovado'">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Aprovado</td>
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Não Aprovado</td>
+                    </tr>
+                <tr v-if="propostaSelecionada.aprovacao=='nao aprovado'">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Aprovado</td>
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Não Aprovado</td>
+                    </tr>
+          </table></div>
+          <br>
+          <div class="tabelaRecursosHumanos2" v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
+          <br>
+          <div v-if="propostaSelecionada.proposta_recursos_humanos_id != null &&
+                this.$store.state.user.roleDB == 'recursos_humanos'">
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
+                <tr>
+                    <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
+                    <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
+                    <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
+          </table></div><br>
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Documentos obrigatorios a anexar à presente proposta</font></th></tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" onclick="return false;">Convite<br>
+                        <input type="checkbox" onclick="return false;">Relatório subscrito por dois professores<br>
+                        <input type="checkbox" onclick="return false;">Cópia da Ata do CTC<br>
+                        <input type="checkbox" onclick="return false;">Distribuição de serviço docente<br>
+                        <input type="checkbox" onclick="return false;">Autorização da acumulação de funções públicas pelo serviço de origem<br>
+                        <input type="checkbox" onclick="return false;">Curriculum Vitae (contratação inicial)
+                    </td>
+                    <td>
+                        <input type="checkbox" onclick="return false;">Cópia dos certificados de habilitações de todos os graus (contratação inicial)<br>
+                        <input type="checkbox" onclick="return false;">Cópia do NIF<br>
+                        <input type="checkbox" onclick="return false;">N.º de CGA/SS<br>
+                        <input type="checkbox" onclick="return false;">Cópia do CC/BI<br>
+                        <input type="checkbox" onclick="return false;">Cópia do IBAN/NIB<br>
+                        <input type="checkbox" onclick="return false;">Certificado de Registo Criminal<br>
+                        <input type="checkbox" onclick="return false;">Declaração de Robustez Física<br>
+                    </td>
+                    <td>
+                        <input type="checkbox" onclick="return false;">Cópia do Boletim de Vacinas<br>
+                        <input type="checkbox" onclick="return false;">Ficha de Identificação<br>
+                        <input type="checkbox" onclick="return false;">Declaração Artº 99 do IRS<br>
+                        <input type="checkbox" onclick="return false;">Declaração Comunic.Direitos/Renúncia ADSE<br>
+                        <input type="checkbox" onclick="return false;"> Resposta à consulta das outras Escolas</td>
+                </tr>
+          </table>
+          <p style='font-size: 8px'>Atualizado em 05/2020 – DSRH<p>
+          <p><b>Os dados recolhidos no âmbito deste processo têm como finalidade a celebração de contrato de trabalho em funções públicas e serão objeto de
+                tratamento nos termos da legislação de proteção de dados em vigor.</b></p>
+          </div>
+   </div>
+   
+   <div class="tabelasRestantes"> 
+   <div >
+           <table width="100%" border="1px" align=center  v-if="propostaSelecionada.verificacao_outras_uo != 'sim'">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
+                <tr v-if="ficheiroCurriculo">
+                    <td>Curriculum Vitae</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do currículo
+                         </b-button>
+                    </td>
+                    <td><b-button class="botao" v-on:click="curriculo = !curriculo"
+                            variant="dark">
+                            Visualizar
+                            {{propostaSelecionada.id_proposta_proponente}}
+                        </b-button>
+                     </td><tr v-if="curriculo" style="width: 100%">
+                        <td colspan="3" style=" TABLE-LAYOUT: fixed; WORD-BREAK:BREAK-ALL;">
+                            <pdf :src="fichCurriculo"></pdf>
+                        </td>
+                    </tr>
+                </tr><tr v-if="ficheiroCertificadoHabilitacoes">
+                    <td>Cópia dos Certificados de Habilitações</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroCertificadoHabilitacoes.proposta_id, 'Habilitacoes do docente a ser contratado', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download dos Certificado de Habilitações 
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="habilitacoes = !habilitacoes"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td></td>
+                    <tr v-if="habilitacoes">
+                        <td colspan="3" style="height: 50%">
+                            {{fichCurriculo}}
+                            <pdf name="fade" :src="fichCertificadoHabilitacoes"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroRelatorioProponentes">
+                    <td>Relatorio susbcrito pelos Proponentes</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Relatorio dos 2 proponentes', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Donwload do Relatório dos Proponentes
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="relatorio = !relatorio"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="relatorio">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichRelatorioProponentes"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ataCTC">
+                    <td>Cópia da Ata do CTC</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ataCTC.proposta_id, 'Ata do CTC', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download da Ata do CTC
+                    </b-button><td>
+                        <b-button  v-on:click="ata = !ata"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td></td>
+                    <tr v-if="ata">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+       </table>
+
+
+
+       
+        <table class="tabelaFicheiro" width="100%" border="1px" align=center  v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
+                <tr v-if="ficheiroCurriculo">
+                    <td>Curriculum Vitae</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do currículo
+                         </b-button>
+                    </td>
+
+                    <td>
+                        <b-button class="botao" v-on:click="curriculo = !curriculo"
+                            variant="dark">
+                            Visualizar
+                            {{propostaSelecionada.id_proposta_proponente}}
+                        </b-button>
+                     </td><tr v-if="curriculo" style="width: 100%">
+                        <td colspan="3" style=" TABLE-LAYOUT: fixed; WORD-BREAK:BREAK-ALL;">
+                            <pdf :src="fichCurriculo"></pdf>
+                        </td>
+                    </tr>
+
+
+
+                    
+                </tr><tr v-if="ficheiroCertificadoHabilitacoes">
+                    <td>Cópia dos Certificados de Habilitações</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroCertificadoHabilitacoes.proposta_id, 'Habilitacoes do docente a ser contratado', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download dos Certificado de Habilitações 
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="habilitacoes = !habilitacoes"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td></td>
+                    <tr v-if="habilitacoes">
+                        <td colspan="3" style="height: 50%">
+                            {{fichCurriculo}}
+                            <pdf name="fade" :src="fichCertificadoHabilitacoes"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroRelatorioProponentes">
+                    <td>Relatorio susbcrito pelos Proponentes</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Relatorio dos 2 proponentes', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Donwload do Relatório dos Proponentes
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="relatorio = !relatorio"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="relatorio">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichRelatorioProponentes"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ataCTC">
+                    <td>Cópia da Ata do CTC</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ataCTC.proposta_id, 'Ata do CTC', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download da Ata do CTC
+                    </b-button><td>
+                        <b-button  v-on:click="ata = !ata"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td></td>
+                    <tr v-if="ata">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroNIF">
+                <td>Cópia do NIF</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroNIF.proposta_id, 'Ficheiro NIF', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download da Cópia do NIF
+                    </b-button><td>
+                        <b-button  v-on:click="nif = !nif"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td></td>
+                    <tr v-if="nif">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroCGA">
+                    <td>N.º de CGA/SS</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroCGA.proposta_id, 'Ficheiro Nº CGA/SS', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro CGA
+                    </b-button><td>
+                        <b-button  v-on:click="cga = !cga"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td></td>
+                    <tr v-if="cga">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroCC">
+                    <td>Cópia do Cartão Cidadão</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroCC.proposta_id, 'Ficheiro Cópia CC', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> DownloadFicheiro do Cartão Cidadão
+                    </b-button><td>
+                        <b-button  v-on:click="cc = !cc"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                            {{propostaSelecionada.id_proposta_proponente}}
+                        </b-button>
+                     </td></td>
+                    <tr v-if="cc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroIBAN">
+                    <td>Cópia IBAM/NIB</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroIBAN.proposta_id, 'Ficheiro Cópia IBAN', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro Cópia IBAN
+                         </b-button>
+                     </td><td>
+                        <b-button  v-on:click="iban = !iban"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                            {{propostaSelecionada.id_proposta_proponente}}
+                        </b-button>
+                     </td>
+                    <tr v-if="iban">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroCertificadoRegistoCriminal">
+                    <td>Certificado de Registo Criminal</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroCertificadoRegistoCriminal.proposta_id, 'Ficheiro Registo Criminal', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download Ficheiro do Registo Criminal
+                    </b-button></td><td>
+                        <b-button  v-on:click="criminal = !criminal"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="criminal">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroDeclaracaoRobustezFisica">
+                    <td>Declaração de Robustez Física</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroDeclaracaoRobustezFisica.proposta_id, 'Ficheiro Robustez Física', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro de Robustez Física
+                    </b-button></td><td>
+                        <b-button  v-on:click="robustez = !robustez"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="robustez">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroBoletimVacinas">
+                    <td>Cópia do Boletim Vacinas</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroBoletimVacinas.proposta_id, 'Ficheiro Boletim Vacinas', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro do Boletim Vacinas
+                    </b-button></td><td>
+                        <b-button  v-on:click="vacinas = !vacinas"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="vacinas">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroFichaIdentificacao">
+                    <td>Ficha Identificacao</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroFichaIdentificacao.proposta_id, 'Ficheiro Ficha Identificacao', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Ficha Identificacao
+                    </b-button></td><td>
+                        <b-button  v-on:click="identificacao = !identificacao"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="identificacao">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroDeclaracaoRenuncia">
+                    <td>DCD/Renuncia ADSE</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroDeclaracaoRenuncia.proposta_id, 'Ficheiro Renuncia ADSE', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Renuncia ADSE
+                    </b-button></td><td>
+                        <b-button  v-on:click="adse = !adse"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="adse">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroDeclaracaoArtigo99">
+                    <td>Declaracao Artº 99 do IRS</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            @click="downloadFicheiro(ficheiroDeclaracaoArtigo99.proposta_id, 'Ficheiro Declaracao IRS', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Declaracao IRS
+                    </b-button></td><td>
+                        <b-button  v-on:click="artigo = !artigo"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="artigo">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroConsultaOutrasEscolas">
+                    <td>Resposta à Consulta das Outras Escolas</td>
+                    <td><b-button
+                            size="md"
+                            variant="dark"
+                            style="width:100%"
+                            click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Resposta Consulta Outras Escolas', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Resposta Consulta Outras Escolas
+                    </b-button></td><td>
+                        <b-button  v-on:click="consulta = !consulta"
+                            size="md"
+                            variant="dark"
+                            style="width:100%">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="consulta">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                        </td></tr>
+                </tr><tr>
+
+                </tr>
+          </table>
+
+    <br>
     <fundamentacao-departamento
       v-if="this.$store.state.user.roleDB == 'proponente_departamento' &&
       this.propostaSelecionada.fundamentacao_coordenador_departamento == null"
@@ -362,6 +771,14 @@
       :propostaSelecionada="propostaSelecionada"
       v-on:voltarProponentes="voltarProponentes"
     ></fundamentacao-curso>
+
+    <assinar-curso
+      v-if="this.$store.state.user.roleDB == 'proponente_curso' &&
+            this.propostaSelecionada.fundamentacao_coordenador_curso != null"
+      :propostaSelecionada="propostaSelecionada"
+      v-on:voltarProponentes="voltarProponentes"
+    ></assinar-curso>
+
 
     <diretor
       v-if="this.$store.state.user.roleDB == 'diretor_uo' && this.propostaSelecionada.proposta_diretor_uo_id == null"
@@ -384,13 +801,398 @@
       :propostaSelecionada="propostaSelecionada"
       v-on:mostrarRh="voltarRecursosHumanos"
     ></proposta-recursos>
+
+    </tr>   
+
+    </table>
+    <div>
+    <div id="dowloadPdf" class="downloadpdf" style="opacity: 0">
+           <div v-if="(this.$store.state.user.roleDB == 'proponente_departamento' ||
+                this.$store.state.user.roleDB == 'proponente_curso')">
+           <table width="100%" border="1px">
+                <tr  bgcolor=#be5b59><th colspan="3"><font color=#ffffff>A preencher pelo/s proponente/s</font></th></tr>
+                <tr>
+                    <td><b>Nome Completo</b></td><td colspan="2">{{propostaSelecionada.nome_completo}}</td>
+                </tr>
+                    <td><b>Departamento/Área Científica/Curso</b></td><td colspan="2" width="75%">{{propostaSelecionada.area_cientifica}}</td>
+                <tr><td><b>Serviço Docente Atribuido</b></td><td colspan="2">Anexo à presente proposta</td></tr>
+                <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
+                <tr width="100%">
+                    <td><b>Grau: </b>{{propostaSelecionada.grau}}</td>
+                    <td><b>Curso: </b>{{propostaSelecionada.curso}}</td>
+                    <td><b>Area Cientifica: </b>{{propostaSelecionada.area_cientifica}}</td>
+                </tr>
+          </table>
+          <br>
+          <table v-if="propostaSelecionada.role == 'professor'" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Professor</font></th></tr>
+                <tr>
+                    <td colspan="2" v-if="tipoPropostaRole.role_professor == 'coordenador'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="2" v-if="tipoPropostaRole.role_professor == 'adjunto'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="2" v-if="tipoPropostaRole.role_professor == 'visitante'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior != null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>
+                                {{tipoPropostaRole.avaliacao_periodo_anterior}}
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior == null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>Não Aplicavel
+                    </td>
+                </tr><tr>
+                    <td rowspan="2"><b>Tempo Parcial: </b>{{tipoPropostaRole.percentagem_prestacao_servicos}}%</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='tempo_integral'">Tempo Integral</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='contratacao_inicial'">Contratação inicial</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='adjunto'">Adjunto</td></tr>
+                    <td><b>Fundamentação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        (cfr. acta do CTC – art. 5.º, n.º 3)
+                        N.B. Contrato e renovações não podem ter duração superior a 4 anos</td>
+                <tr><td><b>Duração:</b></td><td>{{tipoPropostaRole.duracao}}</td></tr>
+                <tr><td><b>Periodo:</b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
+          </table>
+          <table v-if="propostaSelecionada.role == 'assistente'" width="100%" border="1px">
+                
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Assistente</font></th></tr>
+                <tr>
+                    <td colspan="2" v-if="propostaSelecionada.tipo_contrato == 'contratacao_inicial'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="2" v-if="propostaSelecionada.tipo_contrato == 'renovacao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label></td>
+                    <td colspan="2" v-if="propostaSelecionada.tipo_contrato == 'alteracao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label></td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior != null">
+                        <b>Avaliação do desempenho no periodo anterior</b><br>
+                        <input type="checkbox" onclick="return false;"  checked> Positiva
+                        <input type="checkbox" onclick="return false;"> Negativa
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior == null">
+                        <b>Avaliação do desempenho no periodo anterior</b><br>
+                        <input type="checkbox" onclick="return false;"> Positiva
+                        <input type="checkbox" onclick="return false;"  checked> Negativa
+                    </td>
+                </tr><tr>
+                    <td><b>Tempo Parcial: </b>{{ tipoPropostaRole.percentagem_prestacao_servicos }} %</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='tempo_integral'">Tempo Integral</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='contratacao_inicial'">Contratação inicial</td>
+                    <td v-if="tipoPropostaRole.regime_prestacao_servicos=='adjunto'">Adjunto</td></tr>
+                    <td colspan="2" style='text-align:center; font-size: 14px'><b>Fundamentação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        (cfr. acta do CTC – art. 5.º, n.º 3)
+                        N.B. Contrato e renovações não podem ter duração superior a 4 anos</td>
+                <tr><td><b>Duração:</b></td><td>{{tipoPropostaRole.duracao}}</td></tr>
+                <tr><td><b>Periodo:</b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
+          </table>
+          <table v-if="propostaSelecionada.role == 'monitor'" width="100%" border="1px">
+                <tr><th colspan="5" bgcolor=#be5b59><font color=#ffffff>Monitor</font></th></tr>
+                <tr>
+                    <td colspan="5" v-if="propostaSelecionada.tipo_contrato == 'contratacao_inicial'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                    </td>
+                    <td colspan="5" v-if="propostaSelecionada.tipo_contrato == 'renovacao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                    <td colspan="3" v-if="propostaSelecionada.tipo_contrato == 'alteracao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                </tr><tr>
+                    <td><b>Regime de prestação de serviços</b><br>
+                        Tempo Parcial: {{tipoPropostaRole.percentagem_prestacao_servicos}}%</td>
+                    <td><b>Duração: </b></td><td>{{tipoPropostaRole.duracao}}</td>
+                    <td><b>Periodo: </b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
+          </table></div>
+          <br>
+          <div v-if="propostaSelecionada.id_proposta_proponente != null
+                &&(this.$store.state.user.roleDB == 'proponente_departamento' ||
+                this.$store.state.user.roleDB == 'proponente_curso')">
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
+                <tr>
+                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                </tr><tr>
+                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
+          </table>
+          <br>
+          <table width="100%" border="1px">
+                <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Proponente/s</font></th></tr>
+                <tr bgcolor=#be5b59>
+                    <td><font color=#ffffff>Coordenador de Departamento/Unidade Funcional</font></td>
+                    <td><font color=#ffffff>Coordenador de Curso</font></td>
+                </tr><tr>
+                    <td>
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        Ass.: _______________________________ <br>
+                        Nome: {{propostaSelecionada.primeiro_proponente}}
+                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                    <td v-if="propostaSelecionada.segundo_proponente=='proponente_departamento'">
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        Ass.: _______________________________
+                        Nome: {{propostaSelecionada.segundo_proponente}}
+                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                    <td>
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        Ass.: _______________________________ <br>
+                        Nome: {{propostaSelecionada.segundo_proponente}}
+                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                    <td v-if="propostaSelecionada.primeiro_proponente=='proponente_curso'">
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        Ass.: _______________________________ <br>
+                        Nome: {{propostaSelecionada.primeiro_proponente}}
+                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                </tr>
+          </table></div>
+          <br>
+          <div name="diretorUo" id="Uo" v-if="propostaSelecionada.proposta_diretor_uo_id != null
+                &&(this.$store.state.user.roleDB == 'diretor_uo')">
+                <div class="total" style ="width:100%; position: relative;">
+                    <pdf :src="fichAssinado"></pdf>
+                </div>
+                
+                <div class="uoPdfTabela">
+          <table width="100%" border="1px">
+                <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Diretor da UO</font></th></tr>
+                <tr>
+                    <td v-if="propostaSelecionada.reconhecimento=='1'"><b>Reconheço interesse e a necessidade da contratação/renovação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                    </td>
+                    <td rowspan="2" width="60%"><b>Data: </b>{{propostaSelecionada.data_assinatura}}<br> <b>Assinatura: </b>____________________</td>
+                </tr><tr>
+                    <td v-if="propostaSelecionada.parecer=='Favoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Favorável
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Desfavorável
+                    </td>
+                    <td v-if="propostaSelecionada.parecer=='Desfavoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Favorável
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Desfavorável
+                    </td>
+                </tr>
+          </table></div></div>
+          <br>
+          <div class="ctcPdf" id="ctcPdf" v-if="propostaSelecionada.proposta_ctc_id != null &&
+                this.$store.state.user.roleDB == 'ctc'">
+                <div class="total" style ="width:100%; position: relative;">
+                    <pdf :src="fichAssinado"></pdf>
+                </div>
+                <div class="ctcPdfTabela">
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Conselho Técnico Cientifico</font></th></tr>
+                <tr>
+                    <td><b>Votos a Favor: </b>{{propostaSelecionada.votos_a_favor}}</td>
+                    <td><b>Votos Contra: </b>{{propostaSelecionada.votos_contra}}</td>
+                    <td rowspan="3"><b>Data: </b>{{propostaSelecionada.data_assinatura}}  <br>Assinatura:____________________</td>
+                </tr><tr>
+                    <td><b>Votos em branco: </b>{{propostaSelecionada.votos_brancos}}</td>
+                    <td><b>Votos Nulos: </b>{{propostaSelecionada.votos_nulos}}</td>
+                    </tr>
+                <tr  v-if="propostaSelecionada.aprovacao=='Aprovado'">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Aprovado</td>
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Não Aprovado</td>
+                    </tr>
+                <tr v-if="propostaSelecionada.aprovacao=='nao aprovado'">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Aprovado</td>
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Não Aprovado</td>
+                    </tr>
+          </table></div></div>
+          <br>
+
+
+       <div id="recursosHumanos">
+          <div id="downloadPdfRecursosHumanos" v-if="propostaSelecionada.verificacao_outras_uo == 'sim'"><table>
+            <td><img src="" alt="Instituto Politécnico de Leiria" class="pr-5">
+        </td><td width="50%"><p style='text-align:center; font-size: 20px'><b>Proposta de contratação<br>
+            Docentes convidados<br></b></p>
+
+            <p style="font-size: 10px">Legislação: art. 8.º do ECPDESP na redacção que lhe foi dada pelo Decreto-Lei n.º
+                207/2009, de 31 de Agosto, alterado pela Lei nº 7/2010, de 13 de Maio e
+                Regulamento de Contratação de Pessoal Docente Especialmente Contratado ao
+                abrigo do art. 8.º do ECPDESP, do IPL</p>
+        </td></table></div>
+          <div v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
+            <table width="100%" border="1px">
+                <tr bgcolor=#be5b59>
+                   <th colspan="3"><font color=#ffffff>A Preencher pelo DSRH</font></th>
+                </tr>
+                <tr>
+                    <td><b>Número de Funcionário:</b>{{propostaSelecionada.numero_funcionario}}<br>
+                    <b>Contratação Comunidada</b><br>
+                    <b>Inscrição na Seg. Social ou CGA</b>{{propostaSelecionada.inscricao}}<br>
+                    <b>Despacho do Sr.Presidente do IPL: </b>{{propostaSelecionada.despacho_presidente_ipl}}</td>
+                    <td><b>Contrato Redigido</b><br>
+                    <b>Contrato Anexo</b><br>
+                    <b>Cessação Social</b></td>
+                    <td><b>NISS ou Nº CGA </b>{{propostaSelecionada.NISS_ou_numero_CGA}}<br>
+                    <b>Data de Nascimento: </b>{{propostaSelecionada.data_nascimento}}<br>
+                    <b>Nº CC: </b>{{propostaSelecionada.numeroCC}}<br>
+                    <b>E-mail Pessoal: {{propostaSelecionada.email_recursos_humanos}} </b></td>
+                </tr><tr>
+                 <td colspan="3"><b>Dados carregados/atualizadors no GIAF por </b>{{propostaSelecionada.dados_GIAF_carregados_por}} <b>Data: {{propostaSelecionada.data_carregamento_dados_GIAF}} </b></td>
+                </tr>
+           </table></div>
+           <br>
+           <div class="downloadPdfRecursosHumanos2">
+            <pdf :src="fichAssinado"></pdf></div>
+            <br>
+            
+          <div class="downloadPdfRecursosHumanos3" v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
+          <div v-if="propostaSelecionada.proposta_recursos_humanos_id != null &&
+                this.$store.state.user.roleDB == 'recursos_humanos'">
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
+                <tr>
+                    <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
+                    <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
+                    <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
+          </table><br></div>
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Documentos obrigatorios a anexar à presente proposta</font></th></tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" onclick="return false;">Convite<br>
+                        <input type="checkbox" onclick="return false;">Relatório subscrito por dois professores<br>
+                        <input type="checkbox" onclick="return false;">Cópia da Ata do CTC<br>
+                        <input type="checkbox" onclick="return false;">Distribuição de serviço docente<br>
+                        <input type="checkbox" onclick="return false;">Autorização da acumulação de funções públicas pelo serviço de origem<br>
+                        <input type="checkbox" onclick="return false;">Curriculum Vitae (contratação inicial)
+                    </td>
+                    <td>
+                        <input type="checkbox" onclick="return false;">Cópia dos certificados de habilitações de todos os graus (contratação inicial)<br>
+                        <input type="checkbox" onclick="return false;">Cópia do NIF<br>
+                        <input type="checkbox" onclick="return false;">N.º de CGA/SS<br>
+                        <input type="checkbox" onclick="return false;">Cópia do CC/BI<br>
+                        <input type="checkbox" onclick="return false;">Cópia do IBAN/NIB<br>
+                        <input type="checkbox" onclick="return false;">Certificado de Registo Criminal<br>
+                        <input type="checkbox" onclick="return false;">Declaração de Robustez Física<br>
+                    </td>
+                    <td>
+                        <input type="checkbox" onclick="return false;">Cópia do Boletim de Vacinas<br>
+                        <input type="checkbox" onclick="return false;">Ficha de Identificação<br>
+                        <input type="checkbox" onclick="return false;">Declaração Artº 99 do IRS<br>
+                        <input type="checkbox" onclick="return false;">Declaração Comunic.Direitos/Renúncia ADSE<br>
+                        <input type="checkbox" onclick="return false;"> Resposta à consulta das outras Escolas</td>
+                </tr>
+          </table>
+          <p style='font-size: 8px'>Atualizado em 05/2020 – DSRH<p>
+          <p><b>Os dados recolhidos no âmbito deste processo têm como finalidade a celebração de contrato de trabalho em funções públicas e serão objeto de
+                tratamento nos termos da legislação de proteção de dados em vigor.</b></p></div>
+    </div>      
+   </div>
+   </div>
+   
+    </div>
+   </div></div>
   </div>
 </template>
 <script>
+import VuePdfApp from "vue-pdf-app"
+// import this to use default icons for buttons
+import "vue-pdf-app/dist/icons/main.css"
+import pdf from 'vue-pdf'
+import jsPDF from 'jspdf'
 export default {
+  components: {
+    VuePdfApp,
+    pdf
+  },
   props: ["propostaSelecionada"],
   data() {
     return {
+      curriculo: false,
+      habilitacoes: false,
+      relatorio: false,
+      ata: false,
+      nif: false,
+      cga: false,
+      cc: false,
+      iban: false,
+      criminal: false,
+      robustez: false,
+      vacinas: false,
+      identificacao: false,
+      adse: false,
+      artigo: false,
+      consulta: false,
+
+
+      isDashboardVisible: true,
+      isNovaPropostaVisible: false,
+      isActiveProponente: false,
+      isActiveDiretorUO: false,
+      isActiveCTC: false,
+      isActiveSD: false,
+      isActiveRH: false,
+      isEditarPropostaVisible: false,
+      isEnviarPropostaVisible: false,
+      propostaSel: "",
       tipoPropostaRole: [],
       ucsDaPropostaSelecionada: [],
       ficheiros: [],
@@ -409,7 +1211,29 @@ export default {
       ficheiroDeclaracaoArtigo99:"",
       ficheiroDeclaracaoRenuncia:"",
       ficheiroConsultaOutrasEscolas:"",
+      fichRelatorioProponentes:"",
+      ficheiroAssinado:"",
+      fichCurriculo:"",
+      fichCertificadoHabilitacoes:"",
+      fichAtaCTC:"",
+      fichNIF:"",
+      fichCGA:"",
+      fichCC:"",
+      fichIBAN:"",
+      fichCertificadoRegstoCriminal:"",
+      fichDeclaracaoRobustezFisica:"",
+      fichBoletimVacinas:"",
+      fichFichaIdentificacao:"",
+      fichDeclaracaoArtigo99:"",
+      fichDeclaracaoRenuncia:"",
+      fichConsultaOutrasEscolas:"",
+      fichAssinado:"",
+
+
+      ver: "0",
+      fichCurriculo:"",
       propostaID: ""
+
     };
   },
   methods: {
@@ -428,7 +1252,21 @@ export default {
     voltarRecursosHumanos() {
       this.$emit("mostrar-recursos");
     },
-    downloadFicheiro(proposta_id, descricao) {
+
+    downloadFicheiro(proposta_id, descricao, proposta_nome) {
+      axios
+        .get("/api/downloadFicheiro/" + proposta_id + "/" + descricao, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          let blob = new Blob([response.data]);
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = descricao + " " + proposta_nome + ".pdf";
+          link.click();
+        });
+    },
+    downloadFich(proposta_id, descricao) {
       axios
         .get("/api/downloadFicheiro/" + proposta_id + "/" + descricao, {
           responseType: "arraybuffer"
@@ -445,9 +1283,99 @@ export default {
       var doc = new jsPDF();
       doc.fromHTML($("#proposta").get(0), 20, 20);
       doc.save("Proposta Contratação " + this.propostaSelecionada.nome_completo+".pdf");
-    }
+    },
+    
+    gerarPdfPropostaProponente(){
+      
+        var doc = new jsPDF();
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(dowloadPdf, { 
+                html2canvas: {
+                    scale: 0.226,
+                    scrollY:0
+                },
+                x: 10,
+                y: 10, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });
+        
+    },
+
+    
+    gerarPdfCtc(){
+        var doc = new jsPDF();
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(ctcPdf, { 
+                html2canvas: {
+                    scale: 0.226,
+                    scrollY:0
+                },
+                x: 0,
+                y: 0, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });  
+    },
+
+    gerarPdfRecursosHumanos(){
+        var doc = new jsPDF();
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(recursosHumanos, { 
+                html2canvas: {
+                    scale: 0.226,
+                    scrollY:0
+                },
+                x: 10,
+                y: 10, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });  
+    },
+
+    
+    gerarPdfUo(){
+        var doc = new jsPDF();
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(Uo, { 
+                html2canvas: {
+                    scale: 0.226,
+                    scrollY:0
+                },
+                x: 5,
+                y: 10, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });
+        
+    },
   },
   mounted() {
+    this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente o ficheiro assinado', 'info')
+    /*axios.get('/api/getPropostaParaNovoDocente/'+this.$store.state.user.email).then(response => {
+      this.propostaDesteProponente = response.data[0];
+      console.log(this.propostaDesteProponente.id_proposta_proponente);
+      axios.get('/api/propostaDePropostaProponente/'+this.propostaDesteProponente.id_proposta_proponente)
+      .then(response => {
+        this.proposta = response.data;
+      })
+    });*/
     axios
       .get(
         "/api/propostaDePropostaProponente/" +
@@ -458,22 +1386,41 @@ export default {
         console.log(this.propostaID)
         axios.get("/api/ficheiros/" + this.propostaID).then(response => {
           this.ficheiros = response.data;
-          console.log(this.ficheiros)
           this.ficheiroRelatorioProponentes = this.ficheiros[0];
+          this.fichRelatorioProponentes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Relatorio_dos_2_proponentes.pdf",
+          
           this.ficheiroCurriculo = this.ficheiros[1];
+          this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+          console.log(this.fichCurriculo);
           this.ficheiroCertificadoHabilitacoes = this.ficheiros[2];
+          this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
           this.ataCTC = this.ficheiros[3];
+          this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroNIF = this.ficheiros[4];
+          this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroCGA = this.ficheiros[5];
+          this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroCC = this.ficheiros[6];
+          this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroIBAN = this.ficheiros[7];
+          this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroCertificadoRegistoCriminal = this.ficheiros[8];
+          this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[9];
+          this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroBoletimVacinas = this.ficheiros[10];
+          this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroFichaIdentificacao = this.ficheiros[11];
+          this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroDeclaracaoArtigo99 = this.ficheiros[12];
+          this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroDeclaracaoRenuncia = this.ficheiros[13];
+          this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
           this.ficheiroConsultaOutrasEscolas = this.ficheiros[14];
+          this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+          
+          this.fichAssinado = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/Proposta Contratação.pdf";
+          
         });
       });
     axios
@@ -503,3 +1450,160 @@ export default {
   }
 };
 </script>
+
+
+
+
+<style lang="scss">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
+  opacity: 0;
+}
+
+.botao{
+  size: md;
+  width: 100%;
+}
+                            
+.proponente{
+ padding: 5%;
+ position: absolute;
+ top: 7.7%;
+ left: 3.2%;
+ width: 96.5%;
+}
+
+.proponenteFudamentacao{
+ padding: 5%;
+ position: absolute;
+ top: 33.65%;
+ left: 3.2%;
+ width: 96.5%;
+}
+
+.diretoruo{
+ padding: 5%;
+ position: absolute;
+ top: 51%;
+ left: 6.8%;
+ width: 100%;
+}
+
+.uoPdfTabela{
+ padding: 5%;
+ position: absolute;
+ top: 58%;
+ left: -0.5%;
+ width: 104%;
+}
+
+.ctc{
+ padding: 5%;
+ position: absolute;
+ top: 58%;
+ left: 2%;
+ width: 96.5%;
+}
+
+.ctcPdf{
+ padding: 5%;
+ position: absolute;
+ top: 40%;
+ left: 2%;
+ width: 96.5%;
+}
+
+.ctcPdfTabela{
+ padding: 5%;
+ position: absolute;
+ top: 66%;
+ left: 6%;
+ width: 87.5%;
+}
+
+.tabelaCabecalho{
+ padding: 5%;
+ position: absolute;
+ top: 12%;
+ left: 6%;
+ width: 87.5%;
+}
+
+.tabelaRecursosHumanos{
+ padding: 5%;
+ position: absolute;
+ top: 25.5%;
+ left: 7%;
+ width: 87.5%;
+}
+
+.pdfRecursosHumanos{
+ padding: 5%;
+ position: absolute;
+ top: 27.5%;
+ left: -5%;
+ width: 106.5%;
+}
+
+.tabelaRecursosHumanos2{
+ padding: 5%;
+ position: absolute;
+ top: 79.5%;
+ left: 6%;
+ width: 87.5%;
+}
+
+.downloadPdfRecursosHumanos{
+ padding: 5%;
+ position: absolute;
+ top: 25%;
+ width: 87.5%;
+}
+
+.downloadPdfRecursosHumanos3{
+ padding: 5%;
+ position: absolute;
+ top: 25%;
+ width: 87.5%;  
+}
+
+.downloadPdfRecursosHumanos3{
+ padding: 5%;
+ position: absolute;
+ top: 80%;
+ width: 87.5%;  
+}
+
+.downloadpdf{
+ width: 96.5%;
+}
+
+.tabelasRestantes{
+ padding: 5%;
+ position: relative;
+ top: 65%;
+ left: 3.2%;
+ width: 96.5%;
+}
+
+.tabelaFicheiro{
+ padding: 5%;
+ position: absolute;
+ top: 110%;
+ left: 3.2%;
+ width: 96.5%;
+
+}
+
+.total2{
+ padding: 2%;
+ position: absolute;
+bottom: 0;
+z-index: 50;
+}
+
+
+
+</style>

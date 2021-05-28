@@ -29,7 +29,7 @@ class FicheiroController extends Controller
 
         //* Guardar o ficheiro localmente na pasta ficheiros
         if ($file->isValid()) {
-            Storage::disk('local')->putFileAs('ficheiros/' . $request->proposta_id, $file, $name);
+            Storage::disk('local')->putFileAs('public/ficheiros/' . $request->proposta_id, $file, $name);
         }
 
         return response()->json($ficheiro, 200);
@@ -40,7 +40,7 @@ class FicheiroController extends Controller
         //? Apagar todos os ficheiros
         Ficheiro::where('proposta_id', $id)->delete();
 
-        Storage::disk('local')->deleteDirectory('ficheiros/' . $id);
+        Storage::disk('local')->deleteDirectory('public/ficheiros/' . $id);
 
         return response()->json('Ficheiros apagados com sucesso!', 200); 
     }
@@ -48,11 +48,11 @@ class FicheiroController extends Controller
     public function downloadFicheiro($proposta_id, $descricao)
     {
         $ficheiro = Ficheiro::where('proposta_id', $proposta_id)->where('descricao', $descricao)->first();
-        $file = new File(storage_path('app/' . 'ficheiros/' . $proposta_id . '/' . $ficheiro->nome));
+        $file = new File(storage_path('app/' . 'public/ficheiros/' . $proposta_id . '/' . $ficheiro->nome));
 
 
         return response()->download(
-            storage_path('app/' . 'ficheiros/' . $proposta_id . '/' . $ficheiro->nome),
+            storage_path('app/' . 'public/ficheiros/' . $proposta_id . '/' . $ficheiro->nome),
             $ficheiro->nome);
     }
 

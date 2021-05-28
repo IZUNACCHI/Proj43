@@ -31,7 +31,9 @@
         "chart.js": "^2.8.0",
         "dotenv": "^8.0.0",
         "echarts": "^4.2.1",
+        "jspdf": "^2.3.1",
         "nodemailer": "^6.1.1",
+        "pdfassembler": "0.1.0-beta.8",
         "pdfjs": "^2.3.0",
         "socket.io": "^2.2.0",
         "v-charts": "^1.19.0",
@@ -39,10 +41,14 @@
         "vue-apexcharts": "^1.4.0",
         "vue-chartjs": "^3.4.2",
         "vue-loading-overlay": "^3.2.0",
+        "vue-pdf": "^4.2.0",
+        "vue-pdf-app": "^2.0.0",
+        "vue-pure-lightbox": "^3.1.2",
         "vue-router": "^3.0.2",
         "vue-socket.io": "^3.0.7",
         "vue-sweetalert2": "^2.1.1",
         "vuelidate": "^0.7.4",
-        "vuex": "^3.1.0"
+        "vuex": "^3.1.0",
+        "worker-loader": "^3.0.7"
     }
 }

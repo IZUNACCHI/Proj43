@@ -38,7 +38,7 @@ class DiretorUOController extends Controller
       $request->validate([
          'reconhecimento' => 'required',
          'parecer' => 'required',
-         'data_assinatura' => 'required',
+         'data_assinatura_uo' => 'required',
          'diretor_uo_id' => 'required'
       ]);
 
@@ -94,6 +94,21 @@ class DiretorUOController extends Controller
 
         return $arrayPropostas;
     }
+    /*
+    public function getAssinarPropostas()
+    {
+        $propostasADevolver = [];
+
+        $historicoPropostas = DB::table('proposta_proponente')
+            ->leftJoin('proposta', 'proposta_proponente.id_proposta_proponente', 'proposta.proposta_proponente_id')
+            ->leftJoin('proposta_diretor_uo', 'proposta.proposta_diretor_uo_id', 'proposta_diretor_uo.id_proposta_diretor_uo')
+            ->whereNotNull('proposta.proposta_secretariado_direcao_id')
+            //->whereNull('proposta.proposta_recursos_humanos_id')
+            ->get();
+
+        array_push($propostasADevolver, $historicoPropostas);
+        return $propostasADevolver[0];
+    }*/
 
     public function getPropostasPorTipoParecer($diretor_id)
     {

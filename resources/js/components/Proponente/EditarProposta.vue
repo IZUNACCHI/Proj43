@@ -38,7 +38,7 @@
           drop-placeholder="Arraste para aqui um ficheiro"
           browse-text="Procurar"
           name="ficheiroCurriculo"
-          v-validate="{ required: true }"
+          v-validate="{ required: false }"
           :state="validateState('ficheiroCurriculo')"
           @change="onFileSelected"
         ></b-form-file>
@@ -273,7 +273,7 @@
                     drop-placeholder="Arraste para aqui um ficheiro"
                     browse-text="Procurar"
                     name="ficheiroHabilitacoes"
-                    v-validate="{ required: true }"
+                    v-validate="{ required: false }"
                     :state="validateState('ficheiroHabilitacoes')"
                     @change="onFileSelected"
                   ></b-form-file>
@@ -301,7 +301,7 @@
           drop-placeholder="Arraste para aqui um ficheiro"
           browse-text="Procurar"
           name="ficheiroRelatorio"
-          v-validate="{ required: true }"
+          v-validate="{ required: false }"
           :state="validateState('ficheiroRelatorio')"
           @change="onFileSelected"
         ></b-form-file>

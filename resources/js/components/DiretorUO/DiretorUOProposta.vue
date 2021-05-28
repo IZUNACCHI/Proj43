@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="jumbotron">
+    <div>
+        <h3> {{propostaSelecionada.data_assinatura_uo}}</h3>
+    </div>
       <h3>Reconhecimento e Parecer sobre esta proposta</h3>
       <b-form-group label="Reconhecimento" class="mt-5">
         <b-form-checkbox
@@ -27,8 +30,8 @@
         <b-form-group label="Data assinatura">
           <b-form-input
             type="date"
-            :state="$v.propostaDiretor.data_assinatura.$dirty ? !$v.propostaDiretor.data_assinatura.$error : null"
-            v-model="propostaDiretor.data_assinatura"
+            :state="$v.propostaDiretor.data_assinatura_uo.$dirty ? !$v.propostaDiretor.data_assinatura_uo.$error : null"
+            v-model="propostaDiretor.data_assinatura_uo"
           ></b-form-input>
           <b-form-invalid-feedback id="input-1-live-feedback">Selecione a data de assinatura</b-form-invalid-feedback>
         </b-form-group>
@@ -54,7 +57,7 @@ export default {
       propostaDiretor: {
         reconhecimento: "",
         parecer: "",
-        data_assinatura: "",
+        data_assinatura_uo: "",
         diretor_uo_id: this.$store.state.user.id
       },
       parecerArray: [
@@ -67,7 +70,7 @@ export default {
     propostaDiretor: {
       reconhecimento: { required },
       parecer: { required },
-      data_assinatura: { required }
+      data_assinatura_uo: { required }
     }
   },
 

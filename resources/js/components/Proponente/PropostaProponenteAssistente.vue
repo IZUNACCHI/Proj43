@@ -172,7 +172,7 @@ export default {
           regime_prestacao_servicos: { required },
           fundamentacao: { required },
           duracao: { required },
-          periodo: { required },
+          periodo: { required }
         }
       };
     } else {
@@ -195,7 +195,7 @@ export default {
             regime_prestacao_servicos: { required },
             percentagem_prestacao_servicos: { required },
             duracao: { required },
-            periodo: { required },
+            periodo: { required }
           }
         };
       }

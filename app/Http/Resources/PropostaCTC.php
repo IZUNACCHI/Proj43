@@ -20,7 +20,7 @@ class PropostaCTC extends JsonResource
             'votos_brancos' => $this->votos_brancos,
             'votos_nulos' => $this->votos_nulos,
             'aprovacao' => $this->aprovacao,
-            'data_assinatura' => $this->data_assinatura
+            'data_assinatura_ctc' => $this->data_assinatura_ctc
         ];
     }
 }

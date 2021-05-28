@@ -54,7 +54,7 @@
     </b-form-group>
 
     <b-form-group label="Data de assinatura" label-for="inputData">
-      <b-form-input id="inputData" type="date" v-model="propostaCTC.data_assinatura"></b-form-input>
+      <b-form-input id="inputData" type="date" v-model="propostaCTC.data_assinatura_ctc"></b-form-input>
     </b-form-group>
 
     <button
@@ -79,7 +79,7 @@ export default {
         votos_brancos: "",
         votos_nulos: "",
         aprovacao: "",
-        data_assinatura: "",
+        data_assinatura_ctc: "",
         ctc_id: this.$store.state.user.id
       },
       
@@ -101,7 +101,7 @@ export default {
       votos_brancos: { required },
       votos_nulos: { required },
       aprovacao: { required },
-      data_assinatura: { required }
+      data_assinatura_ctc: { required }
     }
     //ata: { required }
   },
