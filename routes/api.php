@@ -146,3 +146,9 @@ Route::put('/unblock/{id}', 'UserController@getUnblocked');
 
 //-------------------------------------------Novos Docentes--------------------------------------------
 Route::get('/getPropostaParaNovoDocente/{emailDocente}', 'NovoDocenteController@getProposta');
+//----------------------------------------Fundamentacoes-----------------------------------------------
+Route::get('/fundamentacoes/{user_id}', 'FundamentacaoController@getFundamentacoes');
+Route::delete('/fundamentacoes/{fundamentacao_id}', 'FundamentacaoController@deleteFundamentacao');
+Route::post('/fundamentacoes/create/{user_id}/{fundamentacao}', 'FundamentacaoController@create');
+
+

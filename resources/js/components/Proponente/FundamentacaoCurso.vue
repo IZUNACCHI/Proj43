@@ -42,6 +42,7 @@ export default {
   props: ["propostaSelecionada"],
   data() {
     return {
+	  selectedFundamentação: null,
       propostaProponente: {
         fundamentacao_coordenador_curso: "",
         data_de_assinatura_coordenador_de_curso:"",

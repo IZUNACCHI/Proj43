@@ -147,6 +147,15 @@
           <b-form-textarea v-model="proposta.fundamentacao_coordenador_curso" rows="3" max-rows="6"
           :state="!$v.proposta.fundamentacao_coordenador_curso.$error && null"></b-form-textarea>
         </b-form-group>
+		  <button type="button" class="btn btn-info" @click="novaFundamentacao()">Guardar Fundamentação</button>
+		<b-form-group label="Fundamentações guardadas">
+		<b-form-select v-model="proposta.fundamentacao_coordenador_curso">
+		<option selected></option>
+		<option v-for="item in fundamentacoes">
+			{{item.fundamentacao}}
+		</option>
+		</b-form-select>
+		</b-form-group>
         <b-form-group label="Data" label-for="inputData">
           <b-form-input
             id="inputData"
@@ -175,7 +184,16 @@
             :state="!$v.proposta.fundamentacao_coordenador_departamento.$error && null"
             max-rows="6"
           ></b-form-textarea>
+		  <button type="button" class="btn btn-info" @click="novaFundamentacao()">Guardar Fundamentação</button>
         </b-form-group>
+		<b-form-group label="Fundamentações guardadas">
+		<b-form-select v-model="proposta.fundamentacao_coordenador_departamento">
+		<option selected></option>
+		<option v-for="item in fundamentacoes">
+			{{item.fundamentacao}}
+		</option>
+		</b-form-select>
+		</b-form-group>
         <b-form-group label="Data" label-for="inputData">
           <b-form-input
             id="inputData"
@@ -237,6 +255,7 @@ export default {
   ],
   data() {
     return {
+	  fundamentacoes: [],
       idParaUcsPropostaProponente: "",
       fundamentacaoCheck: false,
       user: this.$store.state.user,
@@ -266,6 +285,24 @@ export default {
     }
   },
   methods: {
+	novaFundamentacao() {
+		let newfundamentacao = '';
+		if(this.$store.state.user.roleDB == 'proponente_departamento'){
+			newfundamentacao = this.proposta.fundamentacao_coordenador_departamento;
+		}else if(this.$store.state.user.roleDB == 'proponente_curso'){
+			newfundamentacao = this.proposta.fundamentacao_coordenador_curso;
+		}
+		axios.post('/api/fundamentacoes/create/' + this.$store.state.user.id + '/'+ newfundamentacao).then(response => {
+		this.$swal("Success", "Fundamentação guardada!", "success");});
+		this.$nextTick(() => {this.getFundamentacoes();});
+		
+	},
+	getFundamentacoes(){
+		axios.get("/api/fundamentacoes/" + this.$store.state.user.id).then(response => {
+		this.fundamentacoes = response.data;
+		});
+		 
+	},
     voltar() {
       this.$emit("mostrarComponente", this.proposta);
       this.mostrarResumoProposta = false;
@@ -781,7 +818,7 @@ export default {
     }
   },
   mounted(){
-    console.log(this.proposta);
+	this.getFundamentacoes();
   }
 };
 </script>

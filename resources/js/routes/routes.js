@@ -37,7 +37,7 @@ const adminDashboard = Vue.component('adminDashboard', require('../components/Ba
 const adminLogin =  Vue.component('adminLogin', require('../components/Backoffice/AdminLogin.vue').default);
 Vue.component('adicionarCurso', require('../components/Backoffice/AdicionarCurso.vue').default);
 Vue.component('adicionarUcs', require('../components/Backoffice/AdicionarUcs.vue').default);
-
+Vue.component('fundamentacao', require('../components/utils/Fundamentacao.vue').default);
 
 const routes = [
   //---------------Auth----------------------
@@ -71,7 +71,7 @@ const routes = [
     path: '/admin',
     component: adminLogin,
     name: 'adminLogin',
-  }
+  },
 ];
 
 export default new VueRouter({

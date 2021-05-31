@@ -29,7 +29,7 @@ let transporter = nodemailer.createTransport({
 });
 
 let mailOptionsDiretorUO = {
-    from: "projetoinformatico2019@gmail.com",
+    from: "contratacoesgestao@gmail.com",
     to: "contratacoesgestao@gmail.com",
     subject: "Nova Proposta na plataforma de contratações",
     text: "Caro diretor da Unidade Orgânica, foi criada uma nova proposta que requer a sua decisão, por favor, dirija-se à plataforma de gestão de contratações para saber mais informações",
@@ -55,7 +55,7 @@ let mailOptionsRecursosHumanos = {
     subject: "Nova Proposta na plataforma de contratações",
     text: "Caro membro dos Recursos Humanos, foi criada uma nova proposta que requer a sua decisão, por favor, dirija-se à plataforma de gestão de contratações para saber mais informações",
 }
-/*
+
 console.log(transporter);
 transporter.sendMail(mailOptionsDiretorUO, function (error) {
     if (error) {
@@ -65,7 +65,7 @@ transporter.sendMail(mailOptionsDiretorUO, function (error) {
         console.log('Email enviado para o diretor da unidade organica!');
     }
 });
-*/
+
 app.listen(8080, function () {
     console.log('Listening on port 8080')
 })

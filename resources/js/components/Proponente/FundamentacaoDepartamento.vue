@@ -15,7 +15,14 @@
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a fundamentação</b-form-invalid-feedback>
       </b-form-group>
-
+		<b-form-group label="Fundamentações guardadas">
+		<b-form-select v-model="propostaProponente.fundamentacao_coordenador_departamento">
+		<option selected></option>
+		<option v-for="item in fundamentacoes">
+			{{item.fundamentacao}}
+		</option>
+		</b-form-select>
+		</b-form-group>
       <b-form-group label="Data de assinatura" label-for="inputData">
       <b-form-input id="inputData" type="date" v-model="propostaProponente.data_de_assinatura_coordenador_departamento">
 
@@ -40,6 +47,8 @@ export default {
   props: ["propostaSelecionada"],
   data() {
     return {
+	  selectedFundamentação: null,
+	  fundamentacoes: [],
       propostaProponente: {
         fundamentacao_coordenador_departamento: "",
         data_de_assinatura_coordenador_departamento:"",
@@ -54,6 +63,11 @@ export default {
     }
   },
   methods: {
+	getFundamentacoes(){
+		axios.get("/api/fundamentacoes/" + this.$store.state.user.id).then(response => {
+		this.fundamentacoes = response.data;
+		});
+	},
     inserirFundamentacao(propostaProponente){
       this.$v.propostaProponente.$touch();
         if (!this.$v.propostaProponente.$invalid) {
@@ -77,7 +91,10 @@ export default {
         }
         });
       }
-    }
+    },
+	mounted(){
+		this.getFundamentacoes();
+	}
   }
 };
 </script>

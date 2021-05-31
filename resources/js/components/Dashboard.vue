@@ -11,6 +11,9 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right>
             <template slot="button-content">{{ user.name }}</template>
+			<b-dropdown-item v-on:click.prevent="mostrarFundamentacoes">
+              <i class="fas fa-sign-out-alt"></i> Fundamentações
+            </b-dropdown-item>
             <b-dropdown-item v-on:click.prevent="logout">
               <i class="fas fa-sign-out-alt"></i> Logout
             </b-dropdown-item>
@@ -36,7 +39,7 @@
           >
             <i class="fas fa-plus"></i> Nova Proposta
           </button>
-
+		  <fundamentacao v-if="isFundamentacaoVisible"></fundamentacao>
           <tabela-diretor v-if="isDashboardVisible"></tabela-diretor>
           <proponente v-if="isNovaPropostaVisible" v-on:voltar="mostrarProponentes"></proponente>
           <tabela-ctc v-if="user.roleDB == 'ctc'"></tabela-ctc>
@@ -45,6 +48,7 @@
           <tabela-recursos v-if="user.roleDB == 'recursos_humanos'"></tabela-recursos>
           <resumo-geral v-if="isResumoPropostaVisible" :propostaSelecionada="propostaSelecionada"
             v-on:mostrarProponentes="mostrarProponentes"></resumo-geral>
+<<<<<<< Updated upstream
           <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada"
             v-on:voltar="mostrarProponentes"></editarProposta>
           <assinarProposta v-if="isEnviarPropostaVisible" :propostaSelecionada="propostaSelecionada"
@@ -52,6 +56,11 @@
           
           
           <div id="proposta">
+=======
+          <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada" v-on:voltar="mostrarProponentes"></editarProposta>
+		  
+
+>>>>>>> Stashed changes
           <div v-if="mostrarTabela">
             <div v-if="user.roleDB == 'proponente_departamento' && !isNovaPropostaVisible">
               COORDENADOR DEPARTAMENTO
@@ -244,6 +253,7 @@ export default {
   data: function() {
     return {
       isDashboardVisible: true,
+	  isFundamentacaoVisible: false,
       isNovaPropostaVisible: false,
       isActiveProponente: false,
       isActiveDiretorUO: false,
@@ -274,20 +284,29 @@ export default {
       //* Componente Proponente fica visivel
       this.isNovaPropostaVisible = true;
       this.isDashboardVisible = false;
+<<<<<<< Updated upstream
       this.isEnviarPropostaVisible = false;
+=======
+	  this.isFundamentacaoVisible = false;
+>>>>>>> Stashed changes
     },
     home() {
       this.isDashboardVisible = true;
       this.isNovaPropostaVisible = false;
       this.isEditarPropostaVisible = false;
+<<<<<<< Updated upstream
 
       this.isEnviarPropostaVisible = false;
       this.isEnviarPropostaAssinadaVisible = false;
+=======
+	  this.isFundamentacaoVisible = false;
+>>>>>>> Stashed changes
     },
     verDetalhesCoordenadorCurso(propostaPendenteCoordenadorCurso, index) {
       this.isResumoPropostaVisible = true;
       this.isEnviarPropostaVisible = false;
       this.isDashboardVisible = false;
+	  this.isFundamentacaoVisible = false;
       this.propostaSelecionada = Object.assign(
         {},
         propostaPendenteCoordenadorCurso
@@ -302,6 +321,7 @@ export default {
       this.isEnviarPropostaVisible = false;
       this.isResumoPropostaVisible = true;
       this.isDashboardVisible = true;
+	  this.isFundamentacaoVisible = false;
       this.propostaSelecionada = Object.assign(
         {},
         propostaPendenteCoordenadorDepartamento
@@ -338,7 +358,11 @@ export default {
     editarProposta(propostaParaEditar, index) {
       this.isEditarPropostaVisible = true;
       this.isDashboardVisible = true;
+<<<<<<< Updated upstream
       this.isEnviarPropostaVisible = false;
+=======
+	  this.isFundamentacaoVisible = false;
+>>>>>>> Stashed changes
       this.mostrarTabela = false;
       this.propostaSelecionada = Object.assign(
         {},
@@ -346,6 +370,7 @@ export default {
       );
       this.isDashboardVisible = false;
     },
+<<<<<<< Updated upstream
 
 
     gerarPdfProposta(propostaID, index){
@@ -405,7 +430,18 @@ export default {
     },
 
 
+=======
+	mostrarFundamentacoes() {
+		this.isFundamentacaoVisible = true;
+		this.isNovaPropostaVisible = false;
+		this.mostrarTabela = false;
+		this.isResumoPropostaVisible = false;
+		this.isDashboardVisible = true;
+		this.isEditarPropostaVisible = false;
+		},
+>>>>>>> Stashed changes
     mostrarProponentes() {
+	  this.isFundamentacaoVisible = false;
       this.isNovaPropostaVisible = false;
       this.mostrarTabela = true;
       this.isResumoPropostaVisible = false;
@@ -432,6 +468,7 @@ export default {
       });
        }
     },
+	
   },
   computed: {
     user() {
