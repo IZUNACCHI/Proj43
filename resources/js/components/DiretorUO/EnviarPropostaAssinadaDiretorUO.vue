@@ -115,7 +115,7 @@ export default {
             this.ficheiroAInserir.filePropostaAssinada.append("proposta_id", proposta_proponente_id);
             axios.post('/api/ficheiro', this.ficheiroAInserir.filePropostaAssinada).then(response => {})
                 .catch(error => {
-                    console.log("ERRO:: ",error.response.data);
+                    console.log("ERRO: ",error.response.data);
             });
             this.$swal(
                 "Sucesso",

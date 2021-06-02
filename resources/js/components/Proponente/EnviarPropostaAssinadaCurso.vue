@@ -103,7 +103,6 @@ export default {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
     submeter(propostaProponente){
-        console.log(propostaProponente.propostaAssinada);
         this.ficheiroAInserir.filePropostaAssinada = new FormData();
         let proposta_proponente_id = this.propostaSelecionada.id_proposta_proponente;
         
@@ -128,7 +127,7 @@ export default {
             this.ficheiroAInserir.filePropostaAssinada.append("proposta_id", proposta_proponente_id);
             axios.post('/api/ficheiro', this.ficheiroAInserir.filePropostaAssinada).then(response => {})
                 .catch(error => {
-                    console.log("ERRRR:: ",error.response.data);
+                    console.log("ERRO: ",error.response.data);
             });
             this.$swal(
                 "Sucesso",
