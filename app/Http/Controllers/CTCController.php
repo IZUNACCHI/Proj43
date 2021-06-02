@@ -92,4 +92,21 @@ class CTCController extends Controller
 
         return $arrayADevolver;
     }
+
+   public function inserirPropostaAssinada(Request $request){
+      if($request->propostaAssinada == true){
+         $request->propostaAssinada = 1;
+      }
+      else{
+         $request->propostaAssinada = 0;
+      }
+      $request->validate([
+         'propostaAssinada' => 'required',
+      ]);
+
+      $propostaAAtualizar->contrato_assinado_ctc = $request->propostaAssinada;
+      $propostaAAtualizar->save();
+
+      return response()->json($propostaAAtualizar, 200);
+    }
 }

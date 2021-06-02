@@ -138,13 +138,38 @@ class PropostaProponenteController extends Controller
         $propostaAAtualizar->save();
     }
     
-    public function inserirPropostaAssinada($propostaProponenteID, Request $request)
-    {
-        $proposta = Proposta::findOrFail($propostaID);
-        $proposta->docente_inseriu_ficheiros = true;
-        $proposta->save();
-        return response()->json($proposta, 200);
-    
+    public function inserirPropostaAssinadaCurso(Request $request){
+      if($request->propostaAssinada == true){
+         $request->propostaAssinada = 1;
+      }
+      else{
+         $request->propostaAssinada = 0;
+      }
+      $request->validate([
+         'propostaAssinada' => 'required',
+      ]);
+
+      $propostaAAtualizar->contrato_assinado_curso = $request->propostaAssinada;
+      $propostaAAtualizar->save();
+
+      return response()->json($propostaAAtualizar, 200);
+    }
+
+    public function inserirPropostaAssinadaDepartamento(Request $request){
+      if($request->propostaAssinada == true){
+         $request->propostaAssinada = 1;
+      }
+      else{
+         $request->propostaAssinada = 0;
+      }
+      $request->validate([
+         'propostaAssinada' => 'required',
+      ]);
+
+      $propostaAAtualizar->contrato_assinado_departamento = $request->propostaAssinada;
+      $propostaAAtualizar->save();
+
+      return response()->json($propostaAAtualizar, 200);
     }
 
     public function apagarPropostasProponente($id, Request $request)

@@ -94,21 +94,23 @@ class DiretorUOController extends Controller
 
         return $arrayPropostas;
     }
-    /*
-    public function getAssinarPropostas()
-    {
-        $propostasADevolver = [];
 
-        $historicoPropostas = DB::table('proposta_proponente')
-            ->leftJoin('proposta', 'proposta_proponente.id_proposta_proponente', 'proposta.proposta_proponente_id')
-            ->leftJoin('proposta_diretor_uo', 'proposta.proposta_diretor_uo_id', 'proposta_diretor_uo.id_proposta_diretor_uo')
-            ->whereNotNull('proposta.proposta_secretariado_direcao_id')
-            //->whereNull('proposta.proposta_recursos_humanos_id')
-            ->get();
+   public function inserirPropostaAssinada(Request $request){
+      if($request->propostaAssinada == true){
+         $request->propostaAssinada = 1;
+      }
+      else{
+         $request->propostaAssinada = 0;
+      }
+      $request->validate([
+         'propostaAssinada' => 'required',
+      ]);
 
-        array_push($propostasADevolver, $historicoPropostas);
-        return $propostasADevolver[0];
-    }*/
+      $propostaAAtualizar->contrato_assinado_uo = $request->propostaAssinada;
+      $propostaAAtualizar->save();
+
+      return response()->json($propostaAAtualizar, 200);
+    }
 
     public function getPropostasPorTipoParecer($diretor_id)
     {

@@ -55,6 +55,11 @@
                     <button
                       type="button"
                       class="btn btn-info"
+                      @click="mostrarAssinarCTC(propostaHistorico, index)"
+                    >Assinar</button>
+                    <button
+                      type="button"
+                      class="btn btn-info"
                       @click="verDetalhes(propostaHistorico, index)"
                     >Ver detalhes</button>
                   </td>
@@ -68,6 +73,8 @@
     <resumo-geral v-if="isResumoChecked"
     v-on:mostrar-ctc="mostrarCTC"
     :propostaSelecionada="propostaSelecionada"></resumo-geral>
+    <assinarPropostaCTC
+    v-if="isEnviarPropostaCTCVisible" :propostaSelecionada="propostaSelecionada"></assinarPropostaCTC>
   </div>
 </template>
 <script>
@@ -78,7 +85,8 @@ export default {
       historicoPropostasCTC: [],
       mostrarCTCComponent:true,
       propostaSelecionada:{}, 
-      isResumoChecked:false,  
+      isResumoChecked:false,
+      isEnviarPropostaCTCVisible:false,
     };
   },
   methods: {
@@ -86,16 +94,25 @@ export default {
         this.propostaSelecionada = Object.assign({}, propostaPendenteCTC);
         this.mostrarCTCComponent=false;
         this.isResumoChecked=true;
+        this.isEnviarPropostaCTCVisible = false;
       },
       mostrarCTC(){
         this.isResumoChecked = false;
         this.mostrarCTCComponent = true;
+        this.isEnviarPropostaCTCVisible = false;
         axios.get("/api/ctc/getPropostasPendentesCTC").then(response => {
       this.propostasPendentesCTC = response.data;
     });
     axios.get('/api/ctc/getHistoricoPropostasCTC').then(response => {
        this.historicoPropostasCTC = response.data;
     })
+      },
+
+      mostrarAssinarCTC(propostaAssinar, index) {
+        this.propostaSelecionada = Object.assign({}, propostaAssinar);
+        this.mostrarCTCComponent = false;
+        this.isResumoChecked = false;
+        this.isEnviarPropostaCTCVisible = true;
       }
   },
   mounted() {

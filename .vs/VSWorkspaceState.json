@@ -2,15 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\Http\\Controllers",
     "\\resources",
     "\\resources\\js",
     "\\resources\\js\\components",
-    "\\resources\\js\\components\\NovosDocentes",
-    "\\resources\\js\\components\\utils",
-    "\\routes",
-    "\\storage\\app",
-    "\\storage\\app\\public"
+    "\\resources\\js\\components\\Proponente",
+    "\\resources\\js\\components\\RecursosHumanos",
+    "\\resources\\js\\components\\utils"
   ],
-  "SelectedNode": "\\app\\Http\\Controllers\\PropostaProponenteController.php",
+  "SelectedNode": "\\resources\\js\\components\\Proponente\\Proponente.vue",
   "PreviewInSolutionExplorer": false
 }

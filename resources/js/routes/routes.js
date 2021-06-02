@@ -32,12 +32,16 @@ Vue.component('estatisticaCTC', require('../components/Estatistica/EstatisticaCT
 Vue.component('estatisticaSecretariadoDirecao', require('../components/Estatistica/EstatisticaSecretariadoDirecao.vue').default);
 Vue.component('estatisticaRecursosHumanos', require('../components/Estatistica/EstatisticaRecursosHumanos.vue').default);
 Vue.component('editarProposta', require('../components/Proponente/EditarProposta.vue').default);
-Vue.component('assinarProposta', require('../components/Proponente/EnviarPropostaAssinada.vue').default);
+Vue.component('assinarPropostaCurso', require('../components/Proponente/EnviarPropostaAssinadaCurso.vue').default);
+Vue.component('assinarPropostaDepartamento', require('../components/Proponente/EnviarPropostaAssinadaDepartamento.vue').default);
 const adminDashboard = Vue.component('adminDashboard', require('../components/Backoffice/AdminDashboard.vue').default);
 const adminLogin =  Vue.component('adminLogin', require('../components/Backoffice/AdminLogin.vue').default);
 Vue.component('adicionarCurso', require('../components/Backoffice/AdicionarCurso.vue').default);
 Vue.component('adicionarUcs', require('../components/Backoffice/AdicionarUcs.vue').default);
 Vue.component('fundamentacao', require('../components/utils/Fundamentacao.vue').default);
+Vue.component('assinarPropostaDiretor', require('../components/DiretorUO/EnviarPropostaAssinadaDiretorUO.vue').default);
+Vue.component('assinarPropostaCTC', require('../components/CTC/EnviarPropostaAssinadaCTC.vue').default);
+
 
 const routes = [
   //---------------Auth----------------------

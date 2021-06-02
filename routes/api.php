@@ -52,7 +52,8 @@ Route::put('/propostaProponente/fundamentacaoCoordenadorCurso/{propostaID}', 'Pr
 Route::get('/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/{email}', 'PropostaProponenteController@verificarSeJaExistemPropostasAtivasParaDocenteASerContratado');
 Route::put('/apagarPropostasProponente/{idProposta}', 'PropostaProponenteController@apagarPropostasProponente');
 
-Route::post('/propostaProponente/enviarPropostaAssinada/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinada');
+Route::post('/propostaProponente/propostaAssinadaCurso', 'PropostaProponenteController@inserirPropostaAssinadaCurso');
+Route::post('/propostaProponente/propostaAssinadaDepartamento', 'PropostaProponenteController@inserirPropostaAssinadaDepartamento');
 
 //? Estatisticas
 Route::get('/getPropostasProponente/{idProponente}', 'PropostaProponenteController@getPropostasDoProponente');
@@ -100,6 +101,9 @@ Route::get('/diretorUO/getUCSPropostaSelecionada/{proposta_proponente_id}', 'Dir
 Route::post('/diretorUO/propostaDiretor', 'DiretorUOController@store');
 Route::get('/diretorUO/historicoPropostas', 'DiretorUOController@getHistoricoPropostas');
 
+Route::post('/diretorUo/propostaAssinada', 'DiretorUOController@inserirPropostaAssinada');
+
+
 //? Estatisticas
 Route::get('/diretorUO/getPropostas/{idDiretorUO}', 'DiretorUOController@getPropostas');
 Route::get('/diretorUO/getPropostasPorTipoParecer/{idDiretorUO}', 'DiretorUOController@getPropostasPorTipoParecer');
@@ -108,6 +112,9 @@ Route::get('/diretorUO/getPropostasPorTipoParecer/{idDiretorUO}', 'DiretorUOCont
 Route::get('/ctc/getPropostasPendentesCTC', 'CTCController@getPropostasPendentes');
 Route::post('/ctc/propostaCTC', 'CTCController@store');
 Route::get('/ctc/getHistoricoPropostasCTC', 'CTCController@getHistoricoPropostasCTC');
+
+Route::post('/ctc/propostaAssinada', 'CTCController@inserirPropostaAssinada');
+
 
 //? Estatisticas
 Route::get('/ctc/getPropostas/{idCTC}', 'CTCController@getPropostas');

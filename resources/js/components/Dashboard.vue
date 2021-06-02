@@ -48,19 +48,20 @@
           <tabela-recursos v-if="user.roleDB == 'recursos_humanos'"></tabela-recursos>
           <resumo-geral v-if="isResumoPropostaVisible" :propostaSelecionada="propostaSelecionada"
             v-on:mostrarProponentes="mostrarProponentes"></resumo-geral>
-<<<<<<< Updated upstream
+
           <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada"
             v-on:voltar="mostrarProponentes"></editarProposta>
-          <assinarProposta v-if="isEnviarPropostaVisible" :propostaSelecionada="propostaSelecionada"
-            v-on:voltar="mostrarProponentes"></assinarProposta>
-          
-          
+          <assinarPropostaCurso v-if="isEnviarPropostaCursoVisible" :propostaSelecionada="propostaSelecionada"
+            v-on:voltar="mostrarProponentes"></assinarPropostaCurso>
+          <assinarPropostaDepartamento v-if="isEnviarPropostaDepartamentoVisible" :propostaSelecionada="propostaSelecionada"
+            v-on:voltar="mostrarProponentes"></assinarPropostaDepartamento>
+
           <div id="proposta">
-=======
+
           <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada" v-on:voltar="mostrarProponentes"></editarProposta>
 		  
 
->>>>>>> Stashed changes
+
           <div v-if="mostrarTabela">
             <div v-if="user.roleDB == 'proponente_departamento' && !isNovaPropostaVisible">
               COORDENADOR DEPARTAMENTO
@@ -120,7 +121,7 @@
                             <button
                               type="button"
                               class="btn btn-info"
-                              @click="verAssinarCoordenadorCurso(propostaHistorico, index)"
+                              @click="verAssinarCoordenadorDepartamento(propostaHistorico, index)"
                               v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
                               (propostaHistorico.fundamentacao_coordenador_departamento == null)"
                             >Assinar</button>
@@ -261,7 +262,10 @@ export default {
       isActiveSD: false,
       isActiveRH: false,
       isEditarPropostaVisible: false,
-      isEnviarPropostaVisible: false,
+      isEnviarPropostaCursoVisible: false,
+      isEnviarPropostaDepartamentoVisible: false,
+      isEnviarPropostaCTCVisible: false,
+      isEnviarPropostaDiretorVisible: false,
       propostasPendentesCoordenadorDepartamento: "",
       historicoPropostasCoordenadorDepartamento: "",
       propostasPendentesCoordenadorCurso: "",
@@ -284,27 +288,27 @@ export default {
       //* Componente Proponente fica visivel
       this.isNovaPropostaVisible = true;
       this.isDashboardVisible = false;
-<<<<<<< Updated upstream
-      this.isEnviarPropostaVisible = false;
-=======
+
+      this.isEnviarPropostaCursoVisible = false;
+      this.isEnviarPropostaDepartamentoVisible = false;
+
 	  this.isFundamentacaoVisible = false;
->>>>>>> Stashed changes
     },
     home() {
       this.isDashboardVisible = true;
       this.isNovaPropostaVisible = false;
       this.isEditarPropostaVisible = false;
-<<<<<<< Updated upstream
 
-      this.isEnviarPropostaVisible = false;
+      this.isEnviarPropostaCursoVisible = false;
+      this.isEnviarPropostaDepartamentoVisible = false;
       this.isEnviarPropostaAssinadaVisible = false;
-=======
+
 	  this.isFundamentacaoVisible = false;
->>>>>>> Stashed changes
     },
     verDetalhesCoordenadorCurso(propostaPendenteCoordenadorCurso, index) {
       this.isResumoPropostaVisible = true;
-      this.isEnviarPropostaVisible = false;
+      this.isEnviarPropostaCursoVisible = false;
+      this.isEnviarPropostaDepartamentoVisible = false;
       this.isDashboardVisible = false;
 	  this.isFundamentacaoVisible = false;
       this.propostaSelecionada = Object.assign(
@@ -318,7 +322,8 @@ export default {
       propostaPendenteCoordenadorDepartamento,
       index
     ) {
-      this.isEnviarPropostaVisible = false;
+      this.isEnviarPropostaCursoVisible = false;
+      this.isEnviarPropostaDepartamentoVisible = false;
       this.isResumoPropostaVisible = true;
       this.isDashboardVisible = true;
 	  this.isFundamentacaoVisible = false;
@@ -332,7 +337,22 @@ export default {
 
 
     verAssinarCoordenadorCurso(propostaAssinarCoordenadorCurso, index) {
-      this.isEnviarPropostaVisible = true;
+      console.log("Curso");
+      this.isEnviarPropostaCursoVisible = true;
+      this.isEnviarPropostaDepartamentoVisible = false;
+      this.isDashboardVisible = true;
+      this.propostaSelecionada = Object.assign(
+        {},
+        propostaAssinarCoordenadorCurso
+      );
+      this.mostrarTabela = false;
+      this.isDashboardVisible = false;
+      
+    },
+    verAssinarCoordenadorDepartamento(propostaAssinarCoordenadorCurso, index) {
+      console.log("Departamento");
+      this.isEnviarPropostaCursoVisible = false;
+      this.isEnviarPropostaDepartamentoVisible = true;
       this.isDashboardVisible = true;
       this.propostaSelecionada = Object.assign(
         {},
@@ -358,11 +378,11 @@ export default {
     editarProposta(propostaParaEditar, index) {
       this.isEditarPropostaVisible = true;
       this.isDashboardVisible = true;
-<<<<<<< Updated upstream
-      this.isEnviarPropostaVisible = false;
-=======
+      this.isEnviarPropostaCursoVisible = false;
+      this.isEnviarPropostaDepartamentoVisible = false;
+
 	  this.isFundamentacaoVisible = false;
->>>>>>> Stashed changes
+
       this.mostrarTabela = false;
       this.propostaSelecionada = Object.assign(
         {},
@@ -370,7 +390,7 @@ export default {
       );
       this.isDashboardVisible = false;
     },
-<<<<<<< Updated upstream
+
 
 
     gerarPdfProposta(propostaID, index){
@@ -430,7 +450,6 @@ export default {
     },
 
 
-=======
 	mostrarFundamentacoes() {
 		this.isFundamentacaoVisible = true;
 		this.isNovaPropostaVisible = false;
@@ -439,7 +458,6 @@ export default {
 		this.isDashboardVisible = true;
 		this.isEditarPropostaVisible = false;
 		},
->>>>>>> Stashed changes
     mostrarProponentes() {
 	  this.isFundamentacaoVisible = false;
       this.isNovaPropostaVisible = false;

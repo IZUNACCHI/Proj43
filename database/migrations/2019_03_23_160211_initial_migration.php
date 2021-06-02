@@ -76,8 +76,8 @@ class InitialMigration extends Migration
             //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])
             //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])->nullable();
 
-            $table->boolean('contrato_assinado_primeiro_proponente')->default(false);
-            $table->boolean('contrato_assinado_segundo_proponente')->default(false);
+            $table->boolean('contrato_assinado_curso')->default(false);
+            $table->boolean('contrato_assinado_departamento')->default(false);
             $table->enum('role', ['professor', 'assistente', 'monitor']);
             $table->softDeletes();
             $table->timestamps();

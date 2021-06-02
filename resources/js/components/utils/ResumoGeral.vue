@@ -7,7 +7,7 @@
     </div>
     <div v-if="this.$store.state.user.roleDB == 'proponente_curso'">
       <button class="btn btn-danger" @click="voltarProponentes">Voltar</button>
-      <button class="btn btn-danger" v-on:click.prevent="gerarPdfProposta()">Dowload</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfPropostaProponente()">Dowload</button>
       <h3 aling=right>Resumo da proposta de contratação</h3>
     </div>
 
@@ -35,13 +35,11 @@
       <button class="btn btn-danger" v-on:click.prevent="gerarPdfRecursosHumanos()">Download</button>
     </div>
     <div>
+        <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.id_proposta_proponente}}</label>
         </div>
 
    <div id="tes" class="total1">
    <div id="teste">
-        <div class="total" v-if="this.$store.state.user.roleDB != 'recursos_humanos'" style ="width:100%; position: relative;">
-            <pdf :src="fichAssinado"></pdf>
-        </div>
         <div class="pdfRecursosHumanos" v-if="this.$store.state.user.roleDB == 'recursos_humanos'">
             <pdf :src="fichAssinado"></pdf>
         </div>
@@ -77,7 +75,7 @@
                 </tr>
            </table></div>
            <br>
-           <div class="proponente" v-if="(this.$store.state.user.roleDB == 'proponente_departamento' ||
+           <div class="proponente" id="proponente" v-if="(this.$store.state.user.roleDB == 'proponente_departamento' ||
                 this.$store.state.user.roleDB == 'proponente_curso')">
            <table v-if="fichAssinado" width="100%" border="1px">
                 <tr  bgcolor=#be5b59><th colspan="3"><font color=#ffffff>A preencher pelo/s proponente/s</font></th></tr>
@@ -220,33 +218,7 @@
                         Tempo Parcial: {{tipoPropostaRole.percentagem_prestacao_servicos}}%</td>
                     <td><b>Duração: </b></td><td>{{tipoPropostaRole.duracao}}</td>
                     <td><b>Periodo: </b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
-          </table></div>
-          <br>
-          <div class="proponenteFudamentacao" v-if="propostaSelecionada.id_proposta_proponente != null
-                &&(this.$store.state.user.roleDB == 'proponente_departamento' ||
-                this.$store.state.user.roleDB == 'proponente_curso') && 'fichAssinado'">
-          <table v-if="fichAssinado" width="100%" border="1px">
-                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
-                <tr>
-                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
-                </tr><tr>
-                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
-          </table>
-          <br>
+          </table><br>
           <table width="100%" border="1px">
                 <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Proponente/s</font></th></tr>
                 <tr bgcolor=#be5b59>
@@ -256,32 +228,34 @@
                     <td>
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
-                        Ass.: _______________________________
-                        Nome: {{propostaSelecionada.primeiro_proponente}}
-                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
                     <td v-if="propostaSelecionada.segundo_proponente=='proponente_departamento'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
-                        Ass.: _______________________________
-                        Nome: {{propostaSelecionada.segundo_proponente}}
-                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
                     <td>
                     <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
-                        Nome: {{propostaSelecionada.segundo_proponente}}
-                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
                     <td v-if="propostaSelecionada.primeiro_proponente=='proponente_curso'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
-                        Nome: {{propostaSelecionada.primeiro_proponente}}
-                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
                 </tr>
-          </table></div>
-          <br>
+          </table>
+          <br></div>
           <div class="diretoruo" v-if="propostaSelecionada.proposta_diretor_uo_id != null
                 &&(this.$store.state.user.roleDB == 'diretor_uo')">
           <table width="100%" border="1px">
@@ -302,7 +276,7 @@
                     </td>
                 </tr>
           </table></div>
-          <br>
+          
           <div class="ctc" v-if="propostaSelecionada.proposta_ctc_id != null &&
                 this.$store.state.user.roleDB == 'ctc'">
           <table width="100%" border="1px">
@@ -323,8 +297,8 @@
                     <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Aprovado</td>
                     <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Não Aprovado</td>
                     </tr>
-          </table></div>
-          <br>
+          </table><br></div>
+          
           <div class="tabelaRecursosHumanos2" v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
           <br>
           <div v-if="propostaSelecionada.proposta_recursos_humanos_id != null &&
@@ -335,7 +309,29 @@
                     <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
                     <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
                     <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
-          </table></div><br>
+          </table><br>
+          <table v-if="fichAssinado" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
+                <tr>
+                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                </tr><tr>
+                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
+          </table><br>
+          </div>
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Documentos obrigatorios a anexar à presente proposta</font></th></tr>
                 <tr>
@@ -756,8 +752,11 @@
 
                 </tr>
           </table>
-
-    <br>
+          
+        <div class="total" v-if="this.$store.state.user.roleDB != 'recursos_humanos'" style ="width:120%; left:-30.2 ;">
+            <pdf :src="fichAssinado"></pdf><br>
+        </div>
+    
     <fundamentacao-departamento
       v-if="this.$store.state.user.roleDB == 'proponente_departamento' &&
       this.propostaSelecionada.fundamentacao_coordenador_departamento == null"
@@ -772,13 +771,7 @@
       v-on:voltarProponentes="voltarProponentes"
     ></fundamentacao-curso>
 
-    <assinar-curso
-      v-if="this.$store.state.user.roleDB == 'proponente_curso' &&
-            this.propostaSelecionada.fundamentacao_coordenador_curso != null"
-      :propostaSelecionada="propostaSelecionada"
-      v-on:voltarProponentes="voltarProponentes"
-    ></assinar-curso>
-
+    
 
     <diretor
       v-if="this.$store.state.user.roleDB == 'diretor_uo' && this.propostaSelecionada.proposta_diretor_uo_id == null"
@@ -805,8 +798,33 @@
     </tr>   
 
     </table>
-    <div>
-    <div id="dowloadPdf" class="downloadpdf" style="opacity: 0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div style="opacity: 0">
+    <div id="downloadPdf" class="downloadPdf" >
            <div v-if="(this.$store.state.user.roleDB == 'proponente_departamento' ||
                 this.$store.state.user.roleDB == 'proponente_curso')">
            <table width="100%" border="1px">
@@ -950,31 +968,6 @@
                     <td><b>Periodo: </b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
           </table></div>
           <br>
-          <div v-if="propostaSelecionada.id_proposta_proponente != null
-                &&(this.$store.state.user.roleDB == 'proponente_departamento' ||
-                this.$store.state.user.roleDB == 'proponente_curso')">
-          <table width="100%" border="1px">
-                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
-                <tr>
-                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
-                </tr><tr>
-                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
-          </table>
-          <br>
           <table width="100%" border="1px">
                 <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Proponente/s</font></th></tr>
                 <tr bgcolor=#be5b59>
@@ -984,31 +977,31 @@
                     <td>
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
-                        Ass.: _______________________________ <br>
-                        Nome: {{propostaSelecionada.primeiro_proponente}}
-                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
                     <td v-if="propostaSelecionada.segundo_proponente=='proponente_departamento'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
-                        Ass.: _______________________________
-                        Nome: {{propostaSelecionada.segundo_proponente}}
-                        Data: {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
                     <td>
-                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                    <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
-                        Ass.: _______________________________ <br>
-                        Nome: {{propostaSelecionada.segundo_proponente}}
-                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
                     <td v-if="propostaSelecionada.primeiro_proponente=='proponente_curso'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true”>{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
-                        Ass.: _______________________________ <br>
-                        Nome: {{propostaSelecionada.primeiro_proponente}}
-                        Data: {{data_de_assinatura_coordenador_de_curso}}</td>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
+                        <b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
+                        <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
                 </tr>
           </table></div>
           <br>
@@ -1018,7 +1011,7 @@
                     <pdf :src="fichAssinado"></pdf>
                 </div>
                 
-                <div class="uoPdfTabela">
+          <div class="uoPdfTabela">
           <table width="100%" border="1px">
                 <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Diretor da UO</font></th></tr>
                 <tr>
@@ -1037,7 +1030,7 @@
                     </td>
                 </tr>
           </table></div></div>
-          <br>
+          
           <div class="ctcPdf" id="ctcPdf" v-if="propostaSelecionada.proposta_ctc_id != null &&
                 this.$store.state.user.roleDB == 'ctc'">
                 <div class="total" style ="width:100%; position: relative;">
@@ -1112,7 +1105,28 @@
                     <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
                     <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
                     <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
-          </table><br></div>
+          </table><br><table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
+                <tr>
+                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                </tr><tr>
+                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
+          </table>
+          <br></div>
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Documentos obrigatorios a anexar à presente proposta</font></th></tr>
                 <tr>
@@ -1292,7 +1306,7 @@ export default {
         doc.setFont('PTSans');
         doc.setFontSize(10);
         doc.setFont("Roboto-Regular");
-        doc.html(dowloadPdf, { 
+        doc.html(downloadPdf, { 
                 html2canvas: {
                     scale: 0.226,
                     scrollY:0
@@ -1447,6 +1461,7 @@ export default {
             console.log(response);
           })
       });
+        
   }
 };
 </script>
@@ -1469,47 +1484,34 @@ export default {
                             
 .proponente{
  padding: 5%;
- position: absolute;
  top: 7.7%;
  left: 3.2%;
  width: 96.5%;
 }
 
-.proponenteFudamentacao{
- padding: 5%;
- position: absolute;
- top: 33.65%;
- left: 3.2%;
- width: 96.5%;
-}
 
 .diretoruo{
- padding: 5%;
- position: absolute;
- top: 51%;
+ padding: 10%;
  left: 6.8%;
- width: 100%;
+ width: 108%;
 }
 
 .uoPdfTabela{
  padding: 5%;
- position: absolute;
  top: 58%;
  left: -0.5%;
  width: 104%;
 }
 
-.ctc{
+.tc{
  padding: 5%;
- position: absolute;
  top: 58%;
  left: 2%;
  width: 96.5%;
 }
 
-.ctcPdf{
+.tcPdf{
  padding: 5%;
- position: absolute;
  top: 40%;
  left: 2%;
  width: 96.5%;
@@ -1517,7 +1519,6 @@ export default {
 
 .ctcPdfTabela{
  padding: 5%;
- position: absolute;
  top: 66%;
  left: 6%;
  width: 87.5%;
@@ -1525,7 +1526,6 @@ export default {
 
 .tabelaCabecalho{
  padding: 5%;
- position: absolute;
  top: 12%;
  left: 6%;
  width: 87.5%;
@@ -1533,7 +1533,6 @@ export default {
 
 .tabelaRecursosHumanos{
  padding: 5%;
- position: absolute;
  top: 25.5%;
  left: 7%;
  width: 87.5%;
@@ -1541,7 +1540,6 @@ export default {
 
 .pdfRecursosHumanos{
  padding: 5%;
- position: absolute;
  top: 27.5%;
  left: -5%;
  width: 106.5%;
@@ -1549,7 +1547,6 @@ export default {
 
 .tabelaRecursosHumanos2{
  padding: 5%;
- position: absolute;
  top: 79.5%;
  left: 6%;
  width: 87.5%;
@@ -1557,21 +1554,18 @@ export default {
 
 .downloadPdfRecursosHumanos{
  padding: 5%;
- position: absolute;
  top: 25%;
  width: 87.5%;
 }
 
 .downloadPdfRecursosHumanos3{
  padding: 5%;
- position: absolute;
  top: 25%;
  width: 87.5%;  
 }
 
 .downloadPdfRecursosHumanos3{
  padding: 5%;
- position: absolute;
  top: 80%;
  width: 87.5%;  
 }
@@ -1582,21 +1576,22 @@ export default {
 
 .tabelasRestantes{
  padding: 5%;
- position: relative;
- top: 65%;
  left: 3.2%;
  width: 96.5%;
 }
 
-.tabelaFicheiro{
+.abelaFicheiro{
  padding: 5%;
- position: absolute;
  top: 110%;
  left: 3.2%;
  width: 96.5%;
 
 }
 
+.total{
+ width: 120%;
+ left: -30.2 ;
+}
 .total2{
  padding: 2%;
  position: absolute;

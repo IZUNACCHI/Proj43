@@ -58,6 +58,11 @@
                     <button
                       type="button"
                       class="btn btn-info"
+                      @click="mostrarAssinarDiretorUO(propostaHistorico, index)"
+                    >Assinar</button>
+                    <button
+                      type="button"
+                      class="btn btn-info"
                       @click="verDetalhes(propostaHistorico, index)"
                     >Ver detalhes</button>
                   </td>
@@ -71,6 +76,8 @@
 
     <resumo-geral v-if="isResumoChecked"
      v-on:mostrar-diretor="mostrarDiretor" :propostaSelecionada="propostaSelecionada"></resumo-geral>
+    <assinarPropostaDiretor
+    v-if="isEnviarPropostaDiretorUOVisible" :propostaSelecionada="propostaSelecionada"></assinarPropostaDiretor>
   </div>
 </template>
 
@@ -82,6 +89,7 @@ export default {
       propostasPendentesDiretorUO: [],
       historicoPropostasDiretorUO: [],
       isResumoChecked: false,
+      isEnviarPropostaDiretorUOVisible:false,
       mostrarDiretorComponent: true,
       propostaSelecionada: {}
     };
@@ -108,7 +116,15 @@ export default {
       axios.get("/api/diretorUO/historicoPropostas").then(response => {
         this.historicoPropostasDiretorUO = response.data;
       });
-    }
+    },
+    mostrarAssinarDiretorUO(propostaAssinar, index) {
+        this.propostaSelecionada = Object.assign({}, propostaAssinar);
+        this.mostrarDiretorComponent = false;
+        this.isResumoChecked = false;
+        this.isEnviarPropostaDiretorUOVisible = true;
+
+
+      }
   },
   mounted() {
     if (this.$store.state.user.roleDB == "diretor_uo") {
