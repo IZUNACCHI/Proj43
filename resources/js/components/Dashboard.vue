@@ -35,7 +35,8 @@
             class="btn btn-success mb-4 font-weight-bold"
             v-on:click.prevent="novaProposta"
             v-if="isDashboardVisible && (this.$store.state.user.roleDB == 'proponente_departamento'
-            ||this.$store.state.user.roleDB == 'proponente_curso')"
+            ||this.$store.state.user.roleDB == 'proponente_curso'||
+            this.$store.state.user.roleDB == 'secretariado_direcao')"
           >
             <i class="fas fa-plus"></i> Nova Proposta
           </button>
@@ -58,8 +59,7 @@
 
           <div id="proposta">
 
-          <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada" v-on:voltar="mostrarProponentes"></editarProposta>
-		  
+          
 
 
           <div v-if="mostrarTabela">
@@ -205,7 +205,7 @@
                               class="btn btn-info"
                               @click="verAssinarCoordenadorCurso(propostaHistorico, index)"
                               v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
-                              (propostaHistorico.fundamentacao_coordenador_departamento == null)"
+                              (propostaHistorico.fundamentacao_coordenador_departamento != null)"
                             >Assinar</button>
                           </td><td>
                            <button
@@ -291,7 +291,7 @@ export default {
 
       this.isEnviarPropostaCursoVisible = false;
       this.isEnviarPropostaDepartamentoVisible = false;
-
+      this.isActiveSD = false;
 	  this.isFundamentacaoVisible = false;
     },
     home() {
@@ -301,7 +301,6 @@ export default {
 
       this.isEnviarPropostaCursoVisible = false;
       this.isEnviarPropostaDepartamentoVisible = false;
-      this.isEnviarPropostaAssinadaVisible = false;
 
 	  this.isFundamentacaoVisible = false;
     },
@@ -326,7 +325,7 @@ export default {
       this.isEnviarPropostaDepartamentoVisible = false;
       this.isResumoPropostaVisible = true;
       this.isDashboardVisible = true;
-	  this.isFundamentacaoVisible = false;
+      this.isFundamentacaoVisible = false;
       this.propostaSelecionada = Object.assign(
         {},
         propostaPendenteCoordenadorDepartamento
@@ -337,10 +336,10 @@ export default {
 
 
     verAssinarCoordenadorCurso(propostaAssinarCoordenadorCurso, index) {
-      console.log("Curso");
       this.isEnviarPropostaCursoVisible = true;
       this.isEnviarPropostaDepartamentoVisible = false;
       this.isDashboardVisible = true;
+      this.isFundamentacaoVisible = false;
       this.propostaSelecionada = Object.assign(
         {},
         propostaAssinarCoordenadorCurso
@@ -459,6 +458,8 @@ export default {
 		this.isEditarPropostaVisible = false;
 		},
     mostrarProponentes() {
+      this.isEnviarPropostaCursoVisible = false;
+      this.isEnviarPropostaDepartamentoVisible = false;
 	  this.isFundamentacaoVisible = false;
       this.isNovaPropostaVisible = false;
       this.mostrarTabela = true;

@@ -14,7 +14,7 @@ class PropostaProponente extends Model
         'unidade_organica', 'nome_completo', 'email', 'numero_telefone', 'data_de_assinatura_coordenador_departamento', 'tipo_contrato',
         'data_de_assinatura_coordenador_de_curso', 'fundamentacao_coordenador_curso',
         'fundamentacao_coordenador_departamento', 'grau', 'curso', 'area_cientifica', 'primeiro_proponente',
-        'segundo_proponente', 'role',
+        'segundo_proponente', 'role', 'departamento_curso', 'formacao',
     ];
 
     protected $hidden = [];

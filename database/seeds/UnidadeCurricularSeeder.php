@@ -36,7 +36,7 @@ class UnidadeCurricularSeeder extends Seeder
 
         DB::table('unidade_curricular')->insertGetId($unidadeCurricular);
     }
-
+    /*
     private function getIdDepartamentoMatematica()
     {
         static $departamentoMatematica;
@@ -50,5 +50,5 @@ class UnidadeCurricularSeeder extends Seeder
         $departamentoInformatica = $departamentoInformatica != null ? $departamentoInformatica : DB::table('departamento')
             ->where('nome_departamento', 'Engenharia Informatica')->pluck('id')[0];
         return $departamentoInformatica;
-    }
+    }*/
 }

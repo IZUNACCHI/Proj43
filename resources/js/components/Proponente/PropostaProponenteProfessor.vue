@@ -46,12 +46,32 @@
         v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
         propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'"
       >
+        
+      <b-form-group label="Fundamentao">
+        <b-form-file
+          v-model="ficheiroFundamentacaoProfessorModel"
+          placeholder="Escolha um ficheiro"
+          drop-placeholder="Arraste para aqui um ficheiro"
+          browse-text="Procurar"
+          name="ficheiroFundamentacaoProf"
+          v-validate="{ required: true }"
+          :state="validateState('this.ficheiroFundamentacaoProf')"
+          @change="onFileSelected"
+        ></b-form-file>
+        <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
+      </b-form-group>
+
         <b-form-textarea
           v-model="propostaProponenteProfessor.fundamentacao"
           :state="!$v.propostaProponenteProfessor.fundamentacao.$error && null"
         ></b-form-textarea>
         <b-form-invalid-feedback id="input-1-live-feedback">A fundamentação é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
+
+
+
+
+
 
       <b-form-group label="Duração do contrato" label-for="inputDuracaoContrato">
         <b-form-input
@@ -143,7 +163,11 @@ export default {
         periodo: "",
         proposta_proponente_id: "",
         avaliacao_periodo_anterior:"",
-      },
+      },      
+      ficheirosProfessor: [],
+      ficheiroFundamentacaoProf: "",
+      ficheiroFundamentacaoProfessorModel: "",
+
       avancar: false,
       isShowProfessor: true
     };
@@ -187,6 +211,12 @@ export default {
     }
   },
   methods: {
+    validateState(ref) {
+      return this.veeErrors.has(ref) ? false : null;
+    },
+    onFileSelected(event) {
+      this.ficheiros[event.target.name] = event.target.files[0];
+    },
     seguinte() {
       //* Mudar para o componente Resumo Proposta
       this.$v.$touch();
@@ -200,6 +230,28 @@ export default {
           this.propostaProponenteProfessor.percentagem_prestacao_servicos =
             "100";
         }
+        /*
+        this.ficheiro.fileFundamentacao = new FormData();
+        this.ficheiro.fileFundamentacao.append(
+          "file",
+          this.ficheirosProfessor["ficheiroFundamentacaoProf"]
+        );
+        this.ficheiro.fileFundamentacao.append(
+          "descricao",
+          "Fundamentação do docente a ser contratado"
+        );*/
+
+            this.ficheiro.fileFundamentacao = new FormData();
+            this.ficheiro.fileFundamentacao.append(
+                "file",
+                this.ficheirosProfessor["ficheiroFundamentacaoProf"]
+            );
+            this.ficheiro.fileFundamentacao.append(
+                "descricao",
+                "Fundamentacao da Proposta Proponente Professor"
+            );
+
+
         this.avancar = true;
         this.isShowProfessor = false;
         this.$emit("incrementarBarraProgresso");
@@ -235,6 +287,8 @@ export default {
         .get("/api/propostaProponenteProfessor/" + this.proposta.id_proposta_proponente)
         .then(response => {
           Object.assign(this.propostaProponenteProfessor, response.data);
+          /*if (ficheiro.descricao == "Relatorio dos 2 proponentes")
+              this.ficheiroFundamentacao = ficheiro*/
         });
     }
   }

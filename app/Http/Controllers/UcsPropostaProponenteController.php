@@ -16,12 +16,15 @@ class UcsPropostaProponenteController extends Controller
     public function store(Request $request){
         $request->validate([
             'codigo_uc' => 'required',
+            'nome_uc' => 'required',
             'regime' => 'required',
             'tipo' => 'required',
             'horas' => 'required',
             'horas_semestrais' => 'required',
             'departamento_id' => 'nullable',
-            'turno' => 'required'
+            'turno' => 'required',
+            'Código Curso' => 'nullable',
+            'Nome Curso' => 'nullable'
         ]);
         $ucsPropostaProponente = new UcsPropostaProponente();
         $ucsPropostaProponente->fill($request->all());

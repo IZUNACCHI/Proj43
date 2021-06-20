@@ -69,9 +69,9 @@ export default {
 		});
 	},
     inserirFundamentacao(propostaProponente){
-      this.$v.propostaProponente.$touch();
+        this.$v.propostaProponente.$touch();
         if (!this.$v.propostaProponente.$invalid) {
-       this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
+          this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
                         text: 'Não poderá realizar mais nenhuma alteração',
                         type: 'warning',
                         showCancelButton: true,
@@ -80,15 +80,15 @@ export default {
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
-          axios.put('/api/propostaProponente/fundamentacaoCoordenadorDepartamento/'+
-          this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
-            this.$swal('Sucesso', 'Fundamentação inserida com sucesso', 'success');
-            this.$socket.emit("email-diretor", {
+            axios.put('/api/propostaProponente/fundamentacaoCoordenadorDepartamento/'+
+                this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
+                this.$swal('Sucesso', 'Fundamentação inserida com sucesso', 'success');
+                this.$socket.emit("email-diretor", {
                           msg: "Pedido de email enviado..."
                         });
-            this.$emit('voltarProponentes');
-          });
-        }
+                this.$emit('voltarProponentes');
+            });
+          }
         });
       }
     },

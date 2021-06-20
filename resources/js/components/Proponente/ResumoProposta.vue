@@ -4,134 +4,212 @@
       <strong>Resumo da Proposta de contratação</strong>
     </h2>
     <br />
-    <h4>
-      <strong>Informações gerais</strong>
-    </h4>
     <div class="jumbotron">
-      <br />
-      <h5>
-        <strong>Tipo de contratação:</strong>
-        {{ proposta.tipo_contrato }}
-      </h5>
-      <br />
-      <h5>
-        <strong>Unidade Organica:</strong>
-        {{ proposta.unidade_organica }}
-      </h5>
-      <br />
-      <h5>
-        <strong>Nome completo:</strong>
-        {{ proposta.nome_completo }}
-      </h5>
-      <br />
-      <h5>
-        <strong>Papel do docente:</strong>
-        {{ proposta.role }}
-      </h5>
-    </div>
-    <br />
-    <h4>
-      <strong>Unidades Curriculares</strong>
-    </h4>
-    <div>
-      <table class="table">
-        <thead>
-          <th>Código</th>
-          <th>Regime</th>
-          <th>Turno</th>
-          <th>Horas</th>
-          <th>Horas Semestrais</th>
-          <th>Tipo</th>
-        </thead>
-        <tbody>
-          <tr v-for="(ucAUX) in unidadesCurriculares" :key="ucAUX.id">
-            <td>{{ucAUX.codigo_uc}}</td>
-            <td>{{ucAUX.regime}}</td>
-            <td>{{ucAUX.turno}}</td>
-            <td>{{ucAUX.horas}}</td>
-            <td>{{ucAUX.horas_semestrais}}</td>
-            <td>{{ucAUX.tipo}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <br />
-    </div>
-    <br />
-    <h4>
-      <strong>Informações Especificas</strong>
-    </h4>
-    <br />
-    <div class="jumbotron">
-      <div v-if="proposta.role=='professor'">
-        <h5>
-          <strong>Tipo de professor:</strong>
-          {{ propostaProponenteProfessor.role_professor }}
-        </h5>
-      </div>
-      <br />
-      <h5>
-        <strong>Regime de prestação de serviços:</strong>
-      </h5>
+      <table width="100%" border="1px">
+                <tr  bgcolor=#be5b59><th colspan="3"><font color=#ffffff>A preencher pelo/s proponente/s</font></th></tr>
+                <tr>
+                    <td><b>Nome Completo</b></td><td colspan="2">{{proposta.nome_completo}}</td>
+                </tr>
+                    <td><b>Departamento/Área Científica/Curso</b></td><td colspan="2" width="75%">{{proposta.departamento_curso}}</td>
+                <tr><td><b>Serviço Docente Atribuido</b></td><td colspan="2"><input type="checkbox"  id="scales" name="scales" onclick="return false;" checked>
+Anexo à presente proposta</td></tr>
+                <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
+                <tr width="100%">
+                    <td v-if="proposta.formacao=='doutoramento'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Doutoramento</td>
+                    <td v-if="proposta.formacao=='outro'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Outro</td>
+                    <td v-if="proposta.formacao=='em_formacao'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Em Formação</td>
+                    <td v-if="proposta.formacao=='doutoramento'"><b>Curso: </b>{{proposta.grau}}</td>
+                    <td v-if="proposta.formacao!='doutoramento'"><b>Grau: </b>{{proposta.grau}}</td>
+                    <td><b>Area Cientifica: </b>{{proposta.area_cientifica}}</td>
+                </tr>
+          </table><br>
 
-      <div v-if="propostaProponenteProfessor">
-        <h5>{{ propostaProponenteProfessor.regime_prestacao_servicos }}</h5>
-      </div>
-      <div v-if="propostaProponenteAssistente">
-        <h5>{{ propostaProponenteAssistente.regime_prestacao_servicos }}</h5>
-      </div>
-      <div v-if="propostaProponenteMonitor">
-        <h5>{{ propostaProponenteMonitor.regime_prestacao_servicos }}</h5>
-      </div>
-      <br />
 
-      <div v-if="propostaProponenteProfessor">
-        <h5>
-          <strong>Percentagem de prestação de serviços:</strong>
-        </h5>
-        {{ propostaProponenteProfessor.percentagem_prestacao_servicos }}
-      </div>
+          <table v-if="proposta.role == 'professor'" width="100%" border="1px">
+                <tr><th colspan="4" bgcolor=#be5b59><font color=#ffffff>Professor</font></th></tr>
+                <tr>
+                    <td colspan="3" v-if="propostaProponenteProfessor.role_professor == 'coordenador'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="3" v-if="propostaProponenteProfessor.role_professor == 'adjunto'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td colspan="3" v-if="propostaProponenteProfessor.role_professor == 'visitante'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Visitante</label>
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="propostaProponenteProfessor.avaliacao_periodo_anterior != null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>
+                                {{propostaProponenteProfessor.avaliacao_periodo_anterior}}
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="propostaProponenteProfessor.avaliacao_periodo_anterior == null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>Não Aplicavel
+                    </td>
+                </tr><tr>
+                    <td rowspan="2" v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_parcial'"><b>
+                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;" checked> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}%</td>
+                    <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_parcial'">Tempo Integral
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
+                    <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_parcial'">Dedicação Exclusiva
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td></tr>
 
-      <div v-if="propostaProponenteMonitor">
-        <h5>
-          <strong>Percentagem de prestação de serviços:</strong>
-        </h5>
-        {{ propostaProponenteMonitor.percentagem_prestacao_servicos }}
-      </div>
+                    <td rowspan="2" v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'"><b>
+                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}%</td>
+                    <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'">Tempo Integral
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td>
+                    <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'">Dedicação Exclusiva
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td></tr>
 
-      <div v-if="propostaProponenteAssistente">
-        <h5>
-          <strong>Percentagem de prestação de serviços:</strong>
-        </h5>
-        {{ propostaProponenteAssistente.percentagem_prestacao_servicos }}
-      </div>
-      <h5>
-        <strong>Duração do contrato:</strong>
-      </h5>
+                        
+                    <td rowspan="2" v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva'"><b>
+                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}%</td>
+                    <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva'">Tempo Integral
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
+                    <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva'">Dedicação Exclusiva
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td></tr>
 
-      <div v-if="propostaProponenteProfessor">
-        <h5>{{ propostaProponenteProfessor.duracao }}</h5>
-      </div>
-      <div v-if="propostaProponenteMonitor">
-        <h5>{{ propostaProponenteMonitor.duracao }}</h5>
-      </div>
-      <div v-if="propostaProponenteAssistente">
-        <h5>{{ propostaProponenteAssistente.duracao }}</h5>
-      </div>
-      <br />
-      <h5>
-        <strong>Periodo:</strong>
-      </h5>
+                   <tr> <td colspan="2"><b>Fundamentação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        (cfr. acta do CTC – art. 5.º, n.º 3)
+                        N.B. Contrato e renovações não podem ter duração superior a 4 anos</td></tr>
+                <tr><td><b>Duração:</b></td><td colspan="2">{{propostaProponenteProfessor.duracao}}</td></tr>
+                <tr><td><b>Periodo:</b></td><td colspan="2">{{propostaProponenteProfessor.periodo}}</td></tr>
+          </table>
 
-      <div v-if="propostaProponenteProfessor">
-        <h5>{{ propostaProponenteProfessor.periodo }}</h5>
-      </div>
-      <div v-if="propostaProponenteAssistente">
-        <h5>{{ propostaProponenteAssistente.periodo }}</h5>
-      </div>
-      <div v-if="propostaProponenteMonitor">
-        <h5>{{ propostaProponenteMonitor.periodo }}</h5>
-      </div>
-      <br />
+
+          
+          <table v-if="proposta.role == 'assistente'" width="100%" border="1px">
+                <tr><th colspan="4" bgcolor=#be5b59><font color=#ffffff>Assistente</font></th></tr>
+                <tr>
+                    <td colspan="3" v-if="proposta.tipo_contrato == 'contratacao_inicial'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label>
+                    </td>
+                    <td colspan="3" v-if="proposta.tipo_contrato == 'renovacao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Unicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label>
+                    </td>
+                    <td colspan="3" v-if="proposta.tipo_contrato == 'alteracao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Alteração</label>
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="propostaProponenteAssistente.avaliacao_periodo_anterior != null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>
+                                {{propostaProponenteAssistente.avaliacao_periodo_anterior}}
+                    </td>
+                    <td rowspan="7" style='text-align:center' v-if="propostaProponenteAssistente.avaliacao_periodo_anterior == null">
+                                <b>Avaliação do desempenho no periodo anterior</b><br>Não Aplicavel
+                    </td>
+                </tr><tr>
+                    <td><b>Regime de prestação de serviços</b></td>
+                    <td colspan="2" v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'">Tempo Parcial
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        {{propostaProponenteAssistente.percentagem_prestacao_servicos}}%</td>
+                    <td colspan="2" v-if="propostaProponenteAssistente.regime_prestacao_servicos!='tempo_parcial'">Tempo Parcial
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">---%</td></tr>
+
+                <tr>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'"><b>
+                        Tempo parcial igual ou superior a 60%
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>---%</td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'">Tempo Integral
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'">Dedicação Exclusiva
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td></tr>
+
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial_60'"><b>
+                        Tempo parcial igual ou superior a 60%
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked> </b>{{propostaProponenteAssistente.percentagem_prestacao_servicos}}%</td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial_60'">Tempo Integral
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial_60'">Dedicação Exclusiva
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td></tr>
+
+
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral'"><b>
+                        Tempo parcial igual ou superior a 60%
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>---%</td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral'">Tempo Integral
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral'">Dedicação Exclusiva
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td></tr>
+
+                        
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva'"><b>
+                        Tempo parcial igual ou superior a 60%
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>---%</td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva'">Tempo Integral
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
+                    <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva'">Dedicação Exclusiva
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td></tr>
+
+                   <tr> <td colspan="3"><b>Fundamentação</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        (cfr. acta do CTC – art. 5.º, n.º 3)
+                        N.B. Contrato e renovações não podem ter duração superior a 4 anos</td></tr>
+                <tr><td><b>Duração:</b></td><td colspan="2">{{propostaProponenteAssistente.duracao}}</td></tr>
+                <tr><td><b>Periodo:</b></td><td colspan="2">{{propostaProponenteAssistente.periodo}}</td></tr>
+          </table>
+
+
+
+<table v-if="proposta.role == 'monitor'" width="100%" border="1px">
+                <tr><th colspan="5" bgcolor=#be5b59><font color=#ffffff>Monitor</font></th></tr>
+                <tr>
+                    <td colspan="5" v-if="proposta.tipo_contrato == 'contratacao_inicial'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                    </td>
+                    <td colspan="5" v-if="proposta.tipo_contrato == 'renovacao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                    <td colspan="3" v-if="proposta.tipo_contrato == 'alteracao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label></td>
+                </tr><tr>
+                    <td><b>Regime de prestação de serviços</b><br>
+                        Tempo Parcial: {{propostaProponenteMonitor.percentagem_prestacao_servicos}}%</td>
+                    <td><b>Duração: </b></td><td>{{propostaProponenteMonitor.duracao}}</td>
+                    <td><b>Periodo: </b></td><td>{{propostaProponenteMonitor.periodo}}</td></tr>
+          </table>
     </div>
 
     <!-- Coordenador de curso -->
@@ -141,6 +219,7 @@
           v-model="fundamentacaoCheck"
         >Reconheço o interesse e a necessidade da contratação inicial/renovação</b-form-checkbox>
       </b-form-group>
+
 
       <div v-if="fundamentacaoCheck">
         <b-form-group label="Fundamentação">
@@ -168,11 +247,11 @@
     </div>
 
     <!-- Coordenador de departamento -->
-
     <div v-if="this.$store.state.user.roleDB == 'proponente_departamento'" class="mt-5">
-      <b-form-group>
+      <b-form-group v-if="proposta.fundamentacao_coordenador_departamento!='null'">
         <b-form-checkbox
           v-model="fundamentacaoCheck"
+          stacked
         >Reconheço o interesse e a necessidade da contratação inicial/renovação</b-form-checkbox>
       </b-form-group>
 
@@ -238,7 +317,6 @@
     </button>
   </div>
 </template>
-
 <script src="/socket.io/socket.io.js">
 </script>
 
@@ -251,6 +329,8 @@ export default {
     "propostaProponenteProfessor",
     "propostaProponenteAssistente",
     "propostaProponenteMonitor",
+    "ficheiroProponenteProfessor",
+    "ficheiroProponenteAssistente",
     "ficheiro"
   ],
   data() {
@@ -328,7 +408,6 @@ export default {
                 axios.put("/api/updatePropostaProponente/" + this.proposta.id_proposta_proponente, this.proposta)
                   .then(response => {
                     this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
-
                     //? Eliminar UCs Proponentes  Antigas
                     axios.get('api/getUcsPropostaProponente/' + this.proposta.id_proposta_proponente)
                     .then(response => {
@@ -336,23 +415,18 @@ export default {
                         axios.delete("/api/ucsPropostaProponente/" + unidadeCurricular.id_ucs_proposta_proponente).then(response => {});
                       });
                     })
-
                     //? Criar UCs Proponentes Novas
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
                       unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
                       axios
                         .post("/api/ucsPropostaProponente", unidadeCurricular)
                         .then(response => {});
-
                       this.propostaProponenteProfessor.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     //? Apagar Propostas Proponente de todas as roles
                     axios.put('/api/apagarPropostasProponente/'+this.idParaUcsPropostaProponente, this.proposta).then(response => {});
-
                     //? Update Proposta Proponente Professor
                     axios.get("/api/propostaProponenteProfessor/" + this.idParaUcsPropostaProponente).then(response => {
                       if(response.data.id_proposta_proponente_professor) {
@@ -363,7 +437,6 @@ export default {
                         axios.post("/api/propostaProponenteProfessor", this.propostaProponenteProfessor).then(response => {});
                       }
                     });
-
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
                       this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
@@ -371,19 +444,21 @@ export default {
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         this.ficheiro.fileHabilitacoes.append( "proposta_id", response.data.id);
                       }
-
                       this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
-
+                      this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
+                      //this.ficheiroProponenteProfessor.fileFundamentacao.append("proposta_id", response.data.id);
+                      this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
+                      
                       axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
-
                       axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
-                    
+                      axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
+                      //axios.post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao).then(response => {});
+                      axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
+                      
                       axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
-
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
                       }
-
                       this.$swal(
                                 "Sucesso",
                                 "Proposta editada com sucesso!!",
@@ -391,7 +466,6 @@ export default {
                               );
                               this.isLoading = false;
                               this.voltar();
-
                     })
                   });
               } else {
@@ -400,26 +474,21 @@ export default {
                   .post("/api/propostaProponente", this.proposta)
                   .then(response => {
                     this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
-
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
                       unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
                       axios
                         .post("/api/ucsPropostaProponente", unidadeCurricular)
                         .then(response => {});
-
                       this.propostaProponenteProfessor.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     axios
                       .post(
                         "/api/propostaProponenteProfessor",
                         this.propostaProponenteProfessor
                       )
                       .then(response => {});
-
                     axios
                       .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                       .then(response => {
@@ -427,7 +496,6 @@ export default {
                           "proposta_id",
                           response.data
                         );
-
                         if (
                           this.proposta.tipo_contrato == "contratacao_inicial"
                         ) {
@@ -436,22 +504,38 @@ export default {
                             response.data
                           );
                         }
-
                         this.ficheiro.fileRelatorio.append(
                           "proposta_id",
                           response.data
                         );
-
+                        this.ficheiro.fileUnidadesCurriculares.append(
+                          "proposta_id",
+                          response.data
+                        );
+                        this.ficheiro.fileFundamentacao.append(
+                          "proposta_id",
+                          response.data
+                        );
+                        /*this.ficheiroProponenteProfessor.fileFundamentacao.append(
+                          "proposta_id",
+                          response.data
+                        );*/
                         
-
                         axios
                           .post("/api/ficheiro", this.ficheiro.fileRelatorio)
                           .then(response => {});
-
+                        axios
+                          .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                          .then(response => {});
+                        axios
+                          .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
+                          .then(response => {});
+                        /*axios
+                          .post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao)
+                          .then(response => {});*/
                         axios
                           .post("/api/ficheiro", this.ficheiro.fileCurriculo)
                           .then(response => {});
-
                         if (
                           this.proposta.tipo_contrato == "contratacao_inicial"
                         ) {
@@ -479,7 +563,7 @@ export default {
       }
     },
     submeterPropostaAssistente(propostaProponenteAssistente) {
-      if (this.unidadesCurriculares.length > 0) {
+      //if (this.unidadesCurriculares.length > 0) {
          this.$v.$touch();
         if (!this.$v.$invalid) {
         this.$swal
@@ -500,31 +584,25 @@ export default {
                 axios.put("/api/updatePropostaProponente/" + this.proposta.id_proposta_proponente, this.proposta)
                   .then(response => {
                     this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
-
                     //? Eliminar UCs Proponentes  Antigas
-                    axios.get('api/getUcsPropostaProponente/' + this.proposta.id_proposta_proponente)
+                    /*axios.get('api/getUcsPropostaProponente/' + this.proposta.id_proposta_proponente)
                     .then(response => {
                       response.data.forEach(unidadeCurricular => {
                         axios.delete("/api/ucsPropostaProponente/" + unidadeCurricular.id_ucs_proposta_proponente).then(response => {});
-                      });
+                      });*/
                     })
-
                     //? Criar UCs Proponentes Novas
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
                       unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
-                      axios
+                      /*axios
                         .post("/api/ucsPropostaProponente", unidadeCurricular)
-                        .then(response => {});
-
+                        .then(response => {});*/
                       this.propostaProponenteAssistente.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     //? Apagar Propostas Proponente de todas as roles
                     axios.put('/api/apagarPropostasProponente/'+this.idParaUcsPropostaProponente, this.proposta).then(response => {});
-
                     //? Update Proposta Proponente Assistente
                     axios.get("/api/propostaProponenteAssistente/" + this.idParaUcsPropostaProponente).then(response => {
                       if(response.data.id_proposta_proponente_assistente) {
@@ -535,7 +613,6 @@ export default {
                         axios.post("/api/propostaProponenteAssistente", this.propostaProponenteAssistente).then(response => {});
                       }
                     });
-
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
                       this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
@@ -543,17 +620,30 @@ export default {
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         this.ficheiro.fileHabilitacoes.append( "proposta_id", response.data.id);
                       }
-
                       this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
 
-                      axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
+                      if(propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
+                            //this.ficheiroProponenteAssistente.fileFundamentacao.append( "proposta_id", response.data.id);
+                      }
 
+                      this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
+                      //axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
                       axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
+                      axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                     
                       axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
-
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
+                      }
+
+                      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                            axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
+                            //axios.post("/api/ficheiro", this.ficheiroProponenteAssistente.fileFundamentacao) .then(response => {});
                       }
 
                       this.$swal(
@@ -563,9 +653,8 @@ export default {
                               );
                               this.isLoading = false;
                               this.voltar();
-
                     })
-                  });
+                 // });
               } else {
               axios
                 .post("/api/propostaProponente", this.proposta)
@@ -576,9 +665,9 @@ export default {
                     unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
                   });
                   this.unidadesCurriculares.forEach(unidadeCurricular => {
-                    axios
+                   /* axios
                       .post("/api/ucsPropostaProponente", unidadeCurricular)
-                      .then(response => {});
+                      .then(response => {});*/
                     this.propostaProponenteAssistente.proposta_proponente_id = this.idParaUcsPropostaProponente;
                   });
                   axios
@@ -587,7 +676,6 @@ export default {
                       propostaProponenteAssistente
                     )
                     .then(response => {});
-
                   axios
                     .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                     .then(response => {
@@ -607,15 +695,47 @@ export default {
                         "proposta_id",
                         response.data
                       );
+                      this.ficheiro.fileUnidadesCurriculares.append(
+                        "proposta_id",
+                        response.data
+                      );
 
+                      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                            this.ficheiro.fileFundamentacao.append(
+                                "proposta_id",
+                                response.data
+                            );
+                         
+                            /*this.ficheiroProponenteAssistente.fileFundamentacao.append(
+                                "proposta_id",
+                                response.data
+                            );*/
+                       }
                       
-
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileCurriculo)
                         .then(response => {});
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileRelatorio)
                         .then(response => {});
+                      axios
+                        .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                        .then(response => {});
+
+                      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                            axios
+                                .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
+                                .then(response => {});
+                            /*axios
+                                .post("/api/ficheiro", this.ficheiroProponenteAssistente.fileFundamentacao)
+                                .then(response => {});
+                            */
+                      }
+
                       if (
                         this.proposta.tipo_contrato == "contratacao_inicial"
                       ) {
@@ -636,7 +756,7 @@ export default {
             }
           }
           });
-        }
+        //}
       }
     },
     submeterPropostaMonitor(propostaProponenteMonitor) {
@@ -669,23 +789,18 @@ export default {
                         axios.delete("/api/ucsPropostaProponente/" + unidadeCurricular.id_ucs_proposta_proponente).then(response => {});
                       });
                     })*/
-
                     //? Criar UCs Proponentes Novas
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
                       unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
                       axios
                         .post("/api/ucsPropostaProponente", unidadeCurricular)
                         .then(response => {});
-
                       this.propostaProponenteMonitor.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
-
                     //? Apagar Propostas Proponente de todas as roles
                     axios.put('/api/apagarPropostasProponente/'+this.idParaUcsPropostaProponente, this.proposta).then(response => {});
-
                     //? Update Proposta Proponente Monitor
                     axios.get("/api/propostaProponenteMonitor/" + this.idParaUcsPropostaProponente).then(response => {
                       if(response.data.id_proposta_proponente_monitor) {
@@ -696,7 +811,6 @@ export default {
                         axios.post("/api/propostaProponenteMonitor", this.propostaProponenteMonitor).then(response => {});
                       }
                     });
-
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
                       this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
@@ -704,21 +818,20 @@ export default {
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         this.ficheiro.fileHabilitacoes.append( "proposta_id", response.data.id);
                       }
-
                       this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
+                      this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       //----------
                       /*if (this.proposta.tipo_contrato == "renovacao") {
                         axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
                       }*/
-
                       axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
+
+                      axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                     
                       axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
-
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
                       }
-
                       this.$swal(
                                 "Sucesso",
                                 "Proposta editada com sucesso!!",
@@ -726,7 +839,6 @@ export default {
                               );
                               this.isLoading = false;
                               this.voltar();
-
                     })
                   });
               } else {
@@ -751,7 +863,6 @@ export default {
                       propostaProponenteMonitor
                     )
                     .then(response => {});
-
                   axios
                     .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                     .then(response => {
@@ -771,13 +882,17 @@ export default {
                         "proposta_id",
                         response.data
                       );
-
+                      this.ficheiro.fileUnidadesCurriculares.append(
+                        "proposta_id",
+                        response.data
+                      );
                       
-
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileRelatorio)
                         .then(response => {});
-
+                      axios
+                        .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                        .then(response => {});
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileCurriculo)
                         .then(response => {});

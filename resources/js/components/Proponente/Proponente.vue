@@ -2,24 +2,7 @@
   <div>
     <button class="btn btn-danger" @click="voltar" v-if="voltarVar">Voltar</button>
     <br><br>
-    <b-form-group
-      description="Legislação: art. 8.º do ECPDESP na redacção que lhe foi dada pelo Decreto-Lei
-n.º 207/2009, de 31 de Agosto, alterado pela Lei nº 7/2010, de 13 de Maio e
-Regulamento de Contratação de Pessoal Docente Especialmente Contratado ao
-abrigo do art. 8.º do ECPDESP, do IPL"
-    ><h3>Proposta de contratação</h3></b-form-group>
-    <b-form-group label="Tipo de Proposta" v-show="isShow">
-      <b-form-radio-group
-        v-model="proposta.tipo_contrato"
-        :options="tipoContratosArray"
-        :state="!$v.proposta.tipo_contrato.$error && null"
-        stacked
-      ></b-form-radio-group>
-      <b-form-invalid-feedback id="input-1-live-feedback">O Tipo da Proposta é obrigatória!</b-form-invalid-feedback>
-    </b-form-group>
-    
     <div v-if="isShow">
-      <span v-if="proposta.tipo_contrato == 'renovacao'">
       <b-form-group label="Propostas existentes" description="Campo opcional">
         <b-form-select
           :options="propostasExistentes"
@@ -34,34 +17,16 @@ abrigo do art. 8.º do ECPDESP, do IPL"
           </template>
         </b-form-select>
       </b-form-group>
-      </span>
-      <b-form-group label="Currículo (PDF)">
-        <b-form-file
-          v-model="ficheiroCurriculoModel"
-          placeholder="Escolha um ficheiro"
-          drop-placeholder="Arraste para aqui um ficheiro"
-          browse-text="Procurar"
-          name="ficheiroCurriculo"
-          v-validate="{ required: true }"
-          :state="validateState('ficheiroCurriculo')"
-          @change="onFileSelected"
-        ></b-form-file>
-        <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro de Currículo é obrigatório!</b-form-invalid-feedback>
-      </b-form-group>
 
-      <b-form-group>
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroCurriculo"
-          @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado')"
-        >
-        <i class="far fa-file-pdf"></i> Atual Curriculo do Docente
-        </b-button>
-      </b-form-group>
-      <b-form-group label="Unidade Orgânica">
+    <b-form-group
+      description="Legislação: art. 8.º do ECPDESP na redacção que lhe foi dada pelo Decreto-Lei
+n.º 207/2009, de 31 de Agosto, alterado pela Lei nº 7/2010, de 13 de Maio e
+Regulamento de Contratação de Pessoal Docente Especialmente Contratado ao
+abrigo do art. 8.º do ECPDESP, do IPL"
+    ><h3>Proposta de contratação</h3></b-form-group>
+    <b-form-group label="Unidade Orgânica">
         <b-form-input :readonly="true" v-model="proposta.unidade_organica"></b-form-input>
-      </b-form-group>
+    </b-form-group>
 
       <b-form-group label="Nome completo">
         <b-form-input
@@ -70,7 +35,13 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">O Nome completo é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
-
+      <b-form-group label="Departamento/Área Científica/ Curso">
+        <b-form-input
+          :state="!$v.proposta.nome_completo.$error && null"
+          v-model="proposta.departamento_curso"
+        ></b-form-input>
+        <b-form-invalid-feedback id="input-1-live-feedback">O Nome Departamento/Área Científica/ Curso é obrigatório!</b-form-invalid-feedback>
+      </b-form-group>
       <b-form-group label="Email" label-for="inputEmail">
         <b-form-input
           id="inputEmail"
@@ -81,7 +52,6 @@ abrigo do art. 8.º do ECPDESP, do IPL"
           id="input-1-live-feedback"
         >O Email é obrigatório e deve ser um email válido!</b-form-invalid-feedback>
       </b-form-group>
-
       <b-form-group label="Numero Telefone" label-for="inputNumeroTelefone">
         <b-form-input
           id="inputNumeroTelefone"
@@ -90,7 +60,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">O Numero de telefone é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
-
+      
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Unidades Curriculares</b-button>
@@ -229,6 +199,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         </b-collapse>
       </b-card>
 
+      
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-2 variant="dark">Habilitações Literárias</b-button>
@@ -247,7 +218,18 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
 
-              <b-form-group label="Curso" label-for="inputCursoHabilitacoesLiterarias">
+              <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterarias"
+                v-if="proposta.grau != 'doutoramento'">
+                <b-form-input
+                  id="inputCursoHabilitacoesLiterarias"
+                  :state="!$v.proposta.curso.$error && null"
+                  v-model="proposta.curso"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+              </b-form-group>
+              
+              <b-form-group label="Curso" label-for="inputCursoHabilitacoesLiterarias"
+                v-if="proposta.grau == 'doutoramento'">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterarias"
                   :state="!$v.proposta.curso.$error && null"
@@ -255,7 +237,6 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Curso é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
-
               <b-form-group
                 label="Área Científica"
                 label-for="inputAreaCientificaHabilitacoesLiterarias"
@@ -264,9 +245,68 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                   id="inputAreaCientificaHabilitacoesLiterarias"
                   :state="!$v.proposta.area_cientifica.$error && null"
                   v-model="proposta.area_cientifica"
-                ></b-form-input>
+                  ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
+              </b-form-group>
+              </b-form-group>
+            </b-card-text>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
 
+      <b-card no-body class="mb-1">
+        <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-button block href="#" v-b-toggle.accordion-3 variant="dark">Ficheiro Obrigatorios</b-button>
+        </b-card-header>
+        <b-collapse id="accordion-3" accordion="accordion" role="tabpanel">
+          <b-card-body>
+            <b-card-text>
+                <b-form-group label="Currículo (PDF)">
+                    <b-form-file
+                        v-model="ficheiroCurriculoModel"
+                        placeholder="Escolha um ficheiro"
+                        drop-placeholder="Arraste para aqui um ficheiro"
+                        browse-text="Procurar"
+                        name="ficheiroCurriculo"
+                        v-validate="{ required: true }"
+                        :state="validateState('ficheiroCurriculo')"
+                        @change="onFileSelected"
+                    ></b-form-file>
+                    <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro de Currículo é obrigatório!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group>
+                    <b-button
+                        size="md"
+                        variant="dark"
+                        v-if="ficheiroCurriculo"
+                        @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado')"
+                    >
+                    <i class="far fa-file-pdf"></i> Atual Curriculo do Docente
+                    </b-button>
+                </b-form-group>
+                <b-form-group label="Serviço Docente Atribuído (PDF)">
+                    <b-form-file
+                        v-model="ficheiroUnidadesCurricularesModel"
+                        placeholder="Escolha um ficheiro"
+                        drop-placeholder="Arraste para aqui um ficheiro"
+                        browse-text="Procurar"
+                        name="ficheiroUnidadesCurriculares"
+                        v-validate="{ required: true }"
+                        :state="validateState('ficheiroUnidadesCurriculares')"
+                        @change="onFileSelected"
+                    ></b-form-file>
+                    <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group>
+                    <b-button
+                        size="md"
+                        variant="dark"
+                        v-if="ficheiroUnidadesCurriculares"
+                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Serviço do Docente Atribuído')"
+                    >
+                    <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
+                    </b-button>
+                </b-form-group>
                 <b-form-group
                   label="Certificado de Habilitações (PDF)"
                   class="mt-3"
@@ -291,35 +331,36 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                       <i class="far fa-file-pdf"></i> Atual Ficheiro de Habilitacoes do Docente
                     </b-button>
                   </b-form-group>
-                </b-form-group>
               </b-form-group>
+              <b-form-group label="Relatório dos proponentes (PDF)" class="mt-3">
+                  <b-form-file
+                      v-model="ficheiroRelatorioModel"
+                      placeholder="Escolha um ficheiro"
+                      drop-placeholder="Arraste para aqui um ficheiro"
+                      browse-text="Procurar"
+                      name="ficheiroRelatorio"
+                      v-validate="{ required: true }"
+                      :state="validateState('ficheiroRelatorio')"
+                      @change="onFileSelected"
+                  ></b-form-file>
+              </b-form-group>
+              <b-form-group>
+                  <b-button
+                      size="md"
+                      variant="dark"
+                      v-if="ficheiroRelatorio"
+                      @click="downloadFicheiro(ficheiroRelatorio.proposta_id, 'Relatorio dos 2 proponentes')"
+                     >
+                  <i class="far fa-file-pdf"></i> Atual Relatório dos 2 proponentes
+                  </b-button>
+              </b-form-group>
+              <br />
             </b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
 
-      <b-form-group label="Relatório dos proponentes (PDF)" class="mt-3">
-        <b-form-file
-          v-model="ficheiroRelatorioModel"
-          placeholder="Escolha um ficheiro"
-          drop-placeholder="Arraste para aqui um ficheiro"
-          browse-text="Procurar"
-          name="ficheiroRelatorio"
-          v-validate="{ required: true }"
-          :state="validateState('ficheiroRelatorio')"
-          @change="onFileSelected"
-        ></b-form-file>
-      </b-form-group>
-      <b-form-group>
-        <b-button
-          size="md"
-          variant="dark"
-          v-if="ficheiroRelatorio"
-          @click="downloadFicheiro(ficheiroRelatorio.proposta_id, 'Relatorio dos 2 proponentes')"
-        >
-          <i class="far fa-file-pdf"></i> Atual Relatório dos 2 proponentes
-        </b-button>
-      </b-form-group>
+
 
       <b-form-group
         label="Qual será o papel a desempenhar pelo docente a ser contratado?"
@@ -336,9 +377,20 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         >A seleção de uma unidade orgânica é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
+      <b-form-group label="Tipo de Proposta" v-show="isShow">
+      <b-form-radio-group
+        v-model="proposta.tipo_contrato"
+        :options="tipoContratosArray"
+        :state="!$v.proposta.tipo_contrato.$error && null"
+        stacked
+      ></b-form-radio-group>
+      <b-form-invalid-feedback id="input-1-live-feedback">O Tipo da Proposta é obrigatória!</b-form-invalid-feedback>
+    </b-form-group>
+
+
       <button
         class="btn btn-success mt-3 font-weight-bold"
-        v-on:click.prevent="avancar(proposta, unidadesCurriculares)"
+        v-on:click.prevent="avancar(proposta)"
       >
         Seguinte
         <i class="fas fa-arrow-right"></i>
@@ -389,7 +441,6 @@ tratamento nos termos da legislação de proteção de dados em vigor.
 </template>
 <script>
 import { required, email, minLength } from "vuelidate/lib/validators";
-
 export default {
   data() {
     return {
@@ -400,9 +451,9 @@ export default {
         { text: "Alteração", value: "alteracao" }
       ],
       grausArray: [
-        { text: "Licenciatura", value: "licenciatura" },
-        { text: "Mestrado", value: "mestrado" },
-        { text: "Doutoramento", value: "doutoramento" }
+        { text: "Doutoramento", value: "doutoramento" },
+        { text: "Outro", value: "outro" },
+        { text: "Em Formação", value: "em_formacao" }
       ],
       rolesArray: [
         { text: "Professor", value: "professor" },
@@ -459,13 +510,17 @@ export default {
       ficheiro: {
         fileCurriculo: {},
         fileRelatorio: {},
+        fileUnidadesCurriculares: {},
+        fileFundamentacao: {},
         fileHabilitacoes: {}
       },
       ficheiros: [],
       ficheiroCurriculo: "",
+      ficheiroUnidadesCurriculares: "",
       ficheiroHabilitacoes: "",
       ficheiroRelatorio: "",
       ficheiroCurriculoModel: "",
+      ficheiroUnidadesCurricularesModel: "",
       ficheiroHabilitacoesModel: "",
       ficheiroRelatorioModel: "",
       voltarVar:true,
@@ -535,6 +590,21 @@ export default {
         "Curriculo do docente a ser contratado"
       );
 
+
+       //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+      this.ficheiro.fileUnidadesCurriculares = new FormData();
+      this.ficheiro.fileUnidadesCurriculares.append(
+        "file",
+        this.ficheiros["ficheiroUnidadesCurriculares"]
+      );
+      this.ficheiro.fileUnidadesCurriculares.append(
+        "descricao",
+        "Ficheiro Unidades Curriculares do docente a ser contratado"
+      );
+
+
+      
+
       if (this.proposta.tipo_contrato == "contratacao_inicial") {
         this.ficheiro.fileHabilitacoes = new FormData();
         this.ficheiro.fileHabilitacoes.append(
@@ -546,7 +616,6 @@ export default {
           "Habilitacoes do docente a ser contratado"
         );
       }
-
       this.ficheiro.fileRelatorio = new FormData();
       this.ficheiro.fileRelatorio.append(
         "file",
@@ -556,18 +625,17 @@ export default {
         "descricao",
         "Relatorio dos 2 proponentes"
       );
-
       this.roleSelecionado = proposta.role;
       this.$v.proposta.$touch();
       this.$validator.validateAll().then(result => {
         if (result) {
-          if (!this.$v.proposta.$invalid && unidadesCurriculares.length > 0) {
+          //if (!this.$v.proposta.$invalid && unidadesCurriculares.length > 0) {
             this.$store.commit("setProposta", proposta);
             this.isFinalized = true;
             this.isShow = false;
             this.progresso.valor++;
             this.voltarVar = false;
-          }
+          //}
         } else {
         //   this.$bvToast.toast('O formulário possui erros, por favor verifique!', {
         //   title: 'Mensagem de Erro',
@@ -585,10 +653,8 @@ export default {
       
      
     },
-
     getUcsDeCurso(codigo_curso) {
       this.ucs = [];
-
       axios
         .get("/api/unidadesCurricularesDoCursoSelecionado/" + codigo_curso)
         .then(response => {
@@ -599,7 +665,6 @@ export default {
     },
     adicionarUC() {
       this.$v.unidadeCurricular.$touch();
-
       if (!this.$v.unidadeCurricular.$invalid) {
         axios.get('/api/unidadeCurricularNome/'+ this.unidadeCurricular.codigo_uc).then(response => {
           this.unidadeCurricular.nome_uc = response.data;
@@ -632,25 +697,26 @@ export default {
       //* Limpar Objectos
       this.unidadesCurriculares = [];
       Object.assign(this.propostaExistente, {});
-
       //* Associar proposta atual à proposta existente selecionada
       Object.assign(this.proposta, this.propostaExistente);
       this.proposta.data_de_assinatura_coordenador_de_curso = null;
       this.proposta.data_de_assinatura_coordenador_departamento = null;
       this.proposta.fundamentacao_coordenador_curso = null;
       this.proposta.fundamentacao_coordenador_departamento = null;
-
       axios
         .get("/api/ficheiros/" + this.propostaExistente.id_proposta_proponente)
         .then(response => {
           response.data.forEach(ficheiro => {
             if (ficheiro.descricao == "Curriculo do docente a ser contratado"){
               this.ficheiroCurriculo = ficheiro;
-            }   
+            }
+
+            if (ficheiro.descricao == "Ficheiro Unidades Curriculares do docente a ser contratado"){
+              this.ficheiroUnidadesCurriculares = ficheiro;
+            }
             
             if (ficheiro.descricao == "Relatorio dos 2 proponentes")
               this.ficheiroRelatorio = ficheiro;
-
             if (
               this.proposta.tipo_contrato == "contratacao_inicial" &&
               ficheiro.descricao == "Habilitacoes do docente a ser contratado"
@@ -659,7 +725,6 @@ export default {
             }
           });
         });
-
       axios
         .get("/api/getUcsPropostaProponente/" + this.propostaExistente.id_proposta_proponente)
         .then(response => {
@@ -667,7 +732,6 @@ export default {
             this.unidadesCurriculares.push(uc);
           });
         });
-
         this.$store.commit('setPropostaExistente');
     }
   },
@@ -683,7 +747,6 @@ export default {
         });
       });
     });
-
     axios.get("/api/allPropostasProponente").then(response => {
       response.data.forEach(proposta => {
         this.propostasExistentes.push({
@@ -710,7 +773,6 @@ export default {
   font-size: 20px;
   font-weight: 600;
 }
-
 .form-control:focus,
 .custom-select:focus {
   color: #1a1a1a;
@@ -719,7 +781,6 @@ export default {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0);
 }
-
 .btn-dark {
   background-color: #1a1a1a;
 }

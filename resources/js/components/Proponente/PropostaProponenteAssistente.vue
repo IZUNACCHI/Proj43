@@ -50,13 +50,29 @@
         propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
         propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva'"
       >
+
+        <b-form-group>
+        <b-form-file
+          v-model="ficheiroFundamentacaoAssistenteModel"
+          placeholder="Escolha um ficheiro"
+          drop-placeholder="Arraste para aqui um ficheiro"
+          browse-text="Procurar"
+          name="ficheiroFundamentacaoAssistente"
+          v-validate="{ required: true }"
+          :state="validateState('this.ficheiroFundamentacaoAssistente')"
+          @change="onFileSelected"
+        ></b-form-file>
+        <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
+      </b-form-group>
+
+      <!--
         <b-form-textarea
           v-model="propostaProponenteAssistente.fundamentacao"
           :state="!$v.propostaProponenteAssistente.fundamentacao.$error && null"
         ></b-form-textarea>
-        <b-form-invalid-feedback id="input-1-live-feedback">A fundamentação é obrigatória!</b-form-invalid-feedback>
+        <b-form-invalid-feedback id="input-1-live-feedback">A fundamentação é obrigatória!</b-form-invalid-feedback>-->
       </b-form-group>
-
+      
       <b-form-group label="Duração do contrato" label-for="inputDuracaoContrato">
         <b-form-input
           id="inputDuracaoContrato"
@@ -148,6 +164,14 @@ export default {
         avaliacao_periodo_anterior:"",
         proposta_proponente_id: ""
       },
+      ficheiroProponenteAssistente: {
+        fileRelatorio: {},
+        fileFundamentacao: {}
+      },
+      ficheirosAssistente: [],
+      ficheiroFundamentacaoAssistente: "",
+      ficheiroFundamentacaoAssistenteModel: "",
+      
       avancar: false,
       isShowAssistente: true
     };
@@ -170,7 +194,7 @@ export default {
       return {
         propostaProponenteAssistente: {
           regime_prestacao_servicos: { required },
-          fundamentacao: { required },
+          //fundamentacao: { required },
           duracao: { required },
           periodo: { required }
         }
@@ -183,7 +207,7 @@ export default {
         return {
           propostaProponenteAssistente: {
             regime_prestacao_servicos: { required },
-            fundamentacao: { required },
+            //fundamentacao: { required },
             percentagem_prestacao_servicos: { required },
             duracao: { required },
             periodo: { required },
@@ -202,6 +226,12 @@ export default {
     }
   },
   methods: {
+  validateState(ref) {
+      return this.veeErrors.has(ref) ? false : null;
+    },
+    onFileSelected(event) {
+      this.ficheirosAssistente[event.target.name] = event.target.files[0];
+    },
     seguinte() {
       //* Mudar para o componente Resumo Proposta
       this.$v.$touch();
@@ -215,6 +245,31 @@ export default {
           this.propostaProponenteAssistente.percentagem_prestacao_servicos =
             "100";
         }
+
+            //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+            this.ficheiroProponenteAssistente.fileFundamentacao = new FormData();
+            this.ficheiroProponenteAssistente.fileFundamentacao.append(
+                "file",
+                this.ficheirosAssistente["ficheiroFundamentacaoAssistente"]
+            );
+            this.ficheiroProponenteAssistente.fileFundamentacao.append(
+                "descricao",
+                "Fundamentacao da Proposta Proponente Assistente"
+            );
+
+            this.ficheiro.fileFundamentacao = new FormData();
+            this.ficheiro.fileFundamentacao.append(
+                "file",
+                this.ficheirosAssistente["ficheiroFundamentacaoAssistente"]
+            );
+            this.ficheiro.fileFundamentacao.append(
+                "descricao",
+                "Fundamentacao da Proposta Proponente Assistente"
+            );
+
+        //}
+
+
         this.avancar = true;
         this.isShowAssistente = false;
         this.$emit("incrementarBarraProgresso");

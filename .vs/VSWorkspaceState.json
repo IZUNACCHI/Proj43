@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\app",
-    "\\app\\Providers",
     "\\database",
     "\\database\\migrations",
+    "\\database\\seeds",
     "\\resources",
     "\\resources\\js",
     "\\resources\\js\\components",
-    "\\resources\\js\\components\\CTC",
-    "\\storage\\app\\public"
+    "\\resources\\js\\components\\NovosDocentes",
+    "\\resources\\js\\components\\Proponente",
+    "\\resources\\js\\components\\utils"
   ],
-  "SelectedNode": "\\app\\Http\\Controllers\\PropostaProponenteController.php",
+  "SelectedNode": "\\resources\\js\\components\\Proponente\\EnviarPropostaAssinadaDepartamento.vue",
   "PreviewInSolutionExplorer": false
 }

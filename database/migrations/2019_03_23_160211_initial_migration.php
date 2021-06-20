@@ -66,6 +66,8 @@ class InitialMigration extends Migration
             $table->dateTime('data_de_assinatura_coordenador_departamento')->nullable();
             $table->dateTime('data_de_assinatura_coordenador_de_curso')->nullable();
             $table->enum('tipo_contrato', ['contratacao_inicial', 'renovacao', 'alteracao']);
+            $table->string('departamento_curso');
+            
             $table->string('grau');
             $table->string('curso');
             $table->string('area_cientifica');
@@ -131,10 +133,10 @@ class InitialMigration extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-
         Schema::create('ucs_proposta_proponente', function(Blueprint $table){
             $table->increments('id_ucs_proposta_proponente');
             $table->string('codigo_uc');
+            $table->string('nome_uc');
             $table->enum('regime', ['Diurno', 'Pos-Laboral']);
             $table->enum('tipo', ['Semestral', 'Anual']);
             $table->integer('horas')->unsigned();
@@ -144,6 +146,8 @@ class InitialMigration extends Migration
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
             $table->string("turno");
+            $table->string('codigo_curso');
+            $table->string('nome_curso');
         });
 
         Schema::create('proposta_diretor_uo', function(Blueprint $table){
@@ -291,7 +295,7 @@ class InitialMigration extends Migration
 			END$$
 			DELIMITER ;
         ");
-    }
+    
     }
 
     /**

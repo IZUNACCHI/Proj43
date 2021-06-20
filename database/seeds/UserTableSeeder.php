@@ -96,6 +96,20 @@ class UserSeeder extends Seeder
             'deleted_at' => NULL,
             'remember_token' => NULL,
         ]);
+        DB::table('users')->insert([
+            'numero_identificacao' => NULL,
+            'tipo_documento' => NULL,
+            'name' => 'Recursos Humanos',
+            'username' => 'recursos_humanos',
+            'roleDB' => 'recursos_humanos',
+            'role' => 'recursos_humanos',
+            'unidade_organica' => 'ESTG',
+            'password' => bcrypt('root'),
+            'email' => 'recursos_humanos@mail.pt',
+            'blocked' => 0,
+            'deleted_at' => NULL,
+            'remember_token' => NULL,
+        ]);
 		DB::table('users')->insert([
             'numero_identificacao' => NULL,
             'tipo_documento' => NULL,
