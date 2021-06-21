@@ -31,7 +31,7 @@
           <b-form-input
             type="date"
             :state="$v.propostaDiretor.data_assinatura_uo.$dirty ? !$v.propostaDiretor.data_assinatura_uo.$error : null"
-            v-model="propo8staDiretor.data_assinatura_uo"
+            v-model="propostaDiretor.data_assinatura_uo"
           ></b-form-input>
           <b-form-invalid-feedback id="input-1-live-feedback">Selecione a data de assinatura</b-form-invalid-feedback>
         </b-form-group>

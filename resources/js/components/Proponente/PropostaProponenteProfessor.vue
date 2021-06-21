@@ -23,7 +23,7 @@
         ></b-form-radio-group>
         <b-form-invalid-feedback
           id="input-1-live-feedback"
-        >A seleção do regime de prestaões de serviço é obrigatória!</b-form-invalid-feedback>
+        >A seleção do regime de prestações de serviço é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
       <span v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_parcial'">
@@ -40,14 +40,10 @@
         </b-form-group>
       </span>
 
-      <b-form-group
-        label="Fundamentação"
-        description="(cfr. acta do CTC - art. 5º, nº3) N.B Contracto e renovações não podem ter duração superior a 4 anos"
-        v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
-        propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'"
-      >
         
-      <b-form-group label="Fundamentao">
+      <b-form-group label="Fundamentação" description="(cfr. acta do CTC - art. 5º, nº3) N.B Contracto e renovações não podem ter duração superior a 4 anos"
+        v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
+        propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'">
         <b-form-file
           v-model="ficheiroFundamentacaoProfessorModel"
           placeholder="Escolha um ficheiro"
@@ -61,12 +57,7 @@
         <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
 
-        <b-form-textarea
-          v-model="propostaProponenteProfessor.fundamentacao"
-          :state="!$v.propostaProponenteProfessor.fundamentacao.$error && null"
-        ></b-form-textarea>
-        <b-form-invalid-feedback id="input-1-live-feedback">A fundamentação é obrigatória!</b-form-invalid-feedback>
-      </b-form-group>
+       
 
 
 

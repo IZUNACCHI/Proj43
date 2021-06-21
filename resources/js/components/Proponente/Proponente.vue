@@ -63,12 +63,12 @@ abrigo do art. 8.º do ECPDESP, do IPL"
       
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Unidades Curriculares</b-button>
+          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Serviço Docente Atribuído</b-button>
         </b-card-header>
         <b-collapse id="accordion-1" accordion="accordion" role="tabpanel">
           <b-card-body>
             <b-card-text>
-              <h3 class="pb-4">Unidades Curriculares</h3>
+              <h3 class="pb-4">Serviço Docente Atribuído</h3>
 
               <b-form-group label="Curso" label-for="inputCurso">
                 <b-form-select
