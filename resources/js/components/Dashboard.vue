@@ -130,6 +130,11 @@
                               class="btn btn-info"
                               @click="verDetalhesCoordenadorDepartamento(propostaHistorico, index)"
                             >Ver detalhes</button>
+                            <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="gerarPdfProposta(propostaHistorico, index)"
+                              >Dowload</button>
                           </td>
                         </tr>
                       </tbody>
@@ -236,11 +241,21 @@
           <estatisticaDiretorUO v-if="user.roleDB == 'diretor_uo' && isDashboardVisible && isResumoPropostaVisible != false"></estatisticaDiretorUO>
           <estatisticaCTC v-if="user.roleDB == 'ctc' && isDashboardVisible && isResumoPropostaVisible != false"></estatisticaCTC>
           <estatisticaSecretariadoDirecao v-if="user.roleDB == 'secretariado_direcao' && isDashboardVisible"></estatisticaSecretariadoDirecao>
-          <estatisticaRecursosHumanos v-if="user.roleDB == 'recursos_humanos' && isDashboardVisible"></estatisticaRecursosHumanos>  
+          <estatisticaRecursosHumanos v-if="user.roleDB == 'recursos_humanos' && isDashboardVisible"></estatisticaRecursosHumanos>
+
+   
+
+
         </div>
       </div>
+
+
+
     </div>
   </div>
+
+
+
 </template>
 
 <script>
@@ -412,13 +427,13 @@ export default {
         doc.setFont('PTSans');
         doc.setFontSize(10);
         doc.setFont("Roboto-Regular");
-        doc.html(proposta, { 
+        doc.html(downloadPdf, { 
                 html2canvas: {
-                    scale: 0.25,
+                    scale: 0.226,
                     scrollY:0
                 },
-                x: 0,
-                y: 0, 
+                x: 5,
+                y: 10, 
             callback: function (doc) {
                 doc.save("Proposta Contratação de "+ propostaID.nome_completo +".pdf");
                 }
@@ -524,6 +539,20 @@ export default {
     } else if (this.$store.state.user.roleDB == "recursos_humanos") {
       this.isActiveRH = true;
     }
+    
+       /* axios.get("/api/ficheiros/" + this.propostaID).then(response => {
+
+        this.ficheiroAssinadoCoordenadorCurso = this.ficheiros[5];
+          this.fichAssinadoCoordenadorCurso = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Curso.pdf",
+          this.ficheiroAssinadoCoordenadorDepartamento = this.ficheiros[6];
+          this.fichAssinadoCoordenadorDepartamento = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Departamento.pdf",
+          
+          */
+
+
+
+
+          
   }
 };
 </script>

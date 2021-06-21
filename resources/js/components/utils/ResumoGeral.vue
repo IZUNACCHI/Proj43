@@ -39,7 +39,7 @@
         </div>
 
    <div id="tes" class="total1">
-   <div id="teste">
+   <div id="downloadPdf">
         <div class="tabelaCabecalho"><table>
             <td><img src="" alt="Instituto Politécnico de Leiria" class="pr-5">
         </td><td width="50%"><p style='text-align:center; font-size: 20px'><b>Proposta de contratação<br>
@@ -505,6 +505,38 @@
                             <pdf name="fade" :src="fichFundamentacao"></pdf>
                         </td></tr>
 
+                </tr><tr v-if="ficheiroAssinadoCoordenadorCurso">
+                    <td> Ficheiro Assinado Coordenador de Curso</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorCurso.proposta_id, 'Proposta Assinado Coordenador Curso', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="uc = !uc"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichAssinadoCoordenadorCurso"></pdf>
+                        </td></tr>
+                </tr><tr v-if="ficheiroAssinadoCoordenadorDepartamento">
+                    <td> Ficheiro Assinado Coordenador Departamento</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorDepartamento.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="fundamentacao">
+                        <td colspan="3" style="height: 50%">
+                            <pdf name="fade" :src="fichFundamentacao"></pdf>
+                        </td></tr>
 
 
                 </tr><tr v-if="ataCTC">
