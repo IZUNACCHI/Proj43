@@ -15,11 +15,11 @@
 Anexo à presente proposta</td></tr>
                 <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
                 <tr width="100%">
-                    <td v-if="proposta.formacao=='doutoramento'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Doutoramento</td>
-                    <td v-if="proposta.formacao=='outro'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Outro</td>
-                    <td v-if="proposta.formacao=='em_formacao'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Em Formação</td>
-                    <td v-if="proposta.formacao=='doutoramento'"><b>Curso: </b>{{proposta.grau}}</td>
-                    <td v-if="proposta.formacao!='doutoramento'"><b>Grau: </b>{{proposta.grau}}</td>
+                    <td v-if="proposta.grau=='doutoramento'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Doutoramento</td>
+                    <td v-if="proposta.grau=='outro'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Outro</td>
+                    <td v-if="proposta.grau=='em_formacao'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Em Formação</td>
+                    <td v-if="proposta.grau=='doutoramento'"><b>Curso: </b>{{proposta.curso}}</td>
+                    <td v-if="proposta.grau!='doutoramento'"><b>Grau: </b>{{proposta.curso}}</td>
                     <td><b>Area Cientifica: </b>{{proposta.area_cientifica}}</td>
                 </tr>
           </table><br>
@@ -388,7 +388,7 @@ export default {
       this.mostrarResumoProposta = false;
     },
     submeterPropostaProfessor(propostaProponenteProfessor) {
-      if (this.unidadesCurriculares.length > 0) {
+      //if (this.unidadesCurriculares.length > 0) {
          this.$v.$touch();
         if (!this.$v.$invalid) {
         this.$swal.fire({
@@ -559,7 +559,7 @@ export default {
               }
             }
           });
-        }
+        //}
       }
     },
     submeterPropostaAssistente(propostaProponenteAssistente) {
@@ -794,9 +794,9 @@ export default {
                       unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
                     this.unidadesCurriculares.forEach(unidadeCurricular => {
-                      axios
+                     /* axios
                         .post("/api/ucsPropostaProponente", unidadeCurricular)
-                        .then(response => {});
+                        .then(response => {});*/
                       this.propostaProponenteMonitor.proposta_proponente_id = this.idParaUcsPropostaProponente;
                     });
                     //? Apagar Propostas Proponente de todas as roles
@@ -852,9 +852,9 @@ export default {
                     unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
                   });
                   this.unidadesCurriculares.forEach(unidadeCurricular => {
-                    axios
+                    /*axios
                       .post("/api/ucsPropostaProponente", unidadeCurricular)
-                      .then(response => {});
+                      .then(response => {});*/
                     this.propostaProponenteMonitor.proposta_proponente_id = this.idParaUcsPropostaProponente;
                   });
                   axios

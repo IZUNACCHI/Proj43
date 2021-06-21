@@ -39,31 +39,35 @@
           >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
         </b-form-group>
       </span>
-
-        
-      <b-form-group label="Fundamentação" description="(cfr. acta do CTC - art. 5º, nº3) N.B Contracto e renovações não podem ter duração superior a 4 anos"
+      <b-form-group
+        label="Fundamentação"
+        description="(cfr. acta do CTC - art. 5º, nº3) N.B Contracto e renovações não podem ter duração superior a 4 anos"
         v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
-        propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'">
+        propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'"
+      >
+
+        <b-form-group>
         <b-form-file
           v-model="ficheiroFundamentacaoProfessorModel"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
           browse-text="Procurar"
-          name="ficheiroFundamentacaoProf"
+          name="ficheiroFundamentacaoProfessor"
           v-validate="{ required: true }"
-          :state="validateState('this.ficheiroFundamentacaoProf')"
+          :state="validateState('this.ficheiroFundamentacaoProfessor')"
           @change="onFileSelected"
         ></b-form-file>
         <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
 
-       
-
-
-
-
-
-
+      <!--
+        <b-form-textarea
+          v-model="propostaProponenteProfessor.fundamentacao"
+          :state="!$v.propostaProponenteProfessor.fundamentacao.$error && null"
+        ></b-form-textarea>
+        <b-form-invalid-feedback id="input-1-live-feedback">A fundamentação é obrigatória!</b-form-invalid-feedback>-->
+      </b-form-group>
+      
       <b-form-group label="Duração do contrato" label-for="inputDuracaoContrato">
         <b-form-input
           id="inputDuracaoContrato"
@@ -154,27 +158,29 @@ export default {
         periodo: "",
         proposta_proponente_id: "",
         avaliacao_periodo_anterior:"",
-      },      
+      },
+      ficheiroProponenteProfessor: {
+        fileRelatorio: {},
+        fileFundamentacao: {}
+      },
       ficheirosProfessor: [],
-      ficheiroFundamentacaoProf: "",
+      ficheiroFundamentacaoProfessor: "",
       ficheiroFundamentacaoProfessorModel: "",
-
+      
       avancar: false,
       isShowProfessor: true
     };
   },
   //? Validations Vuelidate
   validations() {
-    /*
-    if(this.proposta.tipo_contrato == 'renovacao' || this.proposta.tipo_contrato == 'alteracao'){
-      return{
-        propostaProponenteProfessor: {
-          avaliacao_periodo_anterior: { required },
-        }
-      };
-    }
-    */
-    if (
+    // if(this.proposta.tipo_contrato == 'renovacao' || this.proposta.tipo_contrato == 'alteracao'){
+    //   return{
+    //     propostaProponenteProfessor: {
+    //       avaliacao_periodo_anterior: { required },
+    //     }
+    //   };
+    // }
+     if (
       this.propostaProponenteProfessor.regime_prestacao_servicos ==
         "tempo_integral" ||
       this.propostaProponenteProfessor.regime_prestacao_servicos ==
@@ -184,7 +190,7 @@ export default {
         propostaProponenteProfessor: {
           role_professor: { required },
           regime_prestacao_servicos: { required },
-          fundamentacao: { required },
+          //fundamentacao: { required },
           duracao: { required },
           periodo: { required }
         }
@@ -199,14 +205,15 @@ export default {
           periodo: { required }
         }
       };
+    
     }
   },
   methods: {
-    validateState(ref) {
+  validateState(ref) {
       return this.veeErrors.has(ref) ? false : null;
     },
     onFileSelected(event) {
-      this.ficheiros[event.target.name] = event.target.files[0];
+      this.ficheirosProfessor[event.target.name] = event.target.files[0];
     },
     seguinte() {
       //* Mudar para o componente Resumo Proposta
@@ -221,36 +228,39 @@ export default {
           this.propostaProponenteProfessor.percentagem_prestacao_servicos =
             "100";
         }
-        /*
-        this.ficheiro.fileFundamentacao = new FormData();
-        this.ficheiro.fileFundamentacao.append(
-          "file",
-          this.ficheirosProfessor["ficheiroFundamentacaoProf"]
-        );
-        this.ficheiro.fileFundamentacao.append(
-          "descricao",
-          "Fundamentação do docente a ser contratado"
-        );*/
+
+            //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+            this.ficheiroProponenteProfessor.fileFundamentacao = new FormData();
+            this.ficheiroProponenteProfessor.fileFundamentacao.append(
+                "file",
+                this.ficheirosProfessor["ficheiroFundamentacaoProfessor"]
+            );
+            this.ficheiroProponenteProfessor.fileFundamentacao.append(
+                "descricao",
+                "Fundamentacao da Proposta Proponente Professor"
+            );
 
             this.ficheiro.fileFundamentacao = new FormData();
             this.ficheiro.fileFundamentacao.append(
                 "file",
-                this.ficheirosProfessor["ficheiroFundamentacaoProf"]
+                this.ficheirosProfessor["ficheiroFundamentacaoProfessor"]
             );
             this.ficheiro.fileFundamentacao.append(
                 "descricao",
                 "Fundamentacao da Proposta Proponente Professor"
             );
 
+        //}
+
 
         this.avancar = true;
         this.isShowProfessor = false;
         this.$emit("incrementarBarraProgresso");
-        this.$store.commit("setPropostaProponenteProfessor", this.propostaProponenteProfessor);
+        this.$store.commit("setPropostaProponente", this.propostaProponenteProfessor);
       }
     },
     anterior() {
-       //Mudar para o componente Proponente
+      //* Mudar para o componente Proponente
       this.$emit("mostrarProponente");
       if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
         this.$emit("mostrarProponente", this.proposta);
@@ -260,9 +270,9 @@ export default {
       this.isShowProfessor = true;
       this.avancar = false;
       this.$emit("decrementarBarraProgresso");
-       if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
-         this.anterior();
-       }
+      if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
+        this.anterior();
+      }
     },
     mostrarComponenteProfessor() {
       this.isShowProfessor = true;
@@ -273,13 +283,12 @@ export default {
   mounted() {
     Object.assign(this.propostaProponenteProfessor, this.$store.state.propostaProponenteProfessor);
 
+    //? Se selecionou uma proposta existente
     if (this.proposta.role == "professor" && (this.$store.state.propostaExistente || this.$store.state.editarProposta)) {
       axios
         .get("/api/propostaProponenteProfessor/" + this.proposta.id_proposta_proponente)
         .then(response => {
           Object.assign(this.propostaProponenteProfessor, response.data);
-          /*if (ficheiro.descricao == "Relatorio dos 2 proponentes")
-              this.ficheiroFundamentacao = ficheiro*/
         });
     }
   }

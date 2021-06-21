@@ -208,14 +208,14 @@ abrigo do art. 8.º do ECPDESP, do IPL"
           <b-card-body>
             <b-card-text>
               <h3 class="pb-4">Habilitações Literárias</h3>
-              <b-form-group label="Grau">
+              <b-form-group >
                 <b-form-radio-group
                   v-model="proposta.grau"
                   :options="grausArray"
                   :state="!$v.proposta.grau.$error && null"
                   stacked
                 ></b-form-radio-group>
-                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+                <b-form-invalid-feedback id="input-1-live-feedback">É obrigatório selecionar!</b-form-invalid-feedback>
               </b-form-group>
 
               <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterarias"
