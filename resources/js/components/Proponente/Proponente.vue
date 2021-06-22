@@ -208,14 +208,14 @@ abrigo do art. 8.º do ECPDESP, do IPL"
           <b-card-body>
             <b-card-text>
               <h3 class="pb-4">Habilitações Literárias</h3>
-              <b-form-group >
+              <b-form-group label="Gr">
                 <b-form-radio-group
                   v-model="proposta.grau"
                   :options="grausArray"
                   :state="!$v.proposta.grau.$error && null"
                   stacked
                 ></b-form-radio-group>
-                <b-form-invalid-feedback id="input-1-live-feedback">É obrigatório selecionar!</b-form-invalid-feedback>
+                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
 
               <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterarias"
@@ -258,7 +258,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-3 variant="dark">Ficheiro Obrigatorios</b-button>
         </b-card-header>
-        <b-collapse id="accordion-3" accordion="accordion" role="tabpanel">
+        <!--<b-collapse id="accordion-3" accordion="accordion" role="tabpanel">
           <b-card-body>
             <b-card-text>
                 <b-form-group label="Currículo (PDF)">
@@ -283,7 +283,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     >
                     <i class="far fa-file-pdf"></i> Atual Curriculo do Docente
                     </b-button>
-                </b-form-group>
+                </b-form-group>-->
                 <b-form-group label="Serviço Docente Atribuído (PDF)">
                     <b-form-file
                         v-model="ficheiroUnidadesCurricularesModel"
@@ -307,7 +307,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
                     </b-button>
                 </b-form-group>
-                <b-form-group
+                <!--<b-form-group
                   label="Certificado de Habilitações (PDF)"
                   class="mt-3"
                 >
@@ -354,7 +354,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                   <i class="far fa-file-pdf"></i> Atual Relatório dos 2 proponentes
                   </b-button>
               </b-form-group>
-              <br />
+              <br />-->
             </b-card-text>
           </b-card-body>
         </b-collapse>
@@ -579,7 +579,8 @@ export default {
       axios.get('/api/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/' + proposta.email)
         .then(response => {
         if(!response.data){
-      //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+        /*
+        //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
       this.ficheiro.fileCurriculo = new FormData();
       this.ficheiro.fileCurriculo.append(
         "file",
@@ -588,7 +589,7 @@ export default {
       this.ficheiro.fileCurriculo.append(
         "descricao",
         "Curriculo do docente a ser contratado"
-      );
+      );*/
 
 
        //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
@@ -604,7 +605,7 @@ export default {
 
 
       
-
+      /*
       if (this.proposta.tipo_contrato == "contratacao_inicial") {
         this.ficheiro.fileHabilitacoes = new FormData();
         this.ficheiro.fileHabilitacoes.append(
@@ -624,7 +625,7 @@ export default {
       this.ficheiro.fileRelatorio.append(
         "descricao",
         "Relatorio dos 2 proponentes"
-      );
+      );*/
       this.roleSelecionado = proposta.role;
       this.$v.proposta.$touch();
       this.$validator.validateAll().then(result => {

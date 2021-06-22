@@ -1,9 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\database",
-    "\\database\\migrations",
-    "\\database\\seeds",
     "\\resources",
     "\\resources\\js",
     "\\resources\\js\\components",
@@ -11,6 +8,6 @@
     "\\resources\\js\\components\\Proponente",
     "\\resources\\js\\components\\utils"
   ],
-  "SelectedNode": "\\resources\\js\\components\\Proponente\\EnviarPropostaAssinadaDepartamento.vue",
+  "SelectedNode": "\\resources\\js\\components\\Proponente\\Proponente.vue",
   "PreviewInSolutionExplorer": false
 }

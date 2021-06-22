@@ -388,7 +388,7 @@ export default {
       this.mostrarResumoProposta = false;
     },
     submeterPropostaProfessor(propostaProponenteProfessor) {
-      //if (this.unidadesCurriculares.length > 0) {
+      if (this.unidadesCurriculares.length > 0) {
          this.$v.$touch();
         if (!this.$v.$invalid) {
         this.$swal.fire({
@@ -439,26 +439,26 @@ export default {
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
-                      this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
+                      /*this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
                     
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         this.ficheiro.fileHabilitacoes.append( "proposta_id", response.data.id);
                       }
-                      this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
+                      this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);*/
                       this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       //this.ficheiroProponenteProfessor.fileFundamentacao.append("proposta_id", response.data.id);
                       this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
                       
                       axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
-                      axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
+                      //axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
                       axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       //axios.post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao).then(response => {});
                       axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
                       
-                      axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
+                      /*axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
-                      }
+                      }*/
                       this.$swal(
                                 "Sucesso",
                                 "Proposta editada com sucesso!!",
@@ -492,7 +492,7 @@ export default {
                     axios
                       .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                       .then(response => {
-                        this.ficheiro.fileCurriculo.append(
+                        /*this.ficheiro.fileCurriculo.append(
                           "proposta_id",
                           response.data
                         );
@@ -507,7 +507,7 @@ export default {
                         this.ficheiro.fileRelatorio.append(
                           "proposta_id",
                           response.data
-                        );
+                        );*/
                         this.ficheiro.fileUnidadesCurriculares.append(
                           "proposta_id",
                           response.data
@@ -521,19 +521,19 @@ export default {
                           response.data
                         );*/
                         
-                        axios
+                       /* axios
                           .post("/api/ficheiro", this.ficheiro.fileRelatorio)
-                          .then(response => {});
+                          .then(response => {});*/
                         axios
                           .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                           .then(response => {});
                         axios
                           .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
-                          .then(response => {});
+                          .then(response => {})//;
                         /*axios
                           .post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao)
                           .then(response => {});*/
-                        axios
+                        /*axios
                           .post("/api/ficheiro", this.ficheiro.fileCurriculo)
                           .then(response => {});
                         if (
@@ -543,7 +543,7 @@ export default {
                             .post(
                               "/api/ficheiro",
                               this.ficheiro.fileHabilitacoes
-                            )
+                            )*/
                             .then(response => {
                               this.$swal(
                                 "Sucesso",
@@ -553,13 +553,13 @@ export default {
                               this.isLoading = false;
                               this.voltar();
                             });
-                        }
+                        //}
                       });
                   });
               }
             }
           });
-        //}
+        }
       }
     },
     submeterPropostaAssistente(propostaProponenteAssistente) {
@@ -615,13 +615,13 @@ export default {
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
-                      this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
+                      /*this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
                     
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         this.ficheiro.fileHabilitacoes.append( "proposta_id", response.data.id);
                       }
                       this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
-
+                      */
                       if(propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
                          propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
                          propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
@@ -631,13 +631,13 @@ export default {
 
                       this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       //axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
-                      axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
+                      //axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
                       axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                     
-                      axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
+                      /*axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
-                      }
+                      }*/
 
                       if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
@@ -679,7 +679,7 @@ export default {
                   axios
                     .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                     .then(response => {
-                      this.ficheiro.fileCurriculo.append(
+                      /*this.ficheiro.fileCurriculo.append(
                         "proposta_id",
                         response.data
                       );
@@ -694,7 +694,7 @@ export default {
                       this.ficheiro.fileRelatorio.append(
                         "proposta_id",
                         response.data
-                      );
+                      );*/
                       this.ficheiro.fileUnidadesCurriculares.append(
                         "proposta_id",
                         response.data
@@ -714,13 +714,13 @@ export default {
                             );*/
                        }
                       
-                      axios
+                     /* axios
                         .post("/api/ficheiro", this.ficheiro.fileCurriculo)
                         .then(response => {});
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileRelatorio)
                         .then(response => {});
-                      axios
+                      */axios
                         .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                         .then(response => {});
 
@@ -729,18 +729,18 @@ export default {
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
                             axios
                                 .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
-                                .then(response => {});
+                                .then(response => {})//;
                             /*axios
                                 .post("/api/ficheiro", this.ficheiroProponenteAssistente.fileFundamentacao)
                                 .then(response => {});
                             */
-                      }
+                      //}
 
-                      if (
+                     /* if (
                         this.proposta.tipo_contrato == "contratacao_inicial"
                       ) {
                         axios
-                          .post("/api/ficheiro", this.ficheiro.fileHabilitacoes)
+                          .post("/api/ficheiro", this.ficheiro.fileHabilitacoes)*/
                           .then(response => {
                             this.$swal(
                               "Sucesso",
@@ -813,25 +813,25 @@ export default {
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
-                      this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
+                      /*this.ficheiro.fileCurriculo.append("proposta_id", response.data.id);
                     
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         this.ficheiro.fileHabilitacoes.append( "proposta_id", response.data.id);
                       }
-                      this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
+                      this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);*/
                       this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       //----------
                       /*if (this.proposta.tipo_contrato == "renovacao") {
                         axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
                       }*/
-                      axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
+                      //axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
 
                       axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                     
-                      axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
+                      /*axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
-                      }
+                      }*/
                       this.$swal(
                                 "Sucesso",
                                 "Proposta editada com sucesso!!",
@@ -866,7 +866,7 @@ export default {
                   axios
                     .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                     .then(response => {
-                      this.ficheiro.fileCurriculo.append(
+                      /*this.ficheiro.fileCurriculo.append(
                         "proposta_id",
                         response.data
                       );
@@ -881,26 +881,26 @@ export default {
                       this.ficheiro.fileRelatorio.append(
                         "proposta_id",
                         response.data
-                      );
+                      );*/
                       this.ficheiro.fileUnidadesCurriculares.append(
                         "proposta_id",
                         response.data
                       );
                       
-                      axios
+                      /*axios
                         .post("/api/ficheiro", this.ficheiro.fileRelatorio)
-                        .then(response => {});
+                        .then(response => {});*/
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
-                        .then(response => {});
-                      axios
+                        .then(response => {})//;
+                     /* axios
                         .post("/api/ficheiro", this.ficheiro.fileCurriculo)
                         .then(response => {});
                       if (
                         this.proposta.tipo_contrato == "contratacao_inicial"
                       ) {
                         axios
-                          .post("/api/ficheiro", this.ficheiro.fileHabilitacoes)
+                          .post("/api/ficheiro", this.ficheiro.fileHabilitacoes)*/
                           .then(response => {
                             this.$swal(
                               "Sucesso",
@@ -910,7 +910,7 @@ export default {
                             this.isLoading = false;
                             this.voltar();
                           });
-                      }
+                     // }
                     });
                 });
             }
