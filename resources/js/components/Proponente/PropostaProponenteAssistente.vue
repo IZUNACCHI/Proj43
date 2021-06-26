@@ -42,6 +42,16 @@
         <b-form-invalid-feedback
           id="input-1-live-feedback"
         >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
+        <b-form-select
+          id="inputTempoParcial"
+          v-model="propostaProponenteAssistente.percentagem_prestacao_servicos_2"
+          :state="null"
+          :options="percentagensArray"
+        ></b-form-select>
+        <b-form-invalid-feedback
+          id="input-1-live-feedback"
+        >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
+      
       </b-form-group>
       <b-form-group
         label="Fundamentação"
@@ -158,6 +168,7 @@ export default {
       propostaProponenteAssistente: {
         regime_prestacao_servicos: "",
         percentagem_prestacao_servicos: "",
+        percentagem_prestacao_servicos_2: "",
         fundamentacao: "",
         duracao: "",
         periodo: "",

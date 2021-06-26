@@ -11,7 +11,7 @@ class PropostaProponenteAssistenteController extends Controller
         $request->validate([
             'regime_prestacao_servicos' => 'required',
             'percentagem_prestacao_servicos' => 'nullable|numeric|min:1',
-            'fundamentacao' => 'nullable',
+            'percentagem_prestacao_servicos_2' => 'nullable|numeric|min:1',
             'duracao' => 'required',
             'periodo' => 'required',
             'avaliacao_periodo_anterior' => 'nullable',
@@ -30,7 +30,7 @@ class PropostaProponenteAssistenteController extends Controller
         $request->validate([
             'regime_prestacao_servicos' => 'required',
             'percentagem_prestacao_servicos' => 'nullable|numeric|min:1',
-            'fundamentacao' => 'nullable',
+            'percentagem_prestacao_servicos_2' => 'nullable|numeric|min:1',
             'duracao' => 'required',
             'periodo' => 'required',
             'avaliacao_periodo_anterior' => 'nullable',

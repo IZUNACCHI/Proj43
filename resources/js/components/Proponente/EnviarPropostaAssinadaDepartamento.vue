@@ -4,7 +4,6 @@
     <h4 class="pb-4"> Por favor, insira os seguintes ficheiros para dar continuidade à proposta
         de contratação/renovação/alteração
     </h4>
-    
     <b-form-group label="Ficheiro da Proposta Assinada" class="mt-3">
         <b-form-file
           v-model="ficheirosAInserir.fileAssinado"
@@ -27,7 +26,17 @@
           <i class="far fa-file-pdf"></i> Atual Ficheiro Assinado
         </b-button>
       </b-form-group>
-
+    <b-form-group class="mt-5">
+        <b-form-checkbox
+          id="checkBoxIncricao"
+          v-model="propostaProponente.contrato_assinado_departamento""
+          name="checkBoxContratoAssinadoDepartamento"
+          value="1"
+          unchecked-value="0"
+          :state="$v.propostaProponente.contrato_assinado_departamento.$dirty ? !$v.propostaProponente.contrato_assinado_departamento.$error : null"
+        >Tomei Conhecimento que a proposta fica Definitiva</b-form-checkbox>
+        <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+    </b-form-group>
     <button
         class="btn btn-success mt-3 font-weight-bold"
         v-on:click.prevent="submeter(ficheirosAInserir)">
@@ -40,11 +49,13 @@
 <script>
 import { required, email, minLength } from "vuelidate/lib/validators";
 export default {
-
   props: ["propostaSelecionada"],
   data() {
     return {
       proposta:"",
+      propostaProponente: {
+        contrato_assinado_departamento: ""
+      },
       ficheirosAInserir:{
         fileAssinado:{},
       },
@@ -52,7 +63,13 @@ export default {
       ficheiroAssinado:"",
       };
   },
+  validations: {
+    propostaProponente: {
+      contrato_assinado_departamento: { required },
+    }
+  },
   methods: {
+  
     validateState(ref) {
       return this.veeErrors.has(ref) ? false : null;
     },
@@ -103,16 +120,18 @@ export default {
               );
 
               axios.post('/api/ficheiro', this.ficheirosAInserir.fileAssinado).then(response => {
-                this.$swal(
-                    "Sucesso",
-                    "Proposta criada com sucesso!!",
-                    "success"
-                )
-                this.$emit('voltar');
-                    if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_departamento != null){
-                        this.$emit("voltar", this.proposta);
-                    }
-              });
+                axios.put('/api/propostaProponente/propostaAssinadaDepartamento/'+
+                    this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
+                    this.$swal(
+                        "Sucesso",
+                        "Proposta concluida com sucesso!!",
+                        "success"
+                    )});
+                    this.$emit('voltar');
+                        if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_departamento != null){
+                            this.$emit("voltar", this.proposta);
+                        }
+               });
           }
       });
     }

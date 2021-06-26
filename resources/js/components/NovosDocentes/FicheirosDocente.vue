@@ -4,6 +4,62 @@
     <h4 class="pb-4"> Por favor, insira os seguintes ficheiros para dar continuidade à proposta
         de contratação/renovação/alteração
     </h4>
+
+    
+                <b-form-group label="Currículo (PDF)" v-if="propostaDesteProponente.tipo_contrato =='contrato_inicial'">
+                    <b-form-file
+                        v-model="ficheirosAInserir.fileCurriculo"
+                        placeholder="Escolha um ficheiro"
+                        drop-placeholder="Arraste para aqui um ficheiro"
+                        browse-text="Procurar"
+                        name="ficheiroCurriculo"
+                        v-validate="{ required: true }"
+                        :state="validateState('ficheiroCurriculo')"
+                        @change="onFileSelected"
+                    ></b-form-file>
+                    <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro de Currículo é obrigatório!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group>
+                    <b-button
+                        size="md"
+                        variant="dark"
+                        v-if="ficheiroCurriculo"
+                        @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado')"
+                    >
+                    <i class="far fa-file-pdf"></i> Atual Curriculo do Docente
+                    </b-button>
+                </b-form-group>
+
+
+              <b-form-group
+                  label="Certificado de Habilitações (PDF)"
+                   v-if="propostaDesteProponente.tipo_contrato =='contrato_inicial'"
+                  class="mt-3"
+                >
+                  <b-form-file
+                    v-model="ficheirosAInserir.fileHabilitacoes"
+                    placeholder="Escolha um ficheiro"
+                    drop-placeholder="Arraste para aqui um ficheiro"
+                    browse-text="Procurar"
+                    name="ficheiroHabilitacoes"
+                    v-validate="{ required: true }"
+                    :state="validateState('ficheiroHabilitacoes')"
+                    @change="onFileSelected"
+                  ></b-form-file>
+                  <b-form-group>
+                    <b-button
+                      size="md"
+                      variant="dark"
+                      v-if="ficheiroHabilitacoes"
+                      @click="downloadFicheiro(ficheiroHabilitacoes.proposta_id, 'Habilitacoes do docente a ser contratado')"
+                    >
+                      <i class="far fa-file-pdf"></i> Atual Ficheiro de Habilitacoes do Docente
+                    </b-button>
+                  </b-form-group>
+              </b-form-group>
+
+
+
     <b-form-group label="NIF" class="mt-3">
         <b-form-file
           v-model="ficheirosAInserir.fileNIF"
@@ -283,8 +339,12 @@ export default {
         fileDeclaracaoIRS:{},
         fileDeclaracaoRenunciaADSE:{},
         fileRespostaOutrasEscolas:{},
+        fileCurriculo: {},
+        fileHabilitacoes: {}
       },
       ficheiros:[],
+      ficheiroCurriculo:"",
+      ficheiroHabilitacoes:"",
       ficheiroNIF:"",
       ficheiroNumeroCGA:"",
       ficheiroCopiaCC:"",
@@ -329,6 +389,28 @@ export default {
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
+            if (this.proposta.tipo_contrato == "contratacao_inicial") {
+              //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+              this.ficheirosAInserir.fileCurriculo = new FormData();
+              this.ficheiro.fileCurriculo.append(
+                "file",
+                this.ficheiros["ficheiroCurriculo"]
+              );
+              this.ficheirosAInserir.fileCurriculo.append(
+                "descricao",
+                "Curriculo do docente a ser contratado"
+              );
+              this.ficheiro.fileHabilitacoes = new FormData();
+              this.ficheiro.fileHabilitacoes.append(
+                "file",
+                this.ficheiros["ficheiroHabilitacoes"]
+              );
+              this.ficheiro.fileHabilitacoes.append(
+                "descricao",
+                "Habilitacoes do docente a ser contratado"
+              );
+            }
+
               this.ficheirosAInserir.fileNIF = new FormData();
               this.ficheirosAInserir.fileNIF.append(
                 "file",
@@ -481,7 +563,11 @@ export default {
               this.ficheirosAInserir.fileRespostaOutrasEscolas.append(
                 "proposta_id",
                 this.propostaDesteProponente.id_proposta_proponente
-              );             
+              );
+              if (this.proposta.tipo_contrato == "contratacao_inicial") {
+                axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
+                axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
+              }
               axios.post('/api/ficheiro', this.ficheirosAInserir.fileNIF).then(response => {
 
               });
