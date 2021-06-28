@@ -27,7 +27,6 @@ abrigo do art. 8.º do ECPDESP, do IPL"
     <b-form-group label="">
         <b-form-input :readonly="true" v-model="proposta.unidade_organica"></b-form-input>
     </b-form-group>
-
     <b-form-group label="Unidade Orgânica" label-for="inputTempoParcial">
           <b-form-select
             id="inputTempoParcial"
@@ -105,7 +104,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
 
 
 
-
+      
 
 
 
@@ -282,7 +281,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
           </b-card-body>
         </b-collapse>
       </b-card>
-
+      
      
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -668,6 +667,7 @@ export default {
         unidade_organica: this.$store.state.user.unidade_organica,
         nome_completo: "",
         email: "",
+        departamento_curso: "",
         numero_telefone: "",
         role: "",
         data_de_assinatura_coordenador_departamento: "",
@@ -736,6 +736,7 @@ export default {
           unidade_organica: { required },
           nome_completo: { required },
           email: { required, email },
+          departamento_curso: {required},
           numero_telefone: { required, minLength: minLength(9) },
           grau: { required },
           curso: { required },
@@ -768,6 +769,7 @@ export default {
           unidade_organica: { required },
           nome_completo: { required },
           email: { required, email },
+          departamento_curso: {required},
           numero_telefone: { required, minLength: minLength(9) },
           grau: { required },
           curso: { required },
