@@ -81,6 +81,15 @@ class InitialMigration extends Migration
             $table->boolean('contrato_assinado_curso')->default(false);
             $table->boolean('contrato_assinado_departamento')->default(false);
             $table->enum('role', ['professor', 'assistente', 'monitor']);
+
+            $table->decimal('remuneracao', 6, 2);
+            $table->string('escalao');
+            $table->string('indice');
+            $table->enum('verificacao_outras_uo', ['sim', 'nao']);
+            $table->string('nome_uo')->nullable();
+            $table->integer('tempo_parcial_uo')->nullable()->unsigned();
+            $table->string('periodo_uo')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });
@@ -90,6 +99,7 @@ class InitialMigration extends Migration
             $table->enum('role_professor', ['coordenador', 'adjunto', 'visitante']);
             $table->enum('regime_prestacao_servicos', ['tempo_parcial', 'tempo_integral', 'dedicacao_exclusiva']);
             $table->integer('percentagem_prestacao_servicos')->nullable();
+            $table->integer('percentagem_prestacao_servicos_2')->nullable();
             $table->string('fundamentacao')->nullable();
             $table->string('periodo');
             //$table->dateTime('periodo_inicial')->nullable();
@@ -107,6 +117,7 @@ class InitialMigration extends Migration
             $table->increments('id_proposta_proponente_assistente');
             $table->enum('regime_prestacao_servicos', ['tempo_parcial', 'tempo_parcial_60', 'tempo_integral', 'dedicacao_exclusiva']);
             $table->integer('percentagem_prestacao_servicos');
+            $table->integer('percentagem_prestacao_servicos_2');
             $table->string('fundamentacao')->nullable();
             $table->string('periodo');
             //$table->dateTime('periodo_inicial')->nullable();
@@ -133,6 +144,7 @@ class InitialMigration extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
         Schema::create('ucs_proposta_proponente', function(Blueprint $table){
             $table->increments('id_ucs_proposta_proponente');
             $table->string('codigo_uc');
@@ -188,26 +200,26 @@ class InitialMigration extends Migration
 
         Schema::create('proposta_recursos_humanos', function (Blueprint $table){
             $table->increments('id_proposta_recursos_humanos');
-            $table->decimal('remuneracao', 6, 2);
+            /*$table->decimal('remuneracao', 6, 2);
             $table->string('escalao');
             $table->string('indice');
             $table->enum('verificacao_outras_uo', ['sim', 'nao']);
             $table->string('nome_uo')->nullable();
             $table->integer('tempo_parcial_uo')->nullable()->unsigned();
-            $table->string('periodo_uo')->nullable();
+            $table->string('periodo_uo')->nullable();*/
             //$table->dateTime('periodo_inicial_uo')->nullable();
             //$table->dateTime('periodo_final_uo')->nullable();
             $table->integer('numero_funcionario')->unsigned();
-            $table->enum('inscricao', ['seguranca_social', 'CGA']);
+            $table->boolean('inscricao')->default(false);
             $table->boolean('contratacao_comunicada')->default(false);
-            $table->datetime('despacho_presidente_ipl');
+            $table->string('despacho_presidente_ipl');
             $table->boolean('contrato_redigido')->default(false);
             $table->boolean('contrato_anexo')->default(false);
             $table->boolean('cessacao_social')->default(false);
             $table->integer('NISS_ou_numero_CGA')->unsigned();
             $table->datetime('data_nascimento');
             $table->integer('numero_CC')->unsigned();
-            $table->string('email_recursos_humanos')->unique();
+            //$table->string('email_recursos_humanos')->unique();
             $table->string('dados_GIAF_carregados_por');
             $table->datetime('data_carregamento_dados_GIAF');
             $table->integer('recursos_humanos_id')->unsigned();
@@ -260,6 +272,7 @@ class InitialMigration extends Migration
         Schema::dropIfExists('proposta_proponente_professor');
         Schema::dropIfExists('proposta_proponente_assistente');
         Schema::dropIfExists('proposta_proponente_monitor');
+        Schema::dropIfExists('proposta_proponente_xxxx');
         Schema::dropIfExists('curso');
         Schema::dropIfExists('departamento');
         Schema::dropIfExists('proposta_diretor_uo');

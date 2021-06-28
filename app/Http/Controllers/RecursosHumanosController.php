@@ -43,13 +43,13 @@ class RecursosHumanosController extends Controller
 
     public function store(Request $request){
       $request->validate([
-        'remuneracao' => 'required',
+        /*'remuneracao' => 'required',
         'escalao' => 'required',
-        'indice' => 'required',
-        'verificacao_outras_uo' => 'required',
+        'indice' => 'required',*/
+        /*'verificacao_outras_uo' => 'required',
         'nome_uo' => 'nullable',
         'tempo_parcial_uo' => 'nullable',
-        'periodo_uo' => 'nullable',
+        'periodo_uo' => 'nullable',*/
         'numero_funcionario' => 'required',
         'contratacao_comunicada' => 'required',
         'inscricao' => 'required',
@@ -60,7 +60,7 @@ class RecursosHumanosController extends Controller
         'NISS_ou_numero_CGA' => 'required',
         'data_nascimento' => 'required',
         'numero_CC' => 'required',
-        'email_recursos_humanos' => 'required',
+        //'email_recursos_humanos' => 'required',
         'dados_GIAF_carregados_por' => 'required',
         'data_carregamento_dados_GIAF' => 'required',
         'recursos_humanos_id' => 'required'

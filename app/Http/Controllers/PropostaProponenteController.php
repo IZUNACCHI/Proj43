@@ -61,7 +61,11 @@ class PropostaProponenteController extends Controller
             'curso' => 'required',
             'primeiro_proponente' => 'required',
             'area_cientifica' => 'required',
-        ]);
+            'remuneracao' => 'required',
+            'escalao' => 'required',
+            'indice' => 'required',
+            'verificacao_outras_uo' => 'required',
+            ]);
 
         $proposta->update($request->all());
         $proposta->save();
@@ -137,36 +141,27 @@ class PropostaProponenteController extends Controller
         $propostaAAtualizar->segundo_proponente = $request->segundo_proponente;
         $propostaAAtualizar->save();
     }
-    
-    public function inserirPropostaAssinadaCurso(Request $request){
-      if($request->propostaAssinada == true){
-         $request->propostaAssinada = 1;
-      }
-      else{
-         $request->propostaAssinada = 0;
-      }
-      $request->validate([
-         'propostaAssinada' => 'required',
-      ]);
 
-      $propostaAAtualizar->contrato_assinado_curso = $request->propostaAssinada;
+    public function atualizarProposta($propostaProponenteID, Request $request)
+    {
+        $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);
+        $propostaAAtualizar->remuneracao = $request->remuneracao;
+        $propostaAAtualizar->escalao = $request->escalao;
+        $propostaAAtualizar->indice = $request->indice;
+        $propostaAAtualizar->save();
+    }
+    
+    public function inserirPropostaAssinadaCurso($propostaProponenteID, Request $request){
+      $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);
+      $propostaAAtualizar->contrato_assinado_departamento = $request->contrato_assinado_departamento;
       $propostaAAtualizar->save();
 
       return response()->json($propostaAAtualizar, 200);
     }
 
-    public function inserirPropostaAssinadaDepartamento(Request $request){
-      if($request->propostaAssinada == true){
-         $request->propostaAssinada = 1;
-      }
-      else{
-         $request->propostaAssinada = 0;
-      }
-      $request->validate([
-         'propostaAssinada' => 'required',
-      ]);
-
-      $propostaAAtualizar->contrato_assinado_departamento = $request->propostaAssinada;
+    public function inserirPropostaAssinadaDepartamento($propostaProponenteID, Request $request){
+      $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);
+      $propostaAAtualizar->contrato_assinado_departamento = $request->contrato_assinado_departamento;
       $propostaAAtualizar->save();
 
       return response()->json($propostaAAtualizar, 200);

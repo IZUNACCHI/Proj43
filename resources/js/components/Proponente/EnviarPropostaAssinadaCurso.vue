@@ -27,7 +27,17 @@
           <i class="far fa-file-pdf"></i> Atual Ficheiro Assinado
         </b-button>
       </b-form-group>
-
+    <b-form-group class="mt-5">
+        <b-form-checkbox
+          id="checkBoxIncricao"
+          v-model="propostaProponente.contrato_assinado_curso""
+          name="checkBoxContratoAssinadoCurso"
+          value="1"
+          unchecked-value="0"
+          :state="$v.propostaProponente.contrato_assinado_curso.$dirty ? !$v.propostaProponente.contrato_assinado_curso.$error : null"
+        >Tomei Conhecimento que a proposta fica Definitiva</b-form-checkbox>
+        <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+    </b-form-group>
     <button
         class="btn btn-success mt-3 font-weight-bold"
         v-on:click.prevent="submeter(ficheirosAInserir)">
@@ -45,12 +55,20 @@ export default {
   data() {
     return {
       proposta:"",
+      propostaProponente: {
+        contrato_assinado_curso: ""
+      },
       ficheirosAInserir:{
         fileAssinado:{},
       },
       ficheiros:[],
       ficheiroAssinado:"",
       };
+  },
+  validations: {
+    propostaProponente: {
+      contrato_assinado_curso: { required },
+    }
   },
   methods: {
     validateState(ref) {
@@ -103,11 +121,14 @@ export default {
               );
 
               axios.post('/api/ficheiro', this.ficheirosAInserir.fileAssinado).then(response => {
-                this.$swal(
-                    "Sucesso",
-                    "Proposta criada com sucesso!!",
-                    "success"
-                )
+                axios.put('/api/propostaProponente/propostaAssinadaCurso/'+
+                    this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
+                    this.$swal(
+                        "Sucesso",
+                        "Proposta concluida com sucesso!!",
+                        "success"
+                    )
+                });
                 this.$emit('voltar');
                     if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
                         this.$emit("voltar", this.proposta);

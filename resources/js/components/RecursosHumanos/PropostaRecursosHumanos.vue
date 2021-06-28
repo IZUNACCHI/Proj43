@@ -5,8 +5,8 @@
       <b-form-group label="Remuneração" label-for="inputRemuneracao">
         <b-form-input
           id="inputRemuneracao"
-          :state="$v.propostaRecursosHumanos.remuneracao.$dirty ? !$v.propostaRecursosHumanos.remuneracao.$error : null"
-          v-model="propostaRecursosHumanos.remuneracao"
+          :state=" null"
+          v-model="propostaProponente.remuneracao"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a remuneração em formato numérico!</b-form-invalid-feedback>
       </b-form-group>
@@ -14,8 +14,8 @@
       <b-form-group label="Escalão" label-for="inputEscalao">
         <b-form-input
           id="inputEscalao"
-          :state="$v.propostaRecursosHumanos.escalao.$dirty ? !$v.propostaRecursosHumanos.escalao.$error : null"
-          v-model="propostaRecursosHumanos.escalao"
+          :state="null"
+          v-model="propostaProponente.escalao"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
       </b-form-group>
@@ -23,8 +23,8 @@
       <b-form-group label="Índice" label-for="inputIndice">
         <b-form-input
           id="inputIndice"
-          :state="$v.propostaRecursosHumanos.indice.$dirty ? !$v.propostaRecursosHumanos.indice.$error : null"
-          v-model="propostaRecursosHumanos.indice"
+          :state="null"
+          v-model="propostaProponente.indice"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
       </b-form-group>
@@ -32,20 +32,25 @@
       <b-form-group label="Número de funcionário" label-for="inputNumero">
         <b-form-input
           id="inputNumero"
-          :state="$v.propostaRecursosHumanos.numero_funcionario.$dirty ? !$v.propostaRecursosHumanos.numero_funcionario.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.numero_funcionario"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira um número para o funcionario</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Inscrição">
-        <b-form-radio-group
-          v-model="propostaRecursosHumanos.inscricao"
-          :options="inscricao_array"
-          stacked
-        ></b-form-radio-group>
-      </b-form-group>
 
+      <b-form-group class="mt-5">
+        <b-form-checkbox
+          id="checkBoxIncricao"
+          v-model="propostaRecursosHumanos.inscricao""
+          name="checkBoxInscricao"
+          value="1"
+          unchecked-value="0"
+          :state="null"
+        >Inscrição na Seg. Social (quando aplicável)</b-form-checkbox>
+        <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+      </b-form-group>
+      <!--
       <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
         <b-form-radio-group
           v-model="propostaRecursosHumanos.verificacao_outras_uo"
@@ -76,16 +81,19 @@
           ></b-form-input>
         </b-form-group>
       </b-form-group>
+      -->
+      
+
 
       <b-form-group label="Despacho do Sr.Presidente do IPL" label-for="inputDespacho">
         <b-form-input
-          type="date"
           id="inputDespacho"
-          :state="$v.propostaRecursosHumanos.despacho_presidente_ipl.$dirty ? !$v.propostaRecursosHumanos.despacho_presidente_ipl.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.despacho_presidente_ipl"
         ></b-form-input>
-        <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher este campo</b-form-invalid-feedback>
+        <b-form-invalid-feedback id="input-1-live-feedback">Insira um numero do despacho</b-form-invalid-feedback>
       </b-form-group>
+
 
       <b-form-group class="mt-5">
         <b-form-checkbox
@@ -94,7 +102,7 @@
           name="checkboxContratacaoComunicada"
           value="1"
           unchecked-value="0"
-          :state="$v.propostaRecursosHumanos.contratacao_comunicada.$dirty ? !$v.propostaRecursosHumanos.contratacao_comunicada.$error : null"
+          :state="null"
         >Contratação comunicada</b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
       </b-form-group>
@@ -106,7 +114,7 @@
           name="checkBoxContratoRedigido"
           value="1"
           unchecked-value="0"
-          :state="$v.propostaRecursosHumanos.contrato_redigido.$dirty ? !$v.propostaRecursosHumanos.contrato_redigido.$error : null"
+          :state="null"
         >Contrato redigido</b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
       </b-form-group>
@@ -118,7 +126,7 @@
           name="checkBoxContratoAnexo"
           value="1"
           unchecked-value="0"
-          :state="$v.propostaRecursosHumanos.contrato_anexo.$dirty ? !$v.propostaRecursosHumanos.contrato_anexo.$error : null"
+          :state="null"
         >Contrato anexo</b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
       </b-form-group>
@@ -130,7 +138,7 @@
           name="checkBoxContratoCessacaoSocial"
           value="1"
           unchecked-value="0"
-          :state="$v.propostaRecursosHumanos.cessacao_social.$dirty ? !$v.propostaRecursosHumanos.cessacao_social.$error : null"
+          :state="null"
         >Cessação Social</b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
       </b-form-group>
@@ -138,7 +146,7 @@
       <b-form-group label="NISS ou nº Caixa Geral Aposentações" label-for="inputNissOuCGA">
         <b-form-input
           id="inputNissOuCGA"
-          :state="$v.propostaRecursosHumanos.NISS_ou_numero_CGA.$dirty ? !$v.propostaRecursosHumanos.NISS_ou_numero_CGA.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.NISS_ou_numero_CGA"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher este campo</b-form-invalid-feedback>
@@ -148,7 +156,7 @@
         <b-form-input
           type="date"
           id="inputDataNascimento"
-          :state="$v.propostaRecursosHumanos.data_nascimento.$dirty ? !$v.propostaRecursosHumanos.data_nascimento.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.data_nascimento"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher este campo</b-form-invalid-feedback>
@@ -157,25 +165,25 @@
       <b-form-group label="Número cartão de cidadão" label-for="inputCC">
         <b-form-input
           id="inputCC"
-          :state="$v.propostaRecursosHumanos.numero_CC.$dirty ? !$v.propostaRecursosHumanos.numero_CC.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.numero_CC"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher este campo</b-form-invalid-feedback>
       </b-form-group>
-
+      <!--
       <b-form-group label="E-mail pessoal" label-for="inputEmailPessoal">
         <b-form-input
           id="inputEmailPessoal"
-          :state="$v.propostaRecursosHumanos.email_recursos_humanos.$dirty ? !$v.propostaRecursosHumanos.email_recursos_humanos.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.email_recursos_humanos"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher este campo</b-form-invalid-feedback>
-      </b-form-group>
+      </b-form-group>-->
 
       <b-form-group label="Dados carregados/atualizados no GIAF por:" label-for="inputDadosGIAF">
         <b-form-input
           id="inputDadosGIAF"
-          :state="$v.propostaRecursosHumanos.dados_GIAF_carregados_por.$dirty ? !$v.propostaRecursosHumanos.dados_GIAF_carregados_por.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.dados_GIAF_carregados_por"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher este campo</b-form-invalid-feedback>
@@ -185,7 +193,7 @@
         <b-form-input
           type="date"
           id="inputDataGIAF"
-          :state="$v.propostaRecursosHumanos.data_carregamento_dados_GIAF.$dirty ? !$v.propostaRecursosHumanos.data_carregamento_dados_GIAF.$error : null"
+          :state="null"
           v-model="propostaRecursosHumanos.data_carregamento_dados_GIAF"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher este campo</b-form-invalid-feedback>
@@ -205,22 +213,27 @@ export default {
   props:["propostaSelecionada"],
   data() {
     return {
-      inscricao_array: [
+      /*inscricao_array: [
         { text: "Segurança Social", value: "seguranca_social" },
         { text: "Caixa Geral de Aposentações", value: "CGA" }
-      ],
+      ],*/
       verificacao_outras_uo_array: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
       ],
-      propostaRecursosHumanos: {
+      propostaProponente: {
         remuneracao: "",
         escalao: "",
-        indice: "",
-        verificacao_outras_uo:"",
+        indice: ""
+        },
+      propostaRecursosHumanos: {
+        /*remuneracao: "",
+        escalao: "",
+        indice: "",*/
+        /*verificacao_outras_uo:"",
         nome_uo:"",
         tempo_parcial_uo:"",
-        periodo_uo:"",
+        periodo_uo:"",*/
         numero_funcionario: "",
         contratacao_comunicada: "",
         inscricao: "",
@@ -231,7 +244,7 @@ export default {
         NISS_ou_numero_CGA: "",
         data_nascimento: "",
         numero_CC: "",
-        email_recursos_humanos: "",
+        //email_recursos_humanos: "",
         dados_GIAF_carregados_por: "",
         data_carregamento_dados_GIAF: "",
         recursos_humanos_id: this.$store.state.user.id
@@ -239,14 +252,18 @@ export default {
     };
   },
   validations: {
-    propostaRecursosHumanos: {
+    propostaProponente: {
       remuneracao: { required, numeric },
       escalao: { required },
       indice: { required },
-      verificacao_outras_uo: { required },
+    },
+    propostaRecursosHumanos: {
+      /*remuneracao: { required, numeric },
+      escalao: { required },
+      indice: { required },*/
+      //verificacao_outras_uo: { required },
       numero_funcionario: { required },
       contratacao_comunicada: { required },
-      inscricao: { required },
       despacho_presidente_ipl: { required },
       contrato_redigido: { required },
       contrato_anexo: { required },
@@ -254,12 +271,16 @@ export default {
       NISS_ou_numero_CGA: { required },
       data_nascimento: { required },
       numero_CC: { required },
-      email_recursos_humanos: { required },
+      //email_recursos_humanos: { required },
       dados_GIAF_carregados_por: { required },
       data_carregamento_dados_GIAF: { required }
     }
   },
   methods: {
+  
+    validateState(ref) {
+      return this.veeErrors.has(ref) ? false : null;
+    },
     finalizarPropostaRecursosHumanos(propostaRecursosHumanos){
       
       this.$v.propostaRecursosHumanos.$touch();
@@ -273,6 +294,8 @@ export default {
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
+            axios.put('/api/propostaProponente/atualizarPropostaRemuneracao/'+
+                this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
                 axios.post('/api/recursosHumanos/propostaRecursosHumanos', propostaRecursosHumanos)
                     .then(response => {
                       let idPropostaRecursosHumanos = response.data.id_proposta_recursos_humanos;
@@ -284,7 +307,8 @@ export default {
                           msg: "Pedido de email enviado..."
                         });
                       });
-                    })
+                    });
+                })
           }
         })
       }

@@ -35,7 +35,7 @@
       <button class="btn btn-danger" v-on:click.prevent="gerarPdfRecursosHumanos()">Download</button>
     </div>
     <div>
-        <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.id_proposta_proponente}}</label>
+        <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.id_proposta_proponente}} {{propostaSelecionada.grau}}</label>
         </div>
 
    <div id="tes" class="total1">
@@ -57,16 +57,26 @@
                 </tr>
                 <tr>
                     <td><b>Número de Funcionário:</b>{{propostaSelecionada.numero_funcionario}}<br>
-                    <b>Contratação Comunidada</b><br>
-                    <b>Inscrição na Seg. Social ou CGA</b>{{propostaSelecionada.inscricao}}<br>
+                    <b>Contratação Comunidada</b>
+                        <input v-if="propostaSelecionada.contratacao_comunicada == '1'" type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <input v-else type="checkbox" id="scales" name="scales" onclick="return false;"><br>
+                    <b>Inscrição na Seg. Social (quando aplicável)</b>
+                        <input v-if="propostaSelecionada.inscricao == '1'" type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <input v-else type="checkbox" id="scales" name="scales" onclick="return false;"><br>
                     <b>Despacho do Sr.Presidente do IPL: </b>{{propostaSelecionada.despacho_presidente_ipl}}</td>
-                    <td><b>Contrato Redigido</b><br>
-                    <b>Contrato Anexo</b><br>
-                    <b>Cessação Social</b></td>
+                    <td><b>Contrato Redigido</b>
+                        <input v-if="propostaSelecionada.contrato_redigido == '1'" type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <input v-else type="checkbox" id="scales" name="scales" onclick="return false;"><br>
+                    <b>Contrato Anexo</b>
+                        <input v-if="propostaSelecionada.contrato_anexo == '1'" type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <input v-else type="checkbox" id="scales" name="scales" onclick="return false;"><br>
+                    <b>Cessação Social</b>
+                        <input v-if="propostaSelecionada.cessacao_social == '1'" type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <input v-else type="checkbox" id="scales" name="scales" onclick="return false;"></td>
                     <td><b>NISS ou Nº CGA </b>{{propostaSelecionada.NISS_ou_numero_CGA}}<br>
                     <b>Data de Nascimento: </b>{{propostaSelecionada.data_nascimento}}<br>
-                    <b>Nº CC: </b>{{propostaSelecionada.numeroCC}}<br>
-                    <b>E-mail Pessoal: {{propostaSelecionada.email_recursos_humanos}} </b></td>
+                    <b>Nº CC: </b>{{propostaSelecionada.numero_CC}}<br>
+                    <b>E-mail Pessoal:</b> {{propostaSelecionada.email_recursos_humanos}}</td>
                 </tr><tr>
                  <td colspan="3"><b>Dados carregados/atualizadors no GIAF por </b>{{propostaSelecionada.dados_GIAF_carregados_por}} <b>Data: {{propostaSelecionada.data_carregamento_dados_GIAF}} </b></td>
                 </tr>
@@ -85,10 +95,10 @@
                         <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">Anexo à presente proposta</td></tr>
                 <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
                 <tr width="100%">
-                    <td v-if="propostaSelecionada.grau=='douturamento'"><b>Doutoramento</b></td>
+                    <td v-if="propostaSelecionada.grau=='doutoramento'"><b>Doutoramento</b></td>
                     <td v-if="propostaSelecionada.grau=='outro'"><b>Outro</b></td>
                     <td v-if="propostaSelecionada.grau=='em_formacao'"><b>Em Formação</b></td>
-                    <td v-if="propostaSelecionada.grau=='douturamento'"><b>Curso: </b>{{propostaSelecionada.curso}}</td>
+                    <td v-if="propostaSelecionada.grau=='doutoramento'"><b>Curso: </b>{{propostaSelecionada.curso}}</td>
                     <td v-if="propostaSelecionada.grau=='outro'"><b>Grau: </b>{{propostaSelecionada.curso}}</td>
                     <td v-if="propostaSelecionada.grau=='em_formacao'"><b>Grau: </b>{{propostaSelecionada.curos}}</td>
                     <td><b>Area Cientifica: </b>{{propostaSelecionada.area_cientifica}}</td>
@@ -236,6 +246,43 @@
                     <td><b>Periodo: </b></td><td>{{tipoPropostaRole.periodo}}</td></tr>
           </table><br>
           <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
+                <tr>
+                    <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
+                    <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
+                    <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
+          </table><br>
+          <table width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
+                <tr>
+                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
+                        Periodio</p></td>
+                    <td rowspan="2" v-else>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p>Se sim, indique:, UO ___________________ Tempo parcial ____________________%<br>
+                        Periodio ________________________________</p></td>
+                </tr><tr>
+                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
+          </table><br>
+
+
+          <table width="100%" border="1px">
                 <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Proponente/s</font></th></tr>
                 <tr bgcolor=#be5b59>
                     <td><font color=#ffffff>Coordenador de Departamento/Unidade Funcional</font></td>
@@ -283,14 +330,14 @@
                     <td v-else><b>Reconheço interesse e a necessidade da contratação/renovação</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                     </td>
-                    <td rowspan="2" width="60%"><b>Data: </b>{{propostaSelecionada.data_assinatura}}<br> <b>Assinatura: </b>____________________</td>
+                    <td rowspan="2" width="60%"><b>Data: </b>{{propostaSelecionada.data_assinatura_uo}}<br> <b>Assinatura: </b>____________________</td>
                 </tr><tr>
                     
                     <td v-if="propostaSelecionada.parecer=='Favoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Favorável
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">Desfavorável
                     </td>
-                    <td v-if="propostaSelecionada.parecer=='Desfavoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                    <td v-else-if="propostaSelecionada.parecer=='Desfavoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">Favorável
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Desfavorável
                     </td>
@@ -309,7 +356,7 @@
                 <tr>
                     <td><b>Votos a Favor: </b>{{propostaSelecionada.votos_a_favor}}</td>
                     <td><b>Votos Contra: </b>{{propostaSelecionada.votos_contra}}</td>
-                    <td rowspan="3"><b>Data: </b>{{propostaSelecionada.data_assinatura}}  <br>Assinatura:____________________</td>
+                    <td rowspan="3"><b>Data: </b>{{propostaSelecionada.data_assinatura_ctc}}  <br><b>Assinatura:</b>____________________</td>
                 </tr><tr>
                     <td><b>Votos em branco: </b>{{propostaSelecionada.votos_brancos}}</td>
                     <td><b>Votos Nulos: </b>{{propostaSelecionada.votos_nulos}}</td>
@@ -327,52 +374,20 @@
           <div class="tabelaRecursosHumanos2">
           <br>
           <div>
-          <table width="100%" border="1px">
-                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
-                <tr>
-                    <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
-                    <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
-                    <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
-          </table><br>
-          <table v-if="fichAssinado" width="100%" border="1px">
-                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
-                <tr>
-                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='não'">
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Sim, UO {{propostaSelecionada.nome_uo}} Tempo parcial {{propostaSelecionada.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
-                    <td rowspan="2" v-else>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Se sim, indique:, UO ___________________ Tempo parcial ____________________%<br>
-                        Periodio ________________________________</p></td>
-                </tr><tr>
-                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
-          </table><br>
           </div>
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Documentos obrigatorios a anexar à presente proposta</font></th></tr>
                 <tr>
                     <td>
-                        <input type="checkbox" onclick="return false;">Convite<br>
+                        <input type="checkbox" v-if="propostaSelecionada.convite!=null" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Convite<br>
                         <input type="checkbox" v-if="ficheiroRelatorioProponentes" id="scales" name="scales" onclick="return false;" checked>
                         <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">Relatório subscrito por dois professores<br>
 
-                        <input type="checkbox" onclick="return false;">Cópia da Ata do CTC<br>
-                        <input type="checkbox" onclick="return false;">Distribuição de serviço docente<br>
+                        <input type="checkbox" v-if="ataCTC" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Cópia da Ata do CTC<br>
+                        <input type="checkbox" v-if="ficheiroUnidadesCurriculares" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Distribuição de serviço docente<br>
                         <input type="checkbox" onclick="return false;">Autorização da acumulação de funções públicas pelo serviço de origem<br>
                         <input type="checkbox" v-if="ficheiroCurriculo" onclick="return false;" checked>
                         <input type="checkbox" v-else onclick="return false;">Curriculum Vitae (contratação inicial)
@@ -380,19 +395,30 @@
                     <td>
                         <input type="checkbox" v-if="ficheiroCertificadoHabilitacoes" onclick="return false;" checked>
                         <input type="checkbox" v-else onclick="return false;">Cópia dos certificados de habilitações de todos os graus (contratação inicial)<br>
-                        <input type="checkbox" onclick="return false;">Cópia do NIF<br>
-                        <input type="checkbox" onclick="return false;">N.º de CGA/SS<br>
-                        <input type="checkbox" onclick="return false;">Cópia do CC/BI<br>
-                        <input type="checkbox" onclick="return false;">Cópia do IBAN/NIB<br>
-                        <input type="checkbox" onclick="return false;">Certificado de Registo Criminal<br>
-                        <input type="checkbox" onclick="return false;">Declaração de Robustez Física<br>
+                        <input type="checkbox" v-if="ficheiroNIF" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Cópia do NIF<br>
+                        <input type="checkbox" v-if="ficheiroCGA" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">N.º de CGA/SS<br>
+                        <input type="checkbox" v-if="ficheiroCC" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Cópia do CC/BI<br>
+                        <input type="checkbox" v-if="ficheiroIBAN" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">>Cópia do IBAN/NIB<br>
+                        <input type="checkbox" v-if="ficheiroCertificadoRegistoCriminal" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Certificado de Registo Criminal<br>
+                        <input type="checkbox" v-if="ficheiroDeclaracaoRobustezFisica" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Declaração de Robustez Física<br>
                     </td>
                     <td>
-                        <input type="checkbox" onclick="return false;">Cópia do Boletim de Vacinas<br>
-                        <input type="checkbox" onclick="return false;">Ficha de Identificação<br>
-                        <input type="checkbox" onclick="return false;">Declaração Artº 99 do IRS<br>
-                        <input type="checkbox" onclick="return false;">Declaração Comunic.Direitos/Renúncia ADSE<br>
-                        <input type="checkbox" onclick="return false;"> Resposta à consulta das outras Escolas</td>
+                        <input type="checkbox" v-if="ficheiroBoletimVacinas" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Cópia do Boletim de Vacinas<br>
+                        <input type="checkbox" v-if="ficheiroFichaIdentificacao" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Ficha de Identificação<br>
+                        <input type="checkbox" v-if="ficheiroDeclaracaoArtigo99" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Declaração Artº 99 do IRS<br>
+                        <input type="checkbox" v-if="ficheiroDeclaracaoRenuncia" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Declaração Comunic.Direitos/Renúncia ADSE<br>
+                        <input type="checkbox" v-if="ficheiroConsultaOutrasEscolas" onclick="return false;" checked>
+                        <input type="checkbox" v-else onclick="return false;">Resposta à consulta das outras Escolas</td>
                 </tr>
           </table>
           <p style='font-size: 8px'>Atualizado em 05/2020 – DSRH<p>
@@ -519,7 +545,7 @@
                      </td>
                     <tr v-if="uc">
                         <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichAssinadoCoordenadorCurso"></pdf>
+                            <!--<pdf name="fade" :src="fichAssinadoCoordenadorCurso"></pdf>-->
                         </td></tr>
                 </tr><tr v-if="ficheiroAssinadoCoordenadorDepartamento">
                     <td> Ficheiro Assinado Coordenador Departamento</td>
@@ -791,7 +817,7 @@
                 </tr><tr>
 
                 </tr>
-          </table>
+          </table><br>
 </div></div>          
         <div class="total" v-if="this.$store.state.user.roleDB != 'recursos_humanos'" style ="width:120%; left:-30.2 ;">
             <pdf :src="fichAssinado"></pdf><br>
@@ -1104,58 +1130,144 @@ export default {
         this.propostaID = response.data.id;
         console.log(this.propostaID)
         axios.get("/api/ficheiros/" + this.propostaID).then(response => {
+
           this.ficheiros = response.data;
-          this.ficheiroRelatorioProponentes = this.ficheiros[0];
+          this.ficheiroUnidadesCurriculares = this.ficheiros[0];
+          this.fichUnidadesCurriculares = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Unidades_Curriculares_do_docente_a_ser_contratado.pdf";
+
+          if(this.tipoPropostaRole.regime_prestacao_servicos=="dedicacao_exclusiva" ||
+             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
+             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
+                this.ficheiroFundamentacao = this.ficheiros[1];
+                this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente_Assistente.pdf",
+
+                this.ataCTC = this.ficheiros[2];
+                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+         
+                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
+                    this.ficheiroCurriculo = this.ficheiros[3];
+                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[4];
+                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+
+                    this.ficheiroNIF = this.ficheiros[5];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCGA = this.ficheiros[6];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCC = this.ficheiros[7];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroIBAN = this.ficheiros[8];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[9];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[10];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[11];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[12];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[13];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[14];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[15];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                }else{
+                    this.ficheiroNIF = this.ficheiros[3];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCGA = this.ficheiros[4];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCC = this.ficheiros[5];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroIBAN = this.ficheiros[6];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[7];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[8];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[9];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[10];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[11];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[12];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[13];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                }
+          }else{
+                this.ataCTC = this.ficheiros[1];
+                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+         
+                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
+                    this.ficheiroCurriculo = this.ficheiros[2];
+                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[3];
+                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+
+                    this.ficheiroNIF = this.ficheiros[4];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCGA = this.ficheiros[5];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCC = this.ficheiros[6];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroIBAN = this.ficheiros[7];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[8];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[9];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[10];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[11];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[12];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[13];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[14];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                }else{
+                    this.ficheiroNIF = this.ficheiros[2];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCGA = this.ficheiros[3];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCC = this.ficheiros[4];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroIBAN = this.ficheiros[5];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[6];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[7];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[8];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[9];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[10];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[11];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[12];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                }
+          
+          }
+
+
+          
+          /*this.ficheiroRelatorioProponentes = this.ficheiros[0];
           this.fichRelatorioProponentes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Relatorio_dos_2_proponentes.pdf",
-          
-          this.ficheiroCurriculo = this.ficheiros[1];
-          this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          console.log(this.fichCurriculo);
-          this.ficheiroCertificadoHabilitacoes = this.ficheiros[2];
-          this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+          */
 
-         this.ficheiroUnidadesCurriculares = this.ficheiros[3];
-          this.fichUnidadesCurriculares = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Unidades_Curriculares_do_docente_a_ser_contratado.pdf",
-          
-
-          this.ficheiroFundamentacao = this.ficheiros[4];
-          this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente_Assistente.pdf",
-          this.ficheiroAssinadoCoordenadorCurso = this.ficheiros[5];
+          /*this.ficheiroAssinadoCoordenadorCurso = this.ficheiros[5];
           this.fichAssinadoCoordenadorCurso = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Curso.pdf",
           this.ficheiroAssinadoCoordenadorDepartamento = this.ficheiros[6];
           this.fichAssinadoCoordenadorDepartamento = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Departamento.pdf",
           
-
-
-
-
-
-          this.ataCTC = this.ficheiros[7];
-          this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroNIF = this.ficheiros[8];
-          this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroCGA = this.ficheiros[9];
-          this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroCC = this.ficheiros[10];
-          this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroIBAN = this.ficheiros[11];
-          this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroCertificadoRegistoCriminal = this.ficheiros[12];
-          this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[13];
-          this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroBoletimVacinas = this.ficheiros[14];
-          this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroFichaIdentificacao = this.ficheiros[15];
-          this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroDeclaracaoArtigo99 = this.ficheiros[16];
-          this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroDeclaracaoRenuncia = this.ficheiros[17];
-          this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          this.ficheiroConsultaOutrasEscolas = this.ficheiros[18];
-          this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-          
-          this.fichAssinado = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/Proposta Contratação.pdf";
+          */
+          //this.fichAssinado = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/Proposta Contratação.pdf";
           
         });
       });

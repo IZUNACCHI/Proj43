@@ -256,7 +256,7 @@ export default {
         this.avancar = true;
         this.isShowProfessor = false;
         this.$emit("incrementarBarraProgresso");
-        this.$store.commit("setPropostaProponente", this.propostaProponenteProfessor);
+        this.$store.commit("setPropostaProponenteProfessor", this.propostaProponenteProfessor);
       }
     },
     anterior() {
