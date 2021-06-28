@@ -130,11 +130,11 @@
                               class="btn btn-info"
                               @click="verDetalhesCoordenadorDepartamento(propostaHistorico, index)"
                             >Ver detalhes</button>
-                            <button
+                            <!--<button
                               type="button"
                               class="btn btn-info"
                               @click="gerarPdfProposta(propostaHistorico, index)"
-                              >Dowload</button>
+                              >Dowload</button>-->
                           </td>
                         </tr>
                       </tbody>
@@ -221,13 +221,13 @@
                               (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento == null)"
                             >Editar</button>
                           </td>
-                          <td>
+                          <!--<td>
                            <button
                               type="button"
                               class="btn btn-info"
                               @click="gerarPdfProposta(propostaHistorico, index)"
                               >Dowload</button>
-                          </td>
+                          </td>-->
                         </tr>
                       </tbody>
                     </table>

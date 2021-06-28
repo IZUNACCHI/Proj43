@@ -3,8 +3,6 @@
     <div class="jumbotron">
       <h2>Fundamentação Coordenador Curso</h2>
       
-       
-
       <b-form-group label="Fundamentação" label-for="inputFundCoordCurso">
         <b-form-input
           id="inputFundCoordCurso"
@@ -15,15 +13,13 @@
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a fundamentação</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Data de assinatura!!!!" label-for="inputData">
+      <b-form-group label="Data de assinatura" label-for="inputData">
         <b-form-input
           id="inputData"
           type="date"
           v-model="propostaProponente.data_de_assinatura_coordenador_de_curso"
         ></b-form-input>
       </b-form-group>
-
-
 
       <button
         class="btn btn-success mt-3 font-weight-bold"
@@ -72,13 +68,10 @@ export default {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
     inserirFundamentacao(propostaProponente){
-      this.ficheiro.proposta = new FormData();
+      /*this.ficheiro.proposta = new FormData();
       this.ficheiro.proposta.append("file", this.ficheiros["PropostaAssinada"]);
-      this.ficheiro.proposta.append("descricao", "Proposta Assinada");
-
-
-
-        this.$v.propostaProponente.$touch();
+      this.ficheiro.proposta.append("descricao", "Proposta Assinada");*/
+      this.$v.propostaProponente.$touch();
         if (!this.$v.propostaProponente.$invalid) {
           this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
                         text: 'Não poderá realizar mais nenhuma alteração',
@@ -97,7 +90,7 @@ export default {
                           msg: "Pedido de email enviado..."
                         });
             this.$emit("voltarProponentes", this.propostaProponente);
-            axios.post("/api/ficheiro", this.ficheiro.proposta).then(response => {});   
+            //axios.post("/api/ficheiro", this.ficheiro.proposta).then(response => {});   
                       this.$swal(
                                 "Sucesso",
                                 "Proposta editada com sucesso!!",

@@ -74,7 +74,16 @@
         ></b-form-file>
         <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
-
+      <b-form-group>
+                    <b-button
+                        size="md"
+                        variant="dark"
+                        v-if="ficheiroFundamentacaoAssistente"
+                        @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Fundamentacao da Proposta Proponente Assistente')"
+                    >
+                    <i class="far fa-file-pdf"></i> Atual Fundamentação Assistente
+                    </b-button>
+                </b-form-group>
       <!--
         <b-form-textarea
           v-model="propostaProponenteAssistente.fundamentacao"
@@ -92,7 +101,7 @@
         <b-form-invalid-feedback id="input-1-live-feedback">A duração do contrato é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Periodo" label-for="inputPeriodo">
+      <b-form-group label="Periodo" label-for="inputPeriodo" description="Ex: 13/03/2000 a 28/07/2000">
         <b-form-input
           id="inputPeriodo"
           :state="!$v.propostaProponenteAssistente.periodo.$error && null"

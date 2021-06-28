@@ -50,7 +50,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
       </b-form-group>
       <b-form-group label="Departamento/Área Científica/ Curso">
         <b-form-input
-          :state="!$v.proposta.nome_completo.$error && null"
+          :state="!$v.proposta.departamento_curso.$error && null"
           v-model="proposta.departamento_curso"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">O Nome Departamento/Área Científica/ Curso é obrigatório!</b-form-invalid-feedback>
@@ -253,7 +253,8 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 </table>
               </div>
               <br /></b-form-group>
-              <b-form-group v-if="proposta.verificacao_serviço_docente_atribuído == 'sim'"label="Serviço Docente Atribuído (PDF)">
+              <div v-if="proposta.verificacao_serviço_docente_atribuído == 'sim'">
+              <b-form-group label="Serviço Docente Atribuído (PDF)">
                     <b-form-file
                         v-model="ficheiroUnidadesCurricularesModel"
                         placeholder="Escolha um ficheiro"
@@ -276,6 +277,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
                     </b-button>
                 </b-form-group>
+                </div>
             </b-card-text>
           </b-card-body>
         </b-collapse>
@@ -395,13 +397,13 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-group
                     label="Indique o nome da Unidade Orgânica"
                     label-for="inputTempoParcial"
-                    v-if="proposta.unidade_organica == 'secs'"
+                    v-if="proposta.unidade_organica == 'ESECS'"
                 >
                 <b-form-select
                     id="inputTempoParcial"
                     v-model="proposta.nome_uo"
                     :state="null"
-                    :options="UnidadeOrganicaSECS"
+                    :options="UnidadeOrganicaESECS"
                 ></b-form-select>
                 <b-form-invalid-feedback
                     id="input-1-live-feedback"
@@ -410,7 +412,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-group
                     label="Indique o nome da Unidade Orgânica"
                     label-for="inputTempoParcial"
-                    v-if="proposta.unidade_organica == 'estg'"
+                    v-if="proposta.unidade_organica == 'ESTG'"
                 >
                 <b-form-select
                     id="inputTempoParcial"
@@ -425,7 +427,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-group
                     label="Indique o nome da Unidade Orgânica"
                     label-for="inputTempoParcial"
-                    v-if="proposta.unidade_organica == 'sadcr'"
+                    v-if="proposta.unidade_organica == 'ESAD.CR'"
                 >
                 <b-form-select
                     id="inputTempoParcial"
@@ -440,7 +442,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-group
                     label="Indique o nome da Unidade Orgânica"
                     label-for="inputTempoParcial"
-                    v-if="proposta.unidade_organica == 'esslei'"
+                    v-if="proposta.unidade_organica == 'ESSLei'"
                 >
                 <b-form-select
                     id="inputTempoParcial"
@@ -455,7 +457,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-group
                     label="Indique o nome da Unidade Orgânica"
                     label-for="inputTempoParcial"
-                    v-if="proposta.unidade_organica == 'estm'"
+                    v-if="proposta.unidade_organica == 'ESTM'"
                 >
                 <b-form-select
                     id="inputTempoParcial"
@@ -484,7 +486,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                   ></b-form-input>
                 </b-form-group>
 
-                <b-form-group label="Indique o período" label-for="inputPeriodo">
+                <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 13/03/2000 a 28/07/2000">
                   <b-form-input
                     id="inputPeriodo"
                     v-model="proposta.periodo_uo"
@@ -629,39 +631,38 @@ export default {
         { text: "Não", value: "nao" }
       ],
       UnidadeOrganicaESSLei: [
-        { text: "SECS", value: "secs" },
-        { text: "ESTG", value: "estg" },
-        { text: "SAD.CR", value: "sadcr" },
-        { text: "ESTM", value: "estm" }
+        { text: "SECS", value: "SECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "SADCR" },
+        { text: "ESTM", value: "ESTM" }
       ],
-      UnidadeOrganicaSECS: [
-        { text: "ESTG", value: "estg" },
-        { text: "SAD.CR", value: "sadcr" },
-        { text: "ESTM", value: "estm" },
-        { text: "ESSLei", value: "esslei" }
+      UnidadeOrganicaESECS: [
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "SADCR" },
+        { text: "ESTM", value: "ESTM" },
+        { text: "ESSLei", value: "ESSLei" }
       ],UnidadeOrganicaESTG: [
-        { text: "SECS", value: "secs" },
-        { text: "SAD.CR", value: "sadcr" },
-        { text: "ESTM", value: "estm" },
-        { text: "ESSLei", value: "esslei" }
+        { text: "ESECS", value: "ESECS" },
+        { text: "SAD.CR", value: "ESAD.CR" },
+        { text: "ESTM", value: "ESTM" },
+        { text: "ESSLei", value: "ESSLei" }
       ],UnidadeOrganicaSADCR: [
-        { text: "SECS", value: "secs" },
-        { text: "ESTG", value: "estg" },
-        { text: "ESTM", value: "estm" },
-        { text: "ESSLei", value: "esslei" }
+        { text: "ESECS", value: "ESECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "ESTM", value: "ESTM" },
+        { text: "ESSLei", value: "ESSLei" }
       ],UnidadeOrganicaESTM: [
-        { text: "SECS", value: "secs" },
-        { text: "ESTG", value: "estg" },
-        { text: "SAD.CR", value: "sadcr" },
-        { text: "ESSLei", value: "esslei" }
+        { text: "ESECS", value: "ESECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "ESAD.CR" },
+        { text: "ESSLei", value: "ESSLei" }
       ],UnidadeOrganica: [
-        { text: "SECS", value: "secs" },
-        { text: "ESTG", value: "estg" },
-        { text: "SAD.CR", value: "sadcr" },
-        { text: "ESSLei", value: "esslei" },
-        { text: "ESTM", value: "estm"}
+        { text: "ESECS", value: "ESECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "ESAD.CR" },
+        { text: "ESSLei", value: "ESSLei" },
+        { text: "ESTM", value: "ESTM"}
       ],
-      
       proposta: {
         tipo_contrato: "",
         unidade_organica: this.$store.state.user.unidade_organica,
@@ -742,9 +743,9 @@ export default {
           role: { required },
 
       
-          remuneracao: { required, numeric },
+          /*remuneracao: { required, numeric },
           escalao: { required },
-          indice: { required },
+          indice: { required },*/
           verificacao_outras_uo: { required },
           nome_uo: { required },
           tempo_parcial_uo: { required },
@@ -926,8 +927,8 @@ export default {
         .get("/api/ficheiros/" + this.propostaExistente.id_proposta_proponente)
         .then(response => {
           response.data.forEach(ficheiro => {
-            if (ficheiro.descricao == "Curriculo do docente a ser contratado"){
-              this.ficheiroCurriculo = ficheiro;
+            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente Assistente"){
+              this.ficheiroFundamentacaoAssistente = ficheiro;
             }
 
             if (ficheiro.descricao == "Ficheiro Unidades Curriculares do docente a ser contratado"){

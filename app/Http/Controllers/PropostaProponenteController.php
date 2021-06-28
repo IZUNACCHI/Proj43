@@ -61,9 +61,9 @@ class PropostaProponenteController extends Controller
             'curso' => 'required',
             'primeiro_proponente' => 'required',
             'area_cientifica' => 'required',
-            'remuneracao' => 'required',
-            'escalao' => 'required',
-            'indice' => 'required',
+            /*'remuneracao' => 'nullable',
+            'escalao' => 'nullable',
+            'indice' => 'nullable',*/
             'verificacao_outras_uo' => 'required',
             ]);
 

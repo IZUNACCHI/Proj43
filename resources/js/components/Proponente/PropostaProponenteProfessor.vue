@@ -37,6 +37,12 @@
           <b-form-invalid-feedback
             id="input-1-live-feedback"
           >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
+          <b-form-select
+            id="inputTempoParcial"
+            v-model="propostaProponenteProfessor.percentagem_prestacao_servicos_2"
+            :state="null"
+            :options="percentagensArray"
+          ></b-form-select>
         </b-form-group>
       </span>
       <b-form-group
@@ -77,7 +83,7 @@
         <b-form-invalid-feedback id="input-1-live-feedback">A duração do contrato é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Periodo" label-for="inputPeriodo">
+      <b-form-group label="Periodo" label-for="inputPeriodo"  description="Ex: 13/03/2000 a 28/07/2000">
         <b-form-input
           id="inputPeriodo"
           :state="!$v.propostaProponenteProfessor.periodo.$error && null"
@@ -153,6 +159,7 @@ export default {
         role_professor: "",
         regime_prestacao_servicos: "",
         percentagem_prestacao_servicos: "",
+        percentagem_prestacao_servicos_2: "",
         fundamentacao: "",
         duracao: "",
         periodo: "",

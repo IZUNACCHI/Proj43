@@ -53,7 +53,7 @@
       <b-form-invalid-feedback id="input-1-live-feedback">A duração do contrato é obrigatória!</b-form-invalid-feedback>
     </b-form-group>
 
-    <b-form-group label="Periodo" label-for="inputPeriodo">
+    <b-form-group label="Periodo" label-for="inputPeriodo"  description="Ex: 13/03/2000 a 28/07/2000">
       <b-form-input
         id="inputPeriodo"
         :state="!$v.propostaProponenteMonitor.periodo.$error && null"

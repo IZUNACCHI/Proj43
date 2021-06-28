@@ -50,7 +50,7 @@ class UnidadeCurricularController extends Controller
             return response()->json("Já existe uma UC com esse nome", 401);
         }
         $request->validate([
-            'codigo' => 'required|numeric',
+            'codigo' => 'required',
             'nome' => 'required',
             'codigo_curso' => 'required',
         ]);

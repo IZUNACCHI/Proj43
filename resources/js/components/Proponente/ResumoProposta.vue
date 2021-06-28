@@ -11,8 +11,10 @@
                     <td><b>Nome Completo</b></td><td colspan="2">{{proposta.nome_completo}}</td>
                 </tr>
                     <td><b>Departamento/Área Científica/Curso</b></td><td colspan="2" width="75%">{{proposta.departamento_curso}}</td>
-                <tr><td><b>Serviço Docente Atribuido</b></td><td colspan="2"><input type="checkbox"  id="scales" name="scales" onclick="return false;" checked>
-Anexo à presente proposta</td></tr>
+                <tr><td><b>Serviço Docente Atribuido</b></td><td colspan="2">
+                    <input type="checkbox" v-if="proposta.verificacao_serviço_docente_atribuído == 'sim'" id="scales" name="scales" onclick="return false;" checked>
+                    <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">
+                    Anexo à presente proposta</td></tr>
                 <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
                 <tr width="100%">
                     <td v-if="proposta.grau=='doutoramento'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Doutoramento</td>
@@ -60,15 +62,39 @@ Anexo à presente proposta</td></tr>
                                 <b>Avaliação do desempenho no periodo anterior</b><br>Não Aplicavel
                     </td>
                 </tr><tr>
+                    <td colspan="3" v-if="proposta.tipo_contrato == 'contratacao_inicial'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label>
+                    </td>
+                    <td colspan="3" v-if="proposta.tipo_contrato == 'renovacao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Coordenador</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Adjunto</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Alteração</label>
+                    </td>
+                    <td colspan="3" v-if="proposta.tipo_contrato == 'alteracao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Contratação Inicial</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <label for="scales">Renovação</label>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <label for="scales">Alteração</label></td>
+                </tr><tr>
                     <td rowspan="2" v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_parcial'"><b>
-                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;" checked> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}%</td>
+                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;" checked> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}% {{propostaProponenteProfessor.percentagem_prestacao_servicos_2}}%</td>
                     <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_parcial'">Tempo Integral
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
                     <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_parcial'">Dedicação Exclusiva
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"></td></tr>
 
                     <td rowspan="2" v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'"><b>
-                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}%</td>
+                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b></td>
                     <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'">Tempo Integral
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td>
                     <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'">Dedicação Exclusiva
@@ -76,14 +102,17 @@ Anexo à presente proposta</td></tr>
 
                         
                     <td rowspan="2" v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva'"><b>
-                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}%</td>
+                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b></td>
                     <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva'">Tempo Integral
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
                     <td v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva'">Dedicação Exclusiva
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td></tr>
 
                    <tr> <td colspan="2"><b>Fundamentação</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <input type="checkbox" v-if="
+                        propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
+                        propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'" id="scales" name="scales" onclick="return false;" checked>
+                        <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">
                         (cfr. acta do CTC – art. 5.º, n.º 3)
                         N.B. Contrato e renovações não podem ter duração superior a 4 anos</td></tr>
                 <tr><td><b>Duração:</b></td><td colspan="2">{{propostaProponenteProfessor.duracao}}</td></tr>
@@ -130,14 +159,15 @@ Anexo à presente proposta</td></tr>
                     <td><b>Regime de prestação de serviços</b></td>
                     <td colspan="2" v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'">Tempo Parcial
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        {{propostaProponenteAssistente.percentagem_prestacao_servicos}}%</td>
+                        {{propostaProponenteAssistente.percentagem_prestacao_servicos}}%
+                        {{propostaProponenteAssistente.percentagem_prestacao_servicos_2}}%</td>
                     <td colspan="2" v-if="propostaProponenteAssistente.regime_prestacao_servicos!='tempo_parcial'">Tempo Parcial
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">---%</td></tr>
 
                 <tr>
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'"><b>
                         Tempo parcial igual ou superior a 60%
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>---%</td>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></b></td>
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'">Tempo Integral
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial'">Dedicação Exclusiva
@@ -154,7 +184,7 @@ Anexo à presente proposta</td></tr>
 
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral'"><b>
                         Tempo parcial igual ou superior a 60%
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>---%</td>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></b></td>
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral'">Tempo Integral
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td>
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral'">Dedicação Exclusiva
@@ -163,14 +193,18 @@ Anexo à presente proposta</td></tr>
                         
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva'"><b>
                         Tempo parcial igual ou superior a 60%
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;"> </b>---%</td>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"></b></td>
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva'">Tempo Integral
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
                     <td v-if="propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva'">Dedicação Exclusiva
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td></tr>
 
                    <tr> <td colspan="3"><b>Fundamentação</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <input type="checkbox" v-if="
+                        propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                        propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                        propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva'" id="scales" name="scales" onclick="return false;" checked>
+                        <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">
                         (cfr. acta do CTC – art. 5.º, n.º 3)
                         N.B. Contrato e renovações não podem ter duração superior a 4 anos</td></tr>
                 <tr><td><b>Duração:</b></td><td colspan="2">{{propostaProponenteAssistente.duracao}}</td></tr>
@@ -209,7 +243,7 @@ Anexo à presente proposta</td></tr>
                         Tempo Parcial: {{propostaProponenteMonitor.percentagem_prestacao_servicos}}%</td>
                     <td><b>Duração: </b></td><td>{{propostaProponenteMonitor.duracao}}</td>
                     <td><b>Periodo: </b></td><td>{{propostaProponenteMonitor.periodo}}</td></tr>
-          </table>
+          </table><br>
 
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
@@ -227,15 +261,13 @@ Anexo à presente proposta</td></tr>
                         <b>Sim</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                         <b>Não</b>
-                        <p>Sim, UO {{proposta.nome_uo}} Tempo parcial {{proposta.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
-                    <td rowspan="2" v-if="proposta.verificacao_outras_uo=='sim'">
+                        <p v-if="proposta.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{proposta.nome_uo}}</b> Tempo parcial <b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        <b>Sim</b>
-                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
-                        <b>Não</b>
-                        <p>Sim, UO {{proposta.nome_uo}} Tempo parcial {{proposta.tempo_parcial_uo}}%<br>
-                        Periodio</p></td>
+                        {{proposta.tempo_parcial_uo}}%</b><br>
+                        Periodio <b>{{proposta.periodo_uo}}</b></p>
+                        <p v-else>Sim, UO <b>{{proposta.nome_uo}}</b> Tempo parcial
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
+                        Periodio <b>{{proposta.periodo_uo}}</b></p></td>
                     <td rowspan="2" v-if="proposta.verificacao_outras_uo=='nao'">
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                         <b>Sim</b>

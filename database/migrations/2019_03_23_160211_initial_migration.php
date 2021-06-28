@@ -158,7 +158,7 @@ class InitialMigration extends Migration
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
             $table->string("turno");
-            $table->string('codigo_curso');
+            $table->integer('codigo_curso');
             $table->string('nome_curso');
         });
 
