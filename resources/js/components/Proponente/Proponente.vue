@@ -909,9 +909,9 @@ export default {
       this.isFinalized = false;
       this.progresso.valor--;
       this.voltarVar = true;
-       if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
+       /*if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
          this.voltar();
-       }
+       }*/
     },
     associarProposta() {
       //* Limpar Objectos

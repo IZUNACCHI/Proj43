@@ -255,58 +255,7 @@ class InitialMigration extends Migration
             $table->foreign('proposta_id')->references('id')->on('proposta');
         });
 
-		Schema::create('proposta_log', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nome');
-            $table->string('descricao')->nullable();
-            $table->integer('proposta_id')->unsigned();
-            $table->foreign('proposta_id')->references('id')->on('proposta');
-        });
-		DB::unprepared("
-			CREATE TABLE data_log (
-				action VARCHAR(255),
-				action_time   TIMESTAMP,
-				id INT,
-				timestamp   TIMESTAMP,
-				proposta_proponente_id int(10),
-				proposta_diretor_uo_id int(10),
-				proposta_ctc_id int(10),
-				proposta_secretariado_direcao_id int(10),
-				docente_inseriu_ficheiros tinyint(1),
-				proposta_recursos_humanos_id int(10),
-				status enum('pendente', 'recusada', 'finalizada')
-			);
-		");
-		DB::unprepared("
-			DELIMITER $$
-				CREATE TRIGGER ai_data AFTER INSERT ON proposta
-				FOR EACH ROW
-				BEGIN
-					INSERT INTO proposta_log (action, action_time, id, timestamp, proposta_proponente_id int(10),proposta_diretor_uo_id,proposta_ctc_id, proposta_secretariado_direcao_id, docente_inseriu_ficheiros, proposta_recursos_humanos_id, status)
-					VALUES('insert', NOW(), NEW.id, NEW.timestamp, NEW.proposta_proponente_id, NEW.proposta_diretor_uo_id,proposta_ctc_id, NEW.proposta_secretariado_direcao_id, NEW.docente_inseriu_ficheiros, NEW.proposta_recursos_humanos_id, NEW.status);
-				END$$
-			DELIMITER ;
-        ");
-		DB::unprepared("
-			DELIMITER $$
-				CREATE TRIGGER au_data AFTER UPDATE ON proposta
-				FOR EACH ROW
-				BEGIN
-					INSERT INTO proposta_log (action, action_time, id, timestamp, proposta_proponente_id int(10),proposta_diretor_uo_id,proposta_ctc_id, proposta_secretariado_direcao_id, docente_inseriu_ficheiros, proposta_recursos_humanos_id, status)
-					VALUES('update', NOW(), NEW.id, NEW.timestamp, NEW.proposta_proponente_id, NEW.proposta_diretor_uo_id, NEW.proposta_ctc_id, NEW.proposta_secretariado_direcao_id, NEW.docente_inseriu_ficheiros, NEW.proposta_recursos_humanos_id, NEW.status);
-				END$$
-			DELIMITER ;
-        ");
-		DB::unprepared("
-			DELIMITER $$
-			CREATE TRIGGER ad_data AFTER DELETE ON proposta
-			FOR EACH ROW
-			BEGIN
-				INSERT INTO proposta_log (action, action_time, id, timestamp, proposta_proponente_id int(10),proposta_diretor_uo_id,proposta_ctc_id, proposta_secretariado_direcao_id, docente_inseriu_ficheiros, proposta_recursos_humanos_id, status)
-				VALUES('delete', NOW(), OLD.id, OLD.timestamp, OLD.proposta_proponente_id, OLD.proposta_diretor_uo_id, OLD.proposta_ctc_id, OLD.proposta_secretariado_direcao_id, OLD.docente_inseriu_ficheiros, OLD.proposta_recursos_humanos_id, OLD.status);
-			END$$
-			DELIMITER ;
-        ");
+		
     
     }
 

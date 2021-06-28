@@ -1353,8 +1353,15 @@ export default {
       });
     },
     anterior() {
-      //* Mudar para o componente PropostaProponente*
-      this.$emit("mostrarPropostaProponente_vencimento");
+      //* Mudar para o componente PropostaProponente_role*
+	  if(this.proposta.role="professor"){
+		this.$emit("mostrarPropostaProponente_professor");
+	  }else if(this.proposta.role="monitor"){
+		this.$emit("mostrarPropostaProponente_monitor");
+	  }else{
+		this.$emit("mostrarPropostaProponente_assistente");
+		}
+	  
     }
   },
   mounted(){

@@ -268,10 +268,12 @@ export default {
     },
     anterior() {
       //* Mudar para o componente Proponente
-      this.$emit("mostrarProponente");
+      
       if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
         this.$emit("mostrarProponente", this.proposta);
-      }
+      }else{
+	  this.$emit("mostrarProponente");
+	  }
     },
     mostrarComponente() {
       this.isShowProfessor = true;
