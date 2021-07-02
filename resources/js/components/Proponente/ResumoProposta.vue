@@ -12,7 +12,7 @@
                 </tr>
                     <td><b>Departamento/Área Científica/Curso</b></td><td colspan="2" width="75%">{{proposta.departamento_curso}}</td>
                 <tr><td><b>Serviço Docente Atribuido</b></td><td colspan="2">
-                    <input type="checkbox" v-if="proposta.verificacao_serviço_docente_atribuído == 'sim'" id="scales" name="scales" onclick="return false;" checked>
+                    <input type="checkbox" v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'" id="scales" name="scales" onclick="return false;" checked>
                     <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">
                     Anexo à presente proposta</td></tr>
                 <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
@@ -278,7 +278,33 @@
                 </tr><tr>
                     <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
           </table>
-
+          <br>
+          <table border="1px" v-if="proposta.verificacao_serviço_docente_atribuido=='nao'">
+               <thead><tr><th colspan="9" bgcolor=#be5b59> <font color=#ffffff>Unidades Curriculares</font></th></tr>
+                <th>Codigo UC</th>
+                <th>Nome UC</th>
+                <th>Regime</th>
+                <th>Turno</th>
+                <th>Código Curso</th>
+                <th>Nome Curso</th>
+                <th>Horas</th>
+                <th>Horas Semestrais</th>
+                <th>Tipo</th>        
+              </thead>
+              <tbody>
+                <tr v-for="uc in unidadesCurriculares" :key="uc.ID">
+                  <td>{{ uc.codigo_uc }}</td>
+                  <td>{{ uc.nome_uc }}</td>
+                  <td>{{ uc.regime }}</td>
+                  <td>{{ uc.turno }}</td>
+                  <td>{{ uc.codigo_curso }}</td>
+                  <td>{{ uc.nome_curso }}</td>
+                  <td>{{ uc.horas }}</td>
+                  <td>{{ uc.horas_semestrais }}</td>
+                  <td>{{ uc.tipo }}</td>
+                </tr>
+              </tbody>
+            </table>
     </div>
 
     <!-- Coordenador de curso -->
@@ -455,6 +481,9 @@ export default {
     voltar() {
       this.$emit("mostrarComponente", this.proposta);
       this.mostrarResumoProposta = false;
+      this.$swal.fire({
+            title: "TeVamos voltar?",
+          })
     },
     submeterPropostaProfessor(propostaProponenteProfessor) {
       if (this.unidadesCurriculares.length > 0) {
@@ -514,21 +543,25 @@ export default {
                           }
                       this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);*/
 
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
-                      //this.ficheiroProponenteProfessor.fileFundamentacao.append("proposta_id", response.data.id);
-                      this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
-                      
+                      if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                            //this.ficheiroProponenteProfessor.fileFundamentacao.append("proposta_id", response.data.id);
+                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
+                      }
                       axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
                       //axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }
-                      //axios.post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao).then(response => {});
-                      axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
-                      
+                      if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                        //axios.post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao).then(response => {});
+                        axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
+                      }
                       /*axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
                       if (this.proposta.tipo_contrato == "contratacao_inicial") {
                         axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
@@ -582,33 +615,48 @@ export default {
                           "proposta_id",
                           response.data
                         );*/
-                        if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append(
                           "proposta_id",
                           response.data
                         );
                         }
-                        this.ficheiro.fileFundamentacao.append(
-                          "proposta_id",
-                          response.data
-                        );
-                        /*this.ficheiroProponenteProfessor.fileFundamentacao.append(
-                          "proposta_id",
-                          response.data
-                        );*/
-                        
+                        if(propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                           propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                            this.ficheiro.fileFundamentacao.append(
+                              "proposta_id",
+                              response.data
+                            );
+                            /*this.ficheiroProponenteProfessor.fileFundamentacao.append(
+                              "proposta_id",
+                              response.data
+                            );*/
+                        }
                        /* axios
                           .post("/api/ficheiro", this.ficheiro.fileRelatorio)
                           .then(response => {});*/
                         
-                        if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios
                           .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                           .then(response => {});
                         }
-                        axios
-                          .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
-                          .then(response => {})//;
+                        if(propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                           propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                            axios
+                              .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
+                              .then(response => {
+                                  this.$swal(
+                                    "Sucesso",
+                                    "Proposta criada com sucesso!!",
+                                    "success"
+                                  );
+                                  this.isLoading = false;
+                                  this.voltar();
+                                });
+                         }
+                         this.isLoading = false;
+                         this.voltar();
                         /*axios
                           .post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao)
                           .then(response => {});
@@ -622,7 +670,7 @@ export default {
                             .post(
                               "/api/ficheiro",
                               this.ficheiro.fileHabilitacoes
-                            )*/
+                            )
                             .then(response => {
                               this.$swal(
                                 "Sucesso",
@@ -631,7 +679,7 @@ export default {
                               );
                               this.isLoading = false;
                               this.voltar();
-                            });
+                            });*/
                         //}
                       });
                   });
@@ -675,21 +723,25 @@ export default {
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
-                      //this.ficheiroProponenteProfessor.fileFundamentacao.append("proposta_id", response.data.id);
-                      this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
-                      
+                      if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                            //this.ficheiroProponenteProfessor.fileFundamentacao.append("proposta_id", response.data.id);
+                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
+                      }
                       axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
                       //axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }
-                      //axios.post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao).then(response => {});
-                      axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
-
+                      if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                            //axios.post("/api/ficheiro", this.ficheiroProponenteProfessor.fileFundamentacao).then(response => {});
+                            axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
+                      }
                       this.$swal(
                                 "Sucesso",
                                 "Proposta editada com sucesso!!",
@@ -715,25 +767,30 @@ export default {
                     axios
                       .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                       .then(response => {
-                        if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append(
                           "proposta_id",
                           response.data
                         );
                         }
-                        this.ficheiro.fileFundamentacao.append(
-                          "proposta_id",
-                          response.data
-                        );
-                        if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                        if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                            this.ficheiro.fileFundamentacao.append(
+                              "proposta_id",
+                              response.data
+                            );
+                        }
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios
                           .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                           .then(response => {});
                         }
-                        axios
-                          .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
-                          .then(response => {})//;
-                        
+                        if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                            axios
+                              .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
+                              .then(response => {})//;
+                        }
                       });
                   });
               }
@@ -811,13 +868,13 @@ export default {
                       }
 
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
                       //axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
                       //axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }
                       /*axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
@@ -881,7 +938,7 @@ export default {
                         "proposta_id",
                         response.data
                       );*/
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       this.ficheiro.fileUnidadesCurriculares.append(
                         "proposta_id",
                         response.data
@@ -908,7 +965,7 @@ export default {
                         .post("/api/ficheiro", this.ficheiro.fileRelatorio)
                         .then(response => {});
                       */
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                         .then(response => {});
@@ -996,11 +1053,11 @@ export default {
                       }
 
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }
                       
@@ -1034,7 +1091,7 @@ export default {
                   axios
                     .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                     .then(response => {
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       this.ficheiro.fileUnidadesCurriculares.append(
                         "proposta_id",
                         response.data
@@ -1050,7 +1107,7 @@ export default {
                          
                       }
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                         .then(response => {});
@@ -1139,7 +1196,7 @@ export default {
                       }
                       this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);*/
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
                       //----------
@@ -1148,7 +1205,7 @@ export default {
                       }*/
                       //axios.post("/api/ficheiro", this.ficheiro.fileRelatorio).then(response => {});
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }
                       /**/
@@ -1202,7 +1259,7 @@ export default {
                         "proposta_id",
                         response.data
                       );*/
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       this.ficheiro.fileUnidadesCurriculares.append(
                         "proposta_id",
                         response.data
@@ -1212,10 +1269,10 @@ export default {
                         .post("/api/ficheiro", this.ficheiro.fileRelatorio)
                         .then(response => {});*/
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
-                        .then(response => {})//;
+                        //.then(response => {});
                       
                      /* axios
                         .post("/api/ficheiro", this.ficheiro.fileCurriculo)
@@ -1282,11 +1339,11 @@ export default {
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
                       //----------
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }
                       /**/
@@ -1316,14 +1373,14 @@ export default {
                   axios
                     .post("/api/proposta/" + this.idParaUcsPropostaProponente)
                     .then(response => {
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       this.ficheiro.fileUnidadesCurriculares.append(
                         "proposta_id",
                         response.data
                       );
                       }
                       
-                      if(this.proposta.verificacao_serviço_docente_atribuído == 'sim'){
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                       axios
                         .post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                         .then(response => {

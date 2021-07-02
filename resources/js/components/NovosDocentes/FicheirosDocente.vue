@@ -6,7 +6,7 @@
     </h4>
 
     
-                <b-form-group label="Currículo (PDF)" v-if="propostaDesteProponente.tipo_contrato =='contrato_inicial'">
+                <b-form-group label="Currículo (PDF)" v-if="propostaDesteProponente.tipo_contrato =='contratacao_inicial'">
                     <b-form-file
                         v-model="ficheirosAInserir.fileCurriculo"
                         placeholder="Escolha um ficheiro"
@@ -33,7 +33,7 @@
 
               <b-form-group
                   label="Certificado de Habilitações (PDF)"
-                   v-if="propostaDesteProponente.tipo_contrato =='contrato_inicial'"
+                   v-if="propostaDesteProponente.tipo_contrato =='contratacao_inicial'"
                   class="mt-3"
                 >
                   <b-form-file
@@ -389,10 +389,10 @@ export default {
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
-            if (this.proposta.tipo_contrato == "contratacao_inicial") {
+            if (this.propostaDesteProponente.tipo_contrato == "contratacao_inicial") {
               //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
               this.ficheirosAInserir.fileCurriculo = new FormData();
-              this.ficheiro.fileCurriculo.append(
+              this.ficheirosAInserir.fileCurriculo.append(
                 "file",
                 this.ficheiros["ficheiroCurriculo"]
               );
@@ -400,14 +400,22 @@ export default {
                 "descricao",
                 "Curriculo do docente a ser contratado"
               );
-              this.ficheiro.fileHabilitacoes = new FormData();
-              this.ficheiro.fileHabilitacoes.append(
+              this.ficheirosAInserir.fileCurriculo.append(
+                "proposta_id",
+                this.propostaDesteProponente.id_proposta_proponente
+              );
+              this.ficheirosAInserir.fileHabilitacoes = new FormData();
+              this.ficheirosAInserir.fileHabilitacoes.append(
                 "file",
                 this.ficheiros["ficheiroHabilitacoes"]
               );
-              this.ficheiro.fileHabilitacoes.append(
+              this.ficheirosAInserir.fileHabilitacoes.append(
                 "descricao",
                 "Habilitacoes do docente a ser contratado"
+              );
+              this.ficheirosAInserir.fileHabilitacoes.append(
+                "proposta_id",
+                this.propostaDesteProponente.id_proposta_proponente
               );
             }
 
@@ -446,7 +454,7 @@ export default {
               );
               this.ficheirosAInserir.fileCopiaCC.append(
                 "descricao",
-                "Ficheiro Cópia CC"
+                "Ficheiro Copia CC"
               );
               this.ficheirosAInserir.fileCopiaCC.append(
                 "proposta_id",
@@ -460,7 +468,7 @@ export default {
               );
               this.ficheirosAInserir.fileCopiaIBAN.append(
                 "descricao",
-                "Ficheiro Cópia IBAN"
+                "Ficheiro Copia IBAN"
               );
               this.ficheirosAInserir.fileCopiaIBAN.append(
                 "proposta_id",
@@ -488,7 +496,7 @@ export default {
               );
               this.ficheirosAInserir.fileRobustezFisica.append(
                 "descricao",
-                "Ficheiro Robustez Física"
+                "Ficheiro Robustez Fisica"
               );
               this.ficheirosAInserir.fileRobustezFisica.append(
                 "proposta_id",
@@ -564,9 +572,9 @@ export default {
                 "proposta_id",
                 this.propostaDesteProponente.id_proposta_proponente
               );
-              if (this.proposta.tipo_contrato == "contratacao_inicial") {
-                axios.post("/api/ficheiro", this.ficheiro.fileCurriculo).then(response => {});
-                axios.post("/api/ficheiro", this.ficheiro.fileHabilitacoes) .then(response => {});
+              if (this.propostaDesteProponente.tipo_contrato == "contratacao_inicial") {
+                axios.post("/api/ficheiro", this.ficheirosAInserir.fileCurriculo).then(response => {});
+                axios.post("/api/ficheiro", this.ficheirosAInserir.fileHabilitacoes) .then(response => {});
               }
               axios.post('/api/ficheiro', this.ficheirosAInserir.fileNIF).then(response => {
 

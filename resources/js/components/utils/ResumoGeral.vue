@@ -38,8 +38,8 @@
         <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.id_proposta_proponente}} {{propostaSelecionada.grau}}</label>
     </div>-->
 
-    <div id="test" class="total1" width="100%">
-    <div id="downloadPdf" width="100%">
+    <div id="downloadPdf" class="total1" width="100%">
+    <div  width="100%">
       <div width="100%" >
         <div class="tabelaCabecalho"><table>
             <td><!--<img src="images/logo.svg" alt="Instituto Politécnico de Leiria" class="pr-5">-->
@@ -177,7 +177,7 @@
                         <label for="scales">Alteração</label></td>
                 </tr><tr>
                     <td rowspan="2" v-if="tipoPropostaRole.regime_prestacao_servicos=='tempo_parcial'"><b>
-                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;" checked> </b>{{propostaProponenteProfessor.percentagem_prestacao_servicos}}% {{propostaProponenteProfessor.percentagem_prestacao_servicos_2}}%</td>
+                        Tempo Parcial <input type="checkbox" id="scales" name="scales" onclick="return false;" checked> </b>{{tipoPropostaRole.percentagem_prestacao_servicos}}% {{tipoPropostaRole.percentagem_prestacao_servicos_2}}%</td>
                     <td v-if="tipoPropostaRole.regime_prestacao_servicos=='tempo_parcial'">Tempo Integral
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"></td>
                     <td v-if="tipoPropostaRole.regime_prestacao_servicos=='tempo_parcial'">Dedicação Exclusiva
@@ -504,84 +504,244 @@
           <p><b>Os dados recolhidos no âmbito deste processo têm como finalidade a celebração de contrato de trabalho em funções públicas e serão objeto de
                 tratamento nos termos da legislação de proteção de dados em vigor.</b></p>
           </div>
+          
+        <div v-if="propostaSelecionada.id_proposta_recursos_humanos != null">
+		<pdf
+			:src="fichUnidadesCurriculares"
+                
+			@num-pages="pageCount1 = $event"
+			@page-loaded="currentPage1 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="a in pageCount1"
+			:key="a"
+			:src="fichUnidadesCurriculares"
+			:page="a"
+			style="display: inline-block; width: 100%"
+		></pdf>
+        <!--{{currentPage2}} / {{pageCount2}}
+		<pdf
+			:src="fichFundamentacao"
+                
+			@num-pages="pageCount2 = $event"
+			@page-loaded="currentPage2 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="b in pageCount2"
+			:key="b"
+			:src="fichFundamentacao"
+			:page="b"
+			style="display: inline-block; width: 100%"
+		></pdf>-->
+		<pdf
+			:src="fichAtaCTC"
+                
+			@num-pages="pageCount3 = $event"
+			@page-loaded="currentPage3 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="c in pageCount3"
+			:key="c"
+			:src="fichAtaCTC"
+			:page="c"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichCurriculo"
+                
+			@num-pages="pageCount4 = $event"
+			@page-loaded="currentPage4 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="d in pageCount4"
+			:key="d"
+			:src="fichCurriculo"
+			:page="d"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichCertificadoHabilitacoes"
+                
+			@num-pages="pageCount5 = $event"
+			@page-loaded="currentPage5 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="e in pageCount5"
+			:key="e"
+			:src="fichCertificadoHabilitacoes"
+			:page="e"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichNIF"
+                
+			@num-pages="pageCount6 = $event"
+			@page-loaded="currentPage6 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="f in pageCount6"
+			:key="f"
+			:src="fichNIF"
+			:page="f"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichCGA"
+                
+			@num-pages="pageCount7 = $event"
+			@page-loaded="currentPage7 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="g in pageCount7"
+			:key="g"
+			:src="fichCGA"
+			:page="g"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichCC"
+                
+			@num-pages="pageCount8 = $event"
+			@page-loaded="currentPage8 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="h in pageCount8"
+			:key="h"
+			:src="fichCC"
+			:page="h"
+			style="display: inline-block; width: 100%"
+		></pdf>
+        <pdf
+			:src="fichIBAN"
+                
+			@num-pages="pageCount9 = $event"
+			@page-loaded="currentPage9 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="i in pageCount9"
+			:key="i"
+			:src="fichIBAN"
+			:page="i"
+			style="display: inline-block; width: 100%"
+		></pdf>
+        <pdf
+			:src="fichCertificadoRegstoCriminal"
+                
+			@num-pages="pageCount10 = $event"
+			@page-loaded="currentPage10 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="j in pageCount10"
+			:key="j"
+			:src="fichCertificadoRegstoCriminal"
+			:page="j"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichDeclaracaoRobustezFisica"
+                
+			@num-pages="pageCount11 = $event"
+			@page-loaded="currentPage11 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="l in pageCount11"
+			:key="l"
+			:src="fichDeclaracaoRobustezFisica"
+			:page="l"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichBoletimVacinas"
+                
+			@num-pages="pageCount12 = $event"
+			@page-loaded="currentPage12 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="m in pageCount12"
+			:key="m"
+			:src="fichBoletimVacinas"
+			:page="m"
+			style="display: inline-block; width: 100%"
+		></pdf>
+        <pdf
+			:src="fichFichaIdentificacao"
+                
+			@num-pages="pageCount13 = $event"
+			@page-loaded="currentPage13 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="n in pageCount13"
+			:key="n"
+			:src="fichFichaIdentificacao"
+			:page="n"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichDeclaracaoRenuncia"
+                
+			@num-pages="pageCount14 = $event"
+			@page-loaded="currentPage14 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="o in pageCount14"
+			:key="o"
+			:src="fichDeclaracaoRenuncia"
+			:page="o"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		<pdf
+			:src="fichDeclaracaoArtigo99"
+                
+			@num-pages="pageCount15 = $event"
+			@page-loaded="currentPage15 = $event"
+            style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="p in pageCount15"
+			:key="p"
+			:src="fichDeclaracaoArtigo99"
+			:page="p"
+			style="display: inline-block; width: 100%"
+		></pdf>
+        <pdf
+			:src="fichConsultaOutrasEscolas"
+                
+			@num-pages="pageCount16 = $event"
+			style="display: inline-block; width: 1%; opacity: 0"
+		></pdf>
+        <pdf
+			v-for="q in pageCount16"
+			:key="q"
+			:src="fichConsultaOutrasEscolas"
+			:page="q"
+			style="display: inline-block; width: 100%"
+		></pdf>
+		</div>
    </div>
    </div>
-   <div class="tabelasRestantes"> 
+   <div class="tabelasRestantes" v-if="propostaSelecionada.id_proposta_recursos_humanos == null"> 
    <div >
            <table width="100%" border="1px" align=center>
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
-                <tr v-if="ficheiroCurriculo">
-                    <td>Curriculum Vitae</td>
-                    <td><b-button class="botao"
-                            variant="dark"
-                            @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do currículo
-                         </b-button>
-                    </td>
-                    <td><b-button class="botao" v-on:click="curriculo = !curriculo"
-                            variant="dark">
-                            Visualizar
-                            {{propostaSelecionada.id_proposta_proponente}}
-                        </b-button>
-                     </td><tr v-if="curriculo" style="width: 100%">
-                        <td colspan="3" style=" TABLE-LAYOUT: fixed; WORD-BREAK:BREAK-ALL;">
-                            <pdf :src="fichCurriculo"></pdf>
-                        </td>
-                    </tr>
-                </tr><tr v-if="ficheiroCertificadoHabilitacoes">
-                    <td>Cópia dos Certificados de Habilitações</td>
-                    <td><b-button class="botao"
-                            variant="dark"
-                            @click="downloadFicheiro(ficheiroCertificadoHabilitacoes.proposta_id, 'Habilitacoes do docente a ser contratado', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download dos Certificado de Habilitações 
-                    </b-button></td><td>
-                        <b-button class="botao" v-on:click="habilitacoes = !habilitacoes"
-                            variant="dark">
-                            Visualizar
-                        </b-button>
-                     </td></td>
-                    <tr v-if="habilitacoes">
-                        <td colspan="3" style="height: 50%">
-                            {{fichCurriculo}}
-                            <pdf name="fade" :src="fichCertificadoHabilitacoes"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroRelatorioProponentes">
-                    <td>Relatorio susbcrito pelos Proponentes</td>
-                    <td><b-button class="botao"
-                            variant="dark"
-                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Relatorio dos 2 proponentes', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Donwload do Relatório dos Proponentes
-                    </b-button></td><td>
-                        <b-button class="botao" v-on:click="relatorio = !relatorio"
-                            variant="dark">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="relatorio">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichRelatorioProponentes"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroRelatorioProponentes">
-                    <td>Relatorio susbcrito pelos Proponentes</td>
-                    <td><b-button class="botao"
-                            variant="dark"
-                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Relatorio dos 2 proponentes', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Donwload do Relatório dos Proponentes
-                    </b-button></td><td>
-                        <b-button class="botao" v-on:click="relatorio = !relatorio"
-                            variant="dark">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="relatorio">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichRelatorioProponentes"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroUnidadesCurriculares">
+                <tr v-if="ficheiroUnidadesCurriculares">
                     <td> Ficheiro das Unidades Curriculares</td>
                     <td><b-button class="botao"
                             variant="dark"
-                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Ficheiro Unidades Curriculares do docente a ser contratado', propostaSelecionada.nome_completo)">
+                            @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Ficheiro Unidades Curriculares do docente a ser contratado', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Ficheiro das Unidades Curriculares
                     </b-button></td><td>
                         <b-button class="botao" v-on:click="uc = !uc"
@@ -591,7 +751,13 @@
                      </td>
                     <tr v-if="uc">
                         <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichUnidadesCurriculares"></pdf>
+                            <pdf
+			                    v-for="i in numPages"
+			                    :key="i"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="i"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
                         </td></tr>
                 </tr><tr v-if="ficheiroFundamentacao">
                     <td> Ficheiro da Fundamentação</td>
@@ -607,10 +773,19 @@
                      </td>
                     <tr v-if="fundamentacao">
                         <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichFundamentacao"></pdf>
+                            <pdf
+			                    v-for="i in numPages"
+			                    :key="i"
+			                    :src="fichFundamentacao"
+			                    :page="i"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
                         </td></tr>
 
-                </tr><tr v-if="ficheiroAssinadoCoordenadorCurso">
+
+
+
+                <!--<tr v-if="ficheiroAssinadoCoordenadorCurso">
                     <td> Ficheiro Assinado Coordenador de Curso</td>
                     <td><b-button class="botao"
                             variant="dark"
@@ -624,7 +799,14 @@
                      </td>
                     <tr v-if="uc">
                         <td colspan="3" style="height: 50%">
-                            <!--<pdf name="fade" :src="fichAssinadoCoordenadorCurso"></pdf>-->
+                            <pdf
+			                    v-for="i in numPages"
+			                    :key="i"
+			                    :src="fichFundamentacao"
+			                    :page="i"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                            <pdf name="fade" :src="fichAssinadoCoordenadorCurso"></pdf>
                         </td></tr>
                 </tr><tr v-if="ficheiroAssinadoCoordenadorDepartamento">
                     <td> Ficheiro Assinado Coordenador Departamento</td>
@@ -640,10 +822,17 @@
                      </td>
                     <tr v-if="fundamentacao">
                         <td colspan="3" style="height: 50%">
+                            <pdf
+			                    v-for="i in numPages"
+			                    :key="i"
+			                    :src="fichFundamentacao"
+			                    :page="i"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
                             <pdf name="fade" :src="fichFundamentacao"></pdf>
                         </td></tr>
 
-
+                        -->
                 </tr><tr v-if="ataCTC">
                     <td>Cópia da Ata do CTC</td>
                     <td><b-button
@@ -662,246 +851,367 @@
                      </td></td>
                     <tr v-if="ata">
                         <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
+                            <pdf
+			                    v-for="i in numPages"
+			                    :key="i"
+			                    :src="fichAtaCTC"
+			                    :page="i"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
                         </td></tr>
 
 
-
-
-
-
-             </tr><tr v-if="ficheiroNIF">
-                <td>Cópia do NIF</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroNIF.proposta_id, 'Ficheiro NIF', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download da Cópia do NIF
-                    </b-button><td>
-                        <b-button  v-on:click="nif = !nif"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td></td>
-                    <tr v-if="nif">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroCGA">
-                    <td>N.º de CGA/SS</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroCGA.proposta_id, 'Ficheiro Nº CGA/SS', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro CGA
-                    </b-button><td>
-                        <b-button  v-on:click="cga = !cga"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td></td>
-                    <tr v-if="cga">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroCC">
-                    <td>Cópia do Cartão Cidadão</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroCC.proposta_id, 'Ficheiro Cópia CC', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> DownloadFicheiro do Cartão Cidadão
-                    </b-button><td>
-                        <b-button  v-on:click="cc = !cc"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                            {{propostaSelecionada.id_proposta_proponente}}
-                        </b-button>
-                     </td></td>
-                    <tr v-if="cc">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroIBAN">
-                    <td>Cópia IBAM/NIB</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroIBAN.proposta_id, 'Ficheiro Cópia IBAN', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro Cópia IBAN
-                         </b-button>
-                     </td><td>
-                        <b-button  v-on:click="iban = !iban"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                            {{propostaSelecionada.id_proposta_proponente}}
-                        </b-button>
-                     </td>
-                    <tr v-if="iban">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroCertificadoRegistoCriminal">
-                    <td>Certificado de Registo Criminal</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroCertificadoRegistoCriminal.proposta_id, 'Ficheiro Registo Criminal', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download Ficheiro do Registo Criminal
-                    </b-button></td><td>
-                        <b-button  v-on:click="criminal = !criminal"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="criminal">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroDeclaracaoRobustezFisica">
-                    <td>Declaração de Robustez Física</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroDeclaracaoRobustezFisica.proposta_id, 'Ficheiro Robustez Física', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro de Robustez Física
-                    </b-button></td><td>
-                        <b-button  v-on:click="robustez = !robustez"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="robustez">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroBoletimVacinas">
-                    <td>Cópia do Boletim Vacinas</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroBoletimVacinas.proposta_id, 'Ficheiro Boletim Vacinas', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro do Boletim Vacinas
-                    </b-button></td><td>
-                        <b-button  v-on:click="vacinas = !vacinas"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="vacinas">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroFichaIdentificacao">
-                    <td>Ficha Identificacao</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroFichaIdentificacao.proposta_id, 'Ficheiro Ficha Identificacao', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Ficha Identificacao
-                    </b-button></td><td>
-                        <b-button  v-on:click="identificacao = !identificacao"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="identificacao">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroDeclaracaoRenuncia">
-                    <td>DCD/Renuncia ADSE</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroDeclaracaoRenuncia.proposta_id, 'Ficheiro Renuncia ADSE', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Renuncia ADSE
-                    </b-button></td><td>
-                        <b-button  v-on:click="adse = !adse"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="adse">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroDeclaracaoArtigo99">
-                    <td>Declaracao Artº 99 do IRS</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            @click="downloadFicheiro(ficheiroDeclaracaoArtigo99.proposta_id, 'Ficheiro Declaracao IRS', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Declaracao IRS
-                    </b-button></td><td>
-                        <b-button  v-on:click="artigo = !artigo"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="artigo">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr v-if="ficheiroConsultaOutrasEscolas">
-                    <td>Resposta à Consulta das Outras Escolas</td>
-                    <td><b-button
-                            size="md"
-                            variant="dark"
-                            style="width:100%"
-                            click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Resposta Consulta Outras Escolas', propostaSelecionada.nome_completo)">
-                            <i class="far fa-file-pdf"></i> Download do Ficheiro da Resposta Consulta Outras Escolas
-                    </b-button></td><td>
-                        <b-button  v-on:click="consulta = !consulta"
-                            size="md"
-                            variant="dark"
-                            style="width:100%">
-                            Visualizar
-                        </b-button>
-                     </td>
-                    <tr v-if="consulta">
-                        <td colspan="3" style="height: 50%">
-                            <pdf name="fade" :src="fichCurriculo"></pdf>
-                        </td></tr>
-                </tr><tr>
+                    </tr><tr v-if="ficheiroCurriculo">
+                        <td>Curriculum Vitae</td>
+                        <td><b-button class="botao"
+                                variant="dark"
+                                @click="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Curriculo do docente a ser contratado', propostaSelecionada.nome_completo)">
+                                <i class="far fa-file-pdf"></i> Download do currículo
+                             </b-button>
+                        </td>
+                        <td><b-button class="botao" v-on:click="curriculo = !curriculo"
+                                variant="dark">
+                                Visualizar
+                            </b-button>
+                         </td><tr v-if="curriculo" style="width: 100%">
+                            <td colspan="3" style=" TABLE-LAYOUT: fixed; WORD-BREAK:BREAK-ALL;">
+                                <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichCurriculo"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                        ></pdf>
+                            </td>
+                        </tr>
+                    </tr><tr v-if="ficheiroCertificadoHabilitacoes">
+                        <td>Cópia dos Certificados de Habilitações</td>
+                        <td><b-button class="botao"
+                                variant="dark"
+                                @click="downloadFicheiro(ficheiroCertificadoHabilitacoes.proposta_id, 'Habilitacoes do docente a ser contratado', propostaSelecionada.nome_completo)">
+                                <i class="far fa-file-pdf"></i> Download dos Certificado de Habilitações 
+                        </b-button></td><td>
+                            <b-button class="botao" v-on:click="habilitacoes = !habilitacoes"
+                                variant="dark">
+                                Visualizar
+                            </b-button>
+                         </td></td>
+                        <tr v-if="habilitacoes">
+                            <td colspan="3" style="height: 50%">
+                                <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichCertificadoHabilitacoes"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                            </td>
+                        </tr>
+                    </tr><tr v-if="ficheiroNIF">
+                        <td>Cópia do NIF</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroNIF.proposta_id, 'Ficheiro NIF', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download da Cópia do NIF
+                            </b-button><td>
+                                <b-button  v-on:click="nif = !nif"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td></td>
+                            <tr v-if="nif">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichNIF"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroCGA">
+                            <td>N.º de CGA/SS</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroCGA.proposta_id, 'Ficheiro Nº CGA/SS', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro CGA
+                            </b-button><td>
+                                <b-button  v-on:click="cga = !cga"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td></td>
+                            <tr v-if="cga">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichCGA"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroCC">
+                            <td>Cópia do Cartão Cidadão</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroCC.proposta_id, 'Ficheiro Cópia CC', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> DownloadFicheiro do Cartão Cidadão
+                            </b-button><td>
+                                <b-button  v-on:click="cc = !cc"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td></td>
+                            <tr v-if="cc">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichCC"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroIBAN">
+                            <td>Cópia IBAM/NIB</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroIBAN.proposta_id, 'Ficheiro Cópia IBAN', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro Cópia IBAN
+                                 </b-button>
+                             </td><td>
+                                <b-button  v-on:click="iban = !iban"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="iban">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichIBAN"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroCertificadoRegistoCriminal">
+                            <td>Certificado de Registo Criminal</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroCertificadoRegistoCriminal.proposta_id, 'Ficheiro Registo Criminal', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download Ficheiro do Registo Criminal
+                            </b-button></td><td>
+                                <b-button  v-on:click="criminal = !criminal"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="criminal">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichCertificadoRegstoCriminal"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroDeclaracaoRobustezFisica">
+                            <td>Declaração de Robustez Física</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroDeclaracaoRobustezFisica.proposta_id, 'Ficheiro Robustez Física', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro de Robustez Física
+                            </b-button></td><td>
+                                <b-button  v-on:click="robustez = !robustez"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="robustez">
+                                <td colspan="3" style="height: 50%"><pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichDeclaracaoRobustezFisica"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroBoletimVacinas">
+                            <td>Cópia do Boletim Vacinas</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroBoletimVacinas.proposta_id, 'Ficheiro Boletim Vacinas', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro do Boletim Vacinas
+                            </b-button></td><td>
+                                <b-button  v-on:click="vacinas = !vacinas"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="vacinas">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichBoletimVacinas"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroFichaIdentificacao">
+                            <td>Ficha Identificacao</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroFichaIdentificacao.proposta_id, 'Ficheiro Ficha Identificacao', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro da Ficha Identificacao
+                            </b-button></td><td>
+                                <b-button  v-on:click="identificacao = !identificacao"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="identificacao">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichFichaIdentificacao"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroDeclaracaoRenuncia">
+                            <td>DCD/Renuncia ADSE</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroDeclaracaoRenuncia.proposta_id, 'Ficheiro Renuncia ADSE', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro da Renuncia ADSE
+                            </b-button></td><td>
+                                <b-button  v-on:click="adse = !adse"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="adse">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichDeclaracaoRenuncia"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroDeclaracaoArtigo99">
+                            <td>Declaracao Artº 99 do IRS</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    @click="downloadFicheiro(ficheiroDeclaracaoArtigo99.proposta_id, 'Ficheiro Declaracao IRS', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro da Declaracao IRS
+                            </b-button></td><td>
+                                <b-button  v-on:click="artigo = !artigo"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="artigo">
+                                <td colspan="3" style="height: 50%">
+                                <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichDeclaracaoArtigo99"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr v-if="ficheiroConsultaOutrasEscolas">
+                            <td>Resposta à Consulta das Outras Escolas</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Resposta Consulta Outras Escolas', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro da Resposta Consulta Outras Escolas
+                            </b-button></td><td>
+                                <b-button  v-on:click="consulta = !consulta"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="consulta">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            v-for="i in numPages"
+			                            :key="i"
+			                            :src="fichConsultaOutrasEscolas"
+			                            :page="i"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+                        </tr><tr>
 
                 </tr>
-          </table><br>
-</div></div>          
+          </table>
+
+
+       
+
+          <br>
+</div>
+</div>          
         <div class="total" v-if="this.$store.state.user.roleDB != 'recursos_humanos'" style ="width:120%; left:-30.2 ;">
             <pdf :src="fichAssinado"></pdf><br>
         </div>
-    
+
+
+
+
+
     <fundamentacao-departamento
       v-if="this.$store.state.user.roleDB == 'proponente_departamento' &&
       this.propostaSelecionada.fundamentacao_coordenador_departamento == null"
@@ -940,9 +1250,7 @@
       v-on:mostrarRh="voltarRecursosHumanos"
     ></proposta-recursos>
 
-    </tr>   
-
-    </table>
+    
 
 
 
@@ -952,19 +1260,25 @@
 
 
 
+
+
+
+    
+
+    
+
+
+
+
+        
+
+
+
+</div>
 
 
 
     </div>
-
-
-
-    </div>
-
-
-
-
-
 
 </template>
 <script>
@@ -981,6 +1295,40 @@ export default {
   props: ["propostaSelecionada"],
   data() {
     return {
+    currentPage1: 0,
+		currentPage2: 0,
+		currentPage3: 0,
+		currentPage4: 0,
+		currentPage5: 0,
+		currentPage6: 0,
+		currentPage7: 0,
+		currentPage8: 0,
+		currentPage9: 0,
+		currentPage10: 0,
+		currentPage11: 0,
+		currentPage12: 0,
+		currentPage13: 0,
+		currentPage14: 0,
+		currentPage15: 0,
+		currentPage16: 0,
+	  pageCount1: 0,
+      pageCount2: 0,
+      pageCount3: 0,
+      pageCount4: 0,
+      pageCount5: 0,
+      pageCount6: 0,
+      pageCount7: 0,
+      pageCount8: 0,
+      pageCount9: 0,
+      pageCount10: 0,
+      pageCount11: 0,
+      pageCount12: 0,
+      pageCount16: 0,
+      pageCount13: 0,
+      pageCount14: 0,
+      pageCount15: 0,
+      src: pdf.createLoadingTask('storage/ficheiros/exemplo.pdf'),
+	  numPages: undefined,
       curriculo: false,
       habilitacoes: false,
       relatorio: false,
@@ -1036,6 +1384,7 @@ export default {
       ficheiroDeclaracaoRenuncia:"",
       ficheiroConsultaOutrasEscolas:"",
       fichRelatorioProponentes:"",
+      fichUnidadesCurriculares:"",
       ficheiroAssinado:"",
       fichCurriculo:"",
       fichCertificadoHabilitacoes:"",
@@ -1191,7 +1540,7 @@ export default {
     },
   },
   mounted() {
-    this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente o ficheiro assinado', 'info')
+    //this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente o ficheiro assinado', 'info')
     /*axios.get('/api/getPropostaParaNovoDocente/'+this.$store.state.user.email).then(response => {
       this.propostaDesteProponente = response.data[0];
       console.log(this.propostaDesteProponente.id_proposta_proponente);
@@ -1209,7 +1558,7 @@ export default {
         this.propostaID = response.data.id;
         console.log(this.propostaID)
         axios.get("/api/ficheiros/" + this.propostaID).then(response => {
-
+        if(this.propostaSelecionada.verificacao_serviço_docente_atribuido == "sim"){
           this.ficheiros = response.data;
           this.ficheiroUnidadesCurriculares = this.ficheiros[0];
           this.fichUnidadesCurriculares = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Unidades_Curriculares_do_docente_a_ser_contratado.pdf";
@@ -1218,10 +1567,10 @@ export default {
              this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
              this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
                 this.ficheiroFundamentacao = this.ficheiros[1];
-                this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente_Assistente.pdf",
+                this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
 
                 this.ataCTC = this.ficheiros[2];
-                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
          
                 if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
                     this.ficheiroCurriculo = this.ficheiros[3];
@@ -1230,54 +1579,54 @@ export default {
                     this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
 
                     this.ficheiroNIF = this.ficheiros[5];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
                     this.ficheiroCGA = this.ficheiros[6];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
                     this.ficheiroCC = this.ficheiros[7];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
                     this.ficheiroIBAN = this.ficheiros[8];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
                     this.ficheiroCertificadoRegistoCriminal = this.ficheiros[9];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
                     this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[10];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
                     this.ficheiroBoletimVacinas = this.ficheiros[11];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
                     this.ficheiroFichaIdentificacao = this.ficheiros[12];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
                     this.ficheiroDeclaracaoArtigo99 = this.ficheiros[13];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
                     this.ficheiroDeclaracaoRenuncia = this.ficheiros[14];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
                     this.ficheiroConsultaOutrasEscolas = this.ficheiros[15];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
                 }else{
                     this.ficheiroNIF = this.ficheiros[3];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
                     this.ficheiroCGA = this.ficheiros[4];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
                     this.ficheiroCC = this.ficheiros[5];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
                     this.ficheiroIBAN = this.ficheiros[6];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
                     this.ficheiroCertificadoRegistoCriminal = this.ficheiros[7];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
                     this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[8];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
                     this.ficheiroBoletimVacinas = this.ficheiros[9];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
                     this.ficheiroFichaIdentificacao = this.ficheiros[10];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
                     this.ficheiroDeclaracaoArtigo99 = this.ficheiros[11];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
                     this.ficheiroDeclaracaoRenuncia = this.ficheiros[12];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
                     this.ficheiroConsultaOutrasEscolas = this.ficheiros[13];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
                 }
-          }else{
+            }else{
                 this.ataCTC = this.ficheiros[1];
-                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
          
                 if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
                     this.ficheiroCurriculo = this.ficheiros[2];
@@ -1286,52 +1635,172 @@ export default {
                     this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
 
                     this.ficheiroNIF = this.ficheiros[4];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
                     this.ficheiroCGA = this.ficheiros[5];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
                     this.ficheiroCC = this.ficheiros[6];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
                     this.ficheiroIBAN = this.ficheiros[7];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
                     this.ficheiroCertificadoRegistoCriminal = this.ficheiros[8];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
                     this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[9];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
                     this.ficheiroBoletimVacinas = this.ficheiros[10];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
                     this.ficheiroFichaIdentificacao = this.ficheiros[11];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
                     this.ficheiroDeclaracaoArtigo99 = this.ficheiros[12];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
                     this.ficheiroDeclaracaoRenuncia = this.ficheiros[13];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
                     this.ficheiroConsultaOutrasEscolas = this.ficheiros[14];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
                 }else{
                     this.ficheiroNIF = this.ficheiros[2];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
                     this.ficheiroCGA = this.ficheiros[3];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
                     this.ficheiroCC = this.ficheiros[4];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
                     this.ficheiroIBAN = this.ficheiros[5];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
                     this.ficheiroCertificadoRegistoCriminal = this.ficheiros[6];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
                     this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[7];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
                     this.ficheiroBoletimVacinas = this.ficheiros[8];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
                     this.ficheiroFichaIdentificacao = this.ficheiros[9];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
                     this.ficheiroDeclaracaoArtigo99 = this.ficheiros[10];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
                     this.ficheiroDeclaracaoRenuncia = this.ficheiros[11];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
                     this.ficheiroConsultaOutrasEscolas = this.ficheiros[12];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
                 }
-          
+            }
+          }else{
+            this.ficheiros = response.data;
+            if(this.tipoPropostaRole.regime_prestacao_servicos=="dedicacao_exclusiva" ||
+             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
+             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
+                this.ficheiroFundamentacao = this.ficheiros[0];
+                this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
+
+                this.ataCTC = this.ficheiros[1];
+                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
+         
+                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
+                    this.ficheiroCurriculo = this.ficheiros[2];
+                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[3];
+                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+
+                    this.ficheiroNIF = this.ficheiros[4];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
+                    this.ficheiroCGA = this.ficheiros[5];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
+                    this.ficheiroCC = this.ficheiros[6];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
+                    this.ficheiroIBAN = this.ficheiros[7];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[8];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[9];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[10];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[11];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[12];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[13];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[14];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
+                }else{
+                    this.ficheiroNIF = this.ficheiros[2];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
+                    this.ficheiroCGA = this.ficheiros[3];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
+                    this.ficheiroCC = this.ficheiros[4];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
+                    this.ficheiroIBAN = this.ficheiros[5];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[6];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[7];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[8];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[9];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[10];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[11];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[12];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
+                }
+            }else{
+                this.ataCTC = this.ficheiros[0];
+                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
+         
+                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
+                    this.ficheiroCurriculo = this.ficheiros[1];
+                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
+                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[2];
+                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+
+                    this.ficheiroNIF = this.ficheiros[3];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
+                    this.ficheiroCGA = this.ficheiros[4];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
+                    this.ficheiroCC = this.ficheiros[5];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
+                    this.ficheiroIBAN = this.ficheiros[6];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[7];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[8];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[9];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[10];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[11];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[12];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[13];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
+                }else{
+                    this.ficheiroNIF = this.ficheiros[1];
+                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
+                    this.ficheiroCGA = this.ficheiros[2];
+                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
+                    this.ficheiroCC = this.ficheiros[3];
+                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
+                    this.ficheiroIBAN = this.ficheiros[4];
+                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
+                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[5];
+                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
+                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[6];
+                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
+                    this.ficheiroBoletimVacinas = this.ficheiros[7];
+                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
+                    this.ficheiroFichaIdentificacao = this.ficheiros[8];
+                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
+                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[9];
+                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
+                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[10];
+                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
+                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[11];
+                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
+                }
+            }
           }
 
 
@@ -1374,7 +1843,9 @@ export default {
             console.log(response);
           })
       });
-        
+    this.src.promise.then(pdf => {
+		this.numPages = pdf.numPages;
+    });    
   }
 };
 </script>
@@ -1485,6 +1956,7 @@ export default {
 
 .downloadpdf{
  width: 96.5%;
+ top: 0%;
 }
 
 .tabelasRestantes{
@@ -1502,7 +1974,7 @@ export default {
 }
 
 .total{
- width: 120%;
+ width: 10%;
  left: -30.2 ;
 }
 .total2{

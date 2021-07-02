@@ -31,7 +31,7 @@
             id="inputTempoParcial"
             readonly="true"
             v-model="propostaSelecionada.unidade_organica"
-            :state="!$v.propostaSelecionada.unidade_organica.$error && null"
+            :state="null"
             :options="UnidadeOrganica"
           ></b-form-select>
           <b-form-invalid-feedback
@@ -40,14 +40,14 @@
     </b-form-group>
       <b-form-group label="Nome completo">
         <b-form-input
-          :state="!$v.propostaSelecionada.nome_completo.$error && null"
+          :state="null"
           v-model="propostaSelecionada.nome_completo"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">O Nome completo é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group label="Departamento/Área Científica/ Curso">
         <b-form-input
-          :state="!$v.propostaSelecionada.departamento_curso.$error && null"
+          :state="null"
           v-model="propostaSelecionada.departamento_curso"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">O Nome Departamento/Área Científica/ Curso é obrigatório!</b-form-invalid-feedback>
@@ -56,7 +56,7 @@
       <b-form-group label="Email" label-for="inputEmail">
         <b-form-input
           id="inputEmail"
-          :state="!$v.propostaSelecionada.email.$error && null"
+          :state="null"
           v-model="propostaSelecionada.email"
         ></b-form-input>
         <b-form-invalid-feedback
@@ -67,7 +67,7 @@
       <b-form-group label="Numero Telefone" label-for="inputNumeroTelefone">
         <b-form-input
           id="inputNumeroTelefone"
-          :state="!$v.propostaSelecionada.numero_telefone.$error && null"
+          :state="null"
           v-model="propostaSelecionada.numero_telefone"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">O Numero de telefone é obrigatório!</b-form-invalid-feedback>
@@ -83,14 +83,14 @@
 
                <b-form-group label="Deseja fazer upload do ficheiro de serviço do docente atribuido?">
                 <b-form-radio-group
-                  v-model="propostaSelecionada.verificacao_serviço_docente_atribuído"
-                  :options="verificacao_serviço_docente_atribuído"
+                  v-model="propostaSelecionada.verificacao_serviço_docente_atribuido"
+                  :options="verificacao_serviço_docente_atribuido"
                   stacked
                 ></b-form-radio-group>
               </b-form-group>
 
 
-              <b-form-group v-if="propostaSelecionada.verificacao_serviço_docente_atribuído == 'nao'">
+              <b-form-group v-if="propostaSelecionada.verificacao_serviço_docente_atribuido == 'nao'">
                
               <b-form-group label="Curso" label-for="inputCurso">
                 <b-form-select
@@ -216,7 +216,7 @@
                 </table>
               </div>
               <br /></b-form-group>
-              <div v-if="propostaSelecionada.verificacao_serviço_docente_atribuído == 'sim'">
+              <div v-if="propostaSelecionada.verificacao_serviço_docente_atribuido == 'sim'">
               <b-form-group label="Serviço Docente Atribuído (PDF)">
                     <b-form-file
                         v-model="ficheiroUnidadesCurricularesModel"
@@ -224,7 +224,6 @@
                         drop-placeholder="Arraste para aqui um ficheiro"
                         browse-text="Procurar"
                         name="ficheiroUnidadesCurriculares"
-                        v-validate="{ required: true }"
                         :state="validateState('ficheiroUnidadesCurriculares')"
                         @change="onFileSelected"
                     ></b-form-file>
@@ -235,7 +234,7 @@
                         size="md"
                         variant="dark"
                         v-if="ficheiroUnidadesCurriculares"
-                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.propostaSelecionada_id, 'Serviço do Docente Atribuído')"
+                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Serviço do Docente Atribuído')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
                     </b-button>
@@ -260,7 +259,7 @@
                 <b-form-radio-group
                   v-model="propostaSelecionada.grau"
                   :options="grausArray"
-                  :state="!$v.propostaSelecionada.grau.$error && null"
+                  :state="null"
                   stacked
                 ></b-form-radio-group>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
@@ -270,7 +269,7 @@
                 v-if="propostaSelecionada.grau != 'doutoramento'">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterarias"
-                  :state="!$v.propostaSelecionada.curso.$error && null"
+                  :state="null"
                   v-model="propostaSelecionada.curso"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
@@ -280,7 +279,7 @@
                 v-if="propostaSelecionada.grau == 'doutoramento'">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterarias"
-                  :state="!$v.propostaSelecionada.curso.$error && null"
+                  :state="null"
                   v-model="propostaSelecionada.curso"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Curso é obrigatório!</b-form-invalid-feedback>
@@ -291,7 +290,7 @@
               >
                 <b-form-input
                   id="inputAreaCientificaHabilitacoesLiterarias"
-                  :state="!$v.propostaSelecionada.area_cientifica.$error && null"
+                  :state="null"
                   v-model="propostaSelecionada.area_cientifica"
                   ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
@@ -480,7 +479,7 @@
         <b-form-radio-group
           v-model="propostaSelecionada.role"
           :options="rolesArray"
-          :state="!$v.propostaSelecionada.role.$error && null"
+          :state="null"
           stacked
         ></b-form-radio-group>
         <b-form-invalid-feedback
@@ -550,21 +549,21 @@ tratamento nos termos da legislação de proteção de dados em vigor.
 </template>
 
 <script>
-import { required, email, minLength } from "vuelidate/lib/validators";
-
+import { required, email, minLength, numeric } from "vuelidate/lib/validators";
 export default {
   props: ["propostaSelecionada"],
   data() {
     return {
+      //? Array de Objetos para Radio Buttons
       tipoContratosArray: [
         { text: "Contratação Inicial", value: "contratacao_inicial" },
         { text: "Renovação", value: "renovacao" },
         { text: "Alteração", value: "alteracao" }
       ],
       grausArray: [
-        { text: "Licenciatura", value: "licenciatura" },
-        { text: "Mestrado", value: "mestrado" },
-        { text: "Doutoramento", value: "doutoramento" }
+        { text: "Doutoramento", value: "doutoramento" },
+        { text: "Outro", value: "outro" },
+        { text: "Em Formação", value: "em_formacao" }
       ],
       rolesArray: [
         { text: "Professor", value: "professor" },
@@ -587,7 +586,7 @@ export default {
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
       ],
-      verificacao_serviço_docente_atribuído: [
+      verificacao_serviço_docente_atribuido: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
       ],
@@ -617,42 +616,73 @@ export default {
         { text: "ESTG", value: "ESTG" },
         { text: "SAD.CR", value: "ESAD.CR" },
         { text: "ESSLei", value: "ESSLei" }
-      ],
-      UnidadeOrganica: [
+      ],UnidadeOrganica: [
         { text: "ESECS", value: "ESECS" },
         { text: "ESTG", value: "ESTG" },
         { text: "SAD.CR", value: "ESAD.CR" },
         { text: "ESSLei", value: "ESSLei" },
         { text: "ESTM", value: "ESTM"}
       ],
+      proposta: {
+        tipo_contrato: "",
+        unidade_organica: this.$store.state.user.unidade_organica,
+        nome_completo: "",
+        email: "",
+        departamento_curso: "",
+        numero_telefone: "",
+        role: "",
+        data_de_assinatura_coordenador_departamento: "",
+        data_de_assinatura_coordenador_de_curso: "",
+        fundamentacao_coordenador_curso: "",
+        fundamentacao_coordenador_departamento: "",
+        contrato_assinado_departamento:"",
+        grau: "",
+        area_cientifica: "",
+        curso: "",
+        
+
+        remuneracao: "",
+        escalao: "",
+        indice: "",
+        verificacao_outras_uo:"",
+        nome_uo:"",
+        tempo_parcial_uo:"",
+        periodo_uo:"",
+        primeiro_proponente: this.$store.state.user.name,
+      },
       propostaExistente: {},
-      propostasExistentes: [],
-      unidadesCurriculares: [],
       unidadeCurricular: {
         codigo_uc: "",
+        nome_uc:"",
         regime: "",
         horas: "",
         horas_semestrais: "",
         codigo_curso: "",
+        nome_curso: "",
+        codigo_curso: "",
         turno: "",
         tipo: ""
       },
+      unidadesCurriculares: [],
+      habilitacoes: [],
       cursos: [],
       ucs: [],
       roleSelecionado: "",
       isFinalized: false,
       isShow: true,
+      propostasExistentes: [],
       progresso: {
         valor: 1,
         max: 3
       },
       ficheiro: {
-        fileCurriculo: {},
         fileRelatorio: {},
-        fileHabilitacoes: {}
+        fileUnidadesCurriculares: {},
+        fileFundamentacao: {}
       },
       ficheiros: [],
       ficheiroUnidadesCurriculares: "",
+      ficheiroFunda:"",
       ficheiroCurriculo: "",
       ficheiroHabilitacoes: "",
       ficheiroRelatorio: "",
@@ -662,27 +692,70 @@ export default {
       ficheiroRelatorioModel: "",
     }
   },
-  validations: {
-    propostaSelecionada: {
-      tipo_contrato: { required },
-      unidade_organica: { required },
-      nome_completo: { required },
-      departamento_curso: { required },
-      email: { required, email },
-      numero_telefone: { required, minLength: minLength(9) },
-      grau: { required },
-      curso: { required },
-      area_cientifica: { required },
-      role: { required }
-    },
-    unidadeCurricular: {
-      codigo_curso: { required },
-      codigo_uc: { required },
-      regime: { required },
-      tipo: { required },
-      turno: { required },
-      horas: { required },
-      horas_semestrais: { required }
+  //? Validations Vuelidate
+  validations() {
+    if (proposta.verificacao_outras_uo == "sim" ) {
+      return {
+        proposta: {
+          tipo_contrato: { required },
+          unidade_organica: { required },
+          nome_completo: { required },
+          email: { required, email },
+          departamento_curso: {required},
+          numero_telefone: { required, minLength: minLength(9) },
+          grau: { required },
+          curso: { required },
+          area_cientifica: { required },
+          role: { required },
+
+      
+          /*remuneracao: { required, numeric },
+          escalao: { required },
+          indice: { required },*/
+          verificacao_outras_uo: { required },
+          nome_uo: { required },
+          tempo_parcial_uo: { required },
+          periodo_uo: { required },
+        },
+        unidadeCurricular: {
+          codigo_curso: { required },
+          codigo_uc: { required },
+          regime: { required },
+          tipo: { required },
+          turno: { required },
+          horas: { required },
+          horas_semestrais: { required }
+        }
+      };
+    } else {
+    return{
+        proposta: {
+          tipo_contrato: { required },
+          unidade_organica: { required },
+          nome_completo: { required },
+          email: { required, email },
+          departamento_curso: {required},
+          numero_telefone: { required, minLength: minLength(9) },
+          grau: { required },
+          curso: { required },
+          area_cientifica: { required },
+          role: { required },
+
+          remuneracao: { required, numeric },
+          escalao: { required },
+          indice: { required },
+          verificacao_outras_uo: { required },
+        },
+        unidadeCurricular: {
+          codigo_curso: { required },
+          codigo_uc: { required },
+          regime: { required },
+          tipo: { required },
+          turno: { required },
+          horas: { required },
+          horas_semestrais: { required }
+        }
+      }
     }
   },
   methods: {
@@ -724,6 +797,7 @@ export default {
       this.isFinalized = false;
       this.progresso.valor--;
       this.voltarVar = true;
+
        if(this.propostaSelecionada.fundamentacao_coordenador_departamento != null || this.propostaSelecionada.fundamentacao_coordenador_curso != null){
          this.voltar();
        }
@@ -766,13 +840,13 @@ export default {
         .get("/api/ficheiros/" + this.propostaExistente.id_proposta_proponente)
         .then(response => {
           response.data.forEach(ficheiro => {
-            if (ficheiro.descricao == "Curriculo do docente a ser contratado"){
-              this.ficheiroCurriculo = ficheiro;
-            }   
-            
-            if (ficheiro.descricao == "Relatorio dos 2 proponentes")
-              this.ficheiroRelatorio = ficheiro;
+            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+              this.ficheiroFundamentacao = ficheiro;
+            }
 
+            if (ficheiro.descricao == "Ficheiro Unidades Curriculares do docente a ser contratado"){
+              this.ficheiroUnidadesCurriculares = ficheiro;
+            }
             if (
               this.propostaSelecionada.tipo_contrato == "contratacao_inicial" &&
               ficheiro.descricao == "Habilitacoes do docente a ser contratado"
@@ -794,7 +868,7 @@ export default {
     },
     avancar: function(proposta, unidadesCurriculares) {
       //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
-      this.ficheiro.fileCurriculo = new FormData();
+      /*this.ficheiro.fileCurriculo = new FormData();
       this.ficheiro.fileCurriculo.append(
         "file",
         this.ficheiros["ficheiroCurriculo"]
@@ -824,19 +898,31 @@ export default {
       this.ficheiro.fileRelatorio.append(
         "descricao",
         "Relatorio dos 2 proponentes"
+      );*/
+
+     
+         //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+      this.ficheiro.fileUnidadesCurriculares = new FormData();
+      this.ficheiro.fileUnidadesCurriculares.append(
+        "file",
+        this.ficheiros["ficheiroUnidadesCurriculares"]
+      );
+      this.ficheiro.fileUnidadesCurriculares.append(
+        "descricao",
+        "Ficheiro Unidades Curriculares do docente a ser contratado"
       );
 
       this.roleSelecionado = proposta.role;
-      this.$v.propostaSelecionada.$touch();
+      //this.$v.propostaSelecionada.$touch();
       this.$validator.validateAll().then(result => {
         if (result) {
-          if (!this.$v.propostaSelecionada.$invalid && unidadesCurriculares.length > 0) {
+          //if (!this.$v.propostaSelecionada.$invalid && unidadesCurriculares.length > 0) {
             this.$store.commit("setProposta", proposta);
             this.isFinalized = true;
             this.isShow = false;
             this.progresso.valor++;
             this.voltarVar = false;
-          }
+          //}
         } else {
           this.$bvToast.toast('O formulário possui erros, por favor verifique!', {
           title: 'Mensagem de Erro',
@@ -888,18 +974,16 @@ export default {
         .get("/api/ficheiros/" + this.propostaSelecionada.id_proposta_proponente)
         .then(response => {
           response.data.forEach(ficheiro => {
-            if (ficheiro.descricao == "Curriculo do docente a ser contratado"){
-              this.ficheiroCurriculo = ficheiro;
-            }   
-            
-            if (ficheiro.descricao == "Relatorio dos 2 proponentes")
-              this.ficheiroRelatorio = ficheiro;
-
-            if (
-              this.propostaSelecionada.tipo_contrato == "contratacao_inicial" &&
-              ficheiro.descricao == "Habilitacoes do docente a ser contratado"
-            ) {
-              this.ficheiroHabilitacoes = ficheiro;
+            if (this.propostaSelecionada.verificacao_serviço_docente_atribuido == "sim"){
+                if (ficheiro.descricao == "Ficheiro Unidades Curriculares do docente a ser contratado"){
+                  this.ficheiroUnidadesCurriculares = ficheiro;
+                }   
+            }
+            if (this.propostaSelecionada.regime_prestacao_servicos == "tempo_integral" ||
+                this.propostaSelecionada.regime_prestacao_servicos == "dedicacao_exclusiva"){
+                if(ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+                    this.ficheiroFundamentacao = ficheiro;
+                }
             }
           });
         });

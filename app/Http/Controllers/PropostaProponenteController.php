@@ -29,6 +29,7 @@ class PropostaProponenteController extends Controller
             'data_de_assinatura_coordenador_departamento' => 'nullable',
             'fundamentacao_coordenador_curso' => 'nullable',
             'fundamentacao_coordenador_departamento' => 'nullable',
+            'verificacao_serviço_docente_atribuido' => 'required',
             'role' => 'required',
             'grau' => 'required',
             'curso' => 'required',
@@ -61,6 +62,7 @@ class PropostaProponenteController extends Controller
             'curso' => 'required',
             'primeiro_proponente' => 'required',
             'area_cientifica' => 'required',
+            'verificacao_serviço_docente_atribuido' => 'required',
             /*'remuneracao' => 'nullable',
             'escalao' => 'nullable',
             'indice' => 'nullable',*/

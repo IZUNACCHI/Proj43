@@ -79,7 +79,7 @@
                         size="md"
                         variant="dark"
                         v-if="ficheiroFundamentacaoAssistente"
-                        @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Fundamentacao da Proposta Proponente Assistente')"
+                        @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Fundamentacao da Proposta Proponente')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Fundamentação Assistente
                     </b-button>
@@ -274,7 +274,7 @@ export default {
             );
             this.ficheiroProponenteAssistente.fileFundamentacao.append(
                 "descricao",
-                "Fundamentacao da Proposta Proponente Assistente"
+                "Fundamentacao da Proposta Proponente"
             );
 
             this.ficheiro.fileFundamentacao = new FormData();
@@ -284,7 +284,7 @@ export default {
             );
             this.ficheiro.fileFundamentacao.append(
                 "descricao",
-                "Fundamentacao da Proposta Proponente Assistente"
+                "Fundamentacao da Proposta Proponente"
             );
 
         //}

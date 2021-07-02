@@ -6,7 +6,7 @@
     <b-form-group label="Ciclo do docente a ser contratado">
       <b-form-radio-group
         v-model="propostaProponenteMonitor.ciclo"
-        :options="ciclosArray"
+        :options="ciclo"
         :state="!$v.propostaProponenteMonitor.ciclo.$error && null"
       ></b-form-radio-group>
       <b-form-invalid-feedback id="input-1-live-feedback">A seleção de um ciclo é obrigatória!</b-form-invalid-feedback>
@@ -89,7 +89,7 @@ export default {
   props: ["proposta", "unidadesCurriculares", "ficheiro"],
   data() {
     return {
-      ciclosArray: [
+      ciclo: [
         { text: "1º Ciclo", value: "1ciclo" },
         { text: "2º Ciclo", value: "2ciclo" }
       ],

@@ -25,9 +25,10 @@
           id="input-1-live-feedback"
         >A seleção do regime de prestações de serviço é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
-
-      <span v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_parcial'">
-        <b-form-group label="Percentagem de tempo parcial" label-for="inputTempoParcial">
+      <b-form-group
+        label="Percentagem de tempo parcial"
+        label-for="inputTempoParcial"
+        v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_parcial'">
           <b-form-select
             id="inputTempoParcial"
             v-model="propostaProponenteProfessor.percentagem_prestacao_servicos"
@@ -38,13 +39,13 @@
             id="input-1-live-feedback"
           >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
           <b-form-select
+            width="100%"
             id="inputTempoParcial"
             v-model="propostaProponenteProfessor.percentagem_prestacao_servicos_2"
             :state="null"
             :options="percentagensArray"
           ></b-form-select>
-        </b-form-group>
-      </span>
+      </b-form-group>
       <b-form-group
         label="Fundamentação"
         description="(cfr. acta do CTC - art. 5º, nº3) N.B Contracto e renovações não podem ter duração superior a 4 anos"
@@ -60,12 +61,21 @@
           browse-text="Procurar"
           name="ficheiroFundamentacaoProfessor"
           v-validate="{ required: true }"
-          :state="validateState('this.ficheiroFundamentacaoProfessor')"
+          :state="validateState('ficheiroFundamentacaoProfessor')"
           @change="onFileSelected"
         ></b-form-file>
         <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
-
+      <b-form-group>
+                    <b-button
+                        size="md"
+                        variant="dark"
+                        v-if="ficheiro"
+                        @click="downloadFicheiro(proposta.id_proposta_proponente, 'Fundamentacao da Proposta Proponente')"
+                    >
+                    <i class="far fa-file-pdf"></i> Atual Ficheiro de Fundamentação
+                    </b-button>
+                </b-form-group>
       <!--
         <b-form-textarea
           v-model="propostaProponenteProfessor.fundamentacao"
@@ -171,6 +181,7 @@ export default {
         fileFundamentacao: {}
       },
       ficheirosProfessor: [],
+      ficheiroFun: "",
       ficheiroFundamentacaoProfessor: "",
       ficheiroFundamentacaoProfessorModel: "",
       
@@ -222,6 +233,19 @@ export default {
     onFileSelected(event) {
       this.ficheirosProfessor[event.target.name] = event.target.files[0];
     },
+     downloadFicheiro(proposta_id, descricao) {
+      axios
+        .get("/api/downloadFicheiro/" + proposta_id + "/" + descricao, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          let blob = new Blob([response.data]);
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = descricao + ".pdf";
+          link.click();
+        });
+    },
     seguinte() {
       //* Mudar para o componente Resumo Proposta
       this.$v.$touch();
@@ -244,7 +268,7 @@ export default {
             );
             this.ficheiroProponenteProfessor.fileFundamentacao.append(
                 "descricao",
-                "Fundamentacao da Proposta Proponente Professor"
+                "Fundamentacao da Proposta Proponente"
             );
 
             this.ficheiro.fileFundamentacao = new FormData();
@@ -254,7 +278,7 @@ export default {
             );
             this.ficheiro.fileFundamentacao.append(
                 "descricao",
-                "Fundamentacao da Proposta Proponente Professor"
+                "Fundamentacao da Proposta Proponente"
             );
 
         //}
@@ -299,6 +323,16 @@ export default {
         .then(response => {
           Object.assign(this.propostaProponenteProfessor, response.data);
         });
+      axios
+        .get("/api/ficheiros/" + this.proposta.id_proposta_proponente)
+        .then(response => {
+            if (this.proposta.regime_prestacao_servicos == "tempo_integral" ||
+                this.proposta.regime_prestacao_servicos == "dedicacao_exclusiva"){
+                if(ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+                    this.ficheiroFun = ficheiro;
+                }
+            }
+      });
     }
   }
 };

@@ -11,7 +11,8 @@ class UcsPropostaProponente extends Model
     protected $table = 'ucs_proposta_proponente';
 
     protected $fillable = [
-        'codigo_uc', 'nome_uc', 'regime', 'tipo', 'horas', 'horas_semestrais', 'departamento_id', 'proposta_proponente_id', 'turno',  'Código Curso', 'Nome Curso'
+        'codigo_uc', 'nome_uc', 'regime', 'tipo', 'horas', 'horas_semestrais', 'departamento_id',
+        'proposta_proponente_id', 'turno',  'codigo_curso', 'nome_curso'
     ];
 
 

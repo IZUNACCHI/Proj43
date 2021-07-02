@@ -77,7 +77,7 @@ class InitialMigration extends Migration
             $table->string('segundo_proponente')->nullable();
             //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])
             //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])->nullable();
-
+            
             $table->boolean('contrato_assinado_curso')->default(false);
             $table->boolean('contrato_assinado_departamento')->default(false);
             $table->enum('role', ['professor', 'assistente', 'monitor']);
@@ -85,6 +85,7 @@ class InitialMigration extends Migration
             $table->decimal('remuneracao', 6, 2);
             $table->string('escalao');
             $table->string('indice');
+            $table->enum('verificacao_serviço_docente_atribuido', ['sim', 'nao']);
             $table->enum('verificacao_outras_uo', ['sim', 'nao']);
             $table->string('nome_uo')->nullable();
             $table->integer('tempo_parcial_uo')->nullable()->unsigned();
@@ -139,6 +140,7 @@ class InitialMigration extends Migration
             //$table->dateTime('periodo_inicial')->nullable();
             //$table->dateTime('periodo_final')->nullable();
             $table->string('duracao');
+            $table->string('ciclo');
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
             $table->softDeletes();

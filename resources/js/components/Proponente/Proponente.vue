@@ -1,9 +1,15 @@
 <template>
   <div>
-    <button class="btn btn-danger" @click="voltar" v-if="voltarVar">Voltar</button>
+    <!--<button class="btn btn-danger" @click="voltar" v-if="voltarVar">Voltar</button>-->
     <br><br>
     <div v-if="isShow">
-      <b-form-group label="Propostas existentes" description="Campo opcional">
+    <b-form-group
+      description="Legislação: art. 8.º do ECPDESP na redacção que lhe foi dada pelo Decreto-Lei
+n.º 207/2009, de 31 de Agosto, alterado pela Lei nº 7/2010, de 13 de Maio e
+Regulamento de Contratação de Pessoal Docente Especialmente Contratado ao
+abrigo do art. 8.º do ECPDESP, do IPL"
+    ><h3>Proposta de contratação</h3></b-form-group>
+    <b-form-group label="Propostas existentes" description="Campo opcional">
         <b-form-select
           :options="propostasExistentes"
           v-model="propostaExistente"
@@ -17,15 +23,8 @@
           </template>
         </b-form-select>
       </b-form-group>
-
-    <b-form-group
-      description="Legislação: art. 8.º do ECPDESP na redacção que lhe foi dada pelo Decreto-Lei
-n.º 207/2009, de 31 de Agosto, alterado pela Lei nº 7/2010, de 13 de Maio e
-Regulamento de Contratação de Pessoal Docente Especialmente Contratado ao
-abrigo do art. 8.º do ECPDESP, do IPL"
-    ><h3>Proposta de contratação</h3></b-form-group>
-    <b-form-group label="">
-        <b-form-input :readonly="true" v-model="proposta.unidade_organica"></b-form-input>
+    <!--<b-form-group label="">
+        <b-form-input :readonly="true" v-model="proposta.unidade_organica"></b-form-input>-->
     </b-form-group>
     <b-form-group label="Unidade Orgânica" label-for="inputTempoParcial">
           <b-form-select
@@ -73,41 +72,6 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         <b-form-invalid-feedback id="input-1-live-feedback">O Numero de telefone é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
-
-
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Serviço Docente Atribuído</b-button>
@@ -119,14 +83,14 @@ abrigo do art. 8.º do ECPDESP, do IPL"
 
                <b-form-group label="Deseja fazer upload do ficheiro de serviço do docente atribuido?">
                 <b-form-radio-group
-                  v-model="proposta.verificacao_serviço_docente_atribuído"
-                  :options="verificacao_serviço_docente_atribuído"
+                  v-model="proposta.verificacao_serviço_docente_atribuido"
+                  :options="verificacao_serviço_docente_atribuido"
                   stacked
                 ></b-form-radio-group>
               </b-form-group>
 
 
-              <b-form-group v-if="proposta.verificacao_serviço_docente_atribuído == 'nao'">
+              <b-form-group v-if="proposta.verificacao_serviço_docente_atribuido == 'nao'">
                
               <b-form-group label="Curso" label-for="inputCurso">
                 <b-form-select
@@ -215,8 +179,8 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <i class="fas fa-plus"></i> Adicionar UC
               </button>
 
-              <div v-if="unidadesCurriculares.length">
-                <table class="table mt-3">
+              <b-form-group>
+                <table class="table mt-3" width="100%" v-if="unidadesCurriculares.length">
                   <thead>
                     <th>Código UC</th>
                     <th>Nome UC</th>
@@ -250,9 +214,9 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     </tr>
                   </tbody>
                 </table>
-              </div>
+              </b-form-group>
               <br /></b-form-group>
-              <div v-if="proposta.verificacao_serviço_docente_atribuído == 'sim'">
+              <div v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'">
               <b-form-group label="Serviço Docente Atribuído (PDF)">
                     <b-form-file
                         v-model="ficheiroUnidadesCurricularesModel"
@@ -276,12 +240,11 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
                     </b-button>
                 </b-form-group>
-                </div>
+              </div>
             </b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
-      
      
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -292,7 +255,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
             <b-card-text>
               <h3 class="pb-4">Habilitações Literárias</h3>
 
-              <b-form-group label="Gr">
+              <b-form-group>
                 <b-form-radio-group
                   v-model="proposta.grau"
                   :options="grausArray"
@@ -371,7 +334,6 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
               </b-form-group>
-
             </b-card-text>
           </b-card-body>
         </b-collapse>
@@ -492,24 +454,10 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                   ></b-form-input>
                 </b-form-group>
               </b-form-group>
-
-      
-
-
-
-
-
-
-
             </b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
-
-
-
-
-
 
       <b-form-group
         label="Qual será o papel a desempenhar pelo docente a ser contratado?"
@@ -536,6 +484,8 @@ abrigo do art. 8.º do ECPDESP, do IPL"
       <b-form-invalid-feedback id="input-1-live-feedback">O Tipo da Proposta é obrigatória!</b-form-invalid-feedback>
     </b-form-group>
 
+      <button class="btn btn-danger mt-3 font-weight-bold" v-on:click.prevent="voltar" v-if="voltarVar"> Cancelar
+      </button>
 
       <button
         class="btn btn-success mt-3 font-weight-bold"
@@ -625,7 +575,7 @@ export default {
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
       ],
-      verificacao_serviço_docente_atribuído: [
+      verificacao_serviço_docente_atribuido: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
       ],
@@ -678,8 +628,6 @@ export default {
         grau: "",
         area_cientifica: "",
         curso: "",
-        
-
         remuneracao: "",
         escalao: "",
         indice: "",
@@ -698,6 +646,7 @@ export default {
         horas_semestrais: "",
         codigo_curso: "",
         nome_curso: "",
+        codigo_curso: "",
         turno: "",
         tipo: ""
       },
@@ -763,7 +712,7 @@ export default {
         }
       };
     } else {
-    return{
+      return{
         proposta: {
           tipo_contrato: { required },
           unidade_organica: { required },
@@ -824,34 +773,20 @@ export default {
         .then(response => {
         if(!response.data){
          //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
-      this.ficheiro.fileUnidadesCurriculares = new FormData();
-      this.ficheiro.fileUnidadesCurriculares.append(
-        "file",
-        this.ficheiros["ficheiroUnidadesCurriculares"]
-      );
-      this.ficheiro.fileUnidadesCurriculares.append(
-        "descricao",
-        "Ficheiro Unidades Curriculares do docente a ser contratado"
-      );
-
-
-      
-      /*
-      
-      this.ficheiro.fileRelatorio = new FormData();
-      this.ficheiro.fileRelatorio.append(
-        "file",
-        this.ficheiros["ficheiroRelatorio"]
-      );
-      this.ficheiro.fileRelatorio.append(
-        "descricao",
-        "Relatorio dos 2 proponentes"
-      );*/
-      this.roleSelecionado = proposta.role;
-      this.$v.proposta.$touch();
-      this.$validator.validateAll().then(result => {
+         this.ficheiro.fileUnidadesCurriculares = new FormData();
+         this.ficheiro.fileUnidadesCurriculares.append(
+            "file",
+            this.ficheiros["ficheiroUnidadesCurriculares"]
+         );
+         this.ficheiro.fileUnidadesCurriculares.append(
+            "descricao",
+            "Ficheiro Unidades Curriculares do docente a ser contratado"
+         );
+        this.roleSelecionado = proposta.role;
+        this.$v.proposta.$touch();
+        this.$validator.validateAll().then(result => {
         if (result) {
-          //if (!this.$v.proposta.$invalid && unidadesCurriculares.length > 0) {
+          //if (!this.$v.proposta.$invalid) {
             this.$store.commit("setProposta", proposta);
             this.isFinalized = true;
             this.isShow = false;
@@ -929,21 +864,12 @@ export default {
         .get("/api/ficheiros/" + this.propostaExistente.id_proposta_proponente)
         .then(response => {
           response.data.forEach(ficheiro => {
-            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente Assistente"){
-              this.ficheiroFundamentacaoAssistente = ficheiro;
+            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+              this.ficheiroFundamentacao = ficheiro;
             }
 
             if (ficheiro.descricao == "Ficheiro Unidades Curriculares do docente a ser contratado"){
               this.ficheiroUnidadesCurriculares = ficheiro;
-            }
-            
-            if (ficheiro.descricao == "Relatorio dos 2 proponentes")
-              this.ficheiroRelatorio = ficheiro;
-            if (
-              this.proposta.tipo_contrato == "contratacao_inicial" &&
-              ficheiro.descricao == "Habilitacoes do docente a ser contratado"
-            ) {
-              this.ficheiroHabilitacoes = ficheiro;
             }
           });
         });

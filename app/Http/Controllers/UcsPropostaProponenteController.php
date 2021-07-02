@@ -23,8 +23,8 @@ class UcsPropostaProponenteController extends Controller
             'horas_semestrais' => 'required',
             'departamento_id' => 'nullable',
             'turno' => 'required',
-            'Código Curso' => 'nullable',
-            'Nome Curso' => 'nullable'
+            'codigo_curso' => 'required',
+            'nome_curso' => 'required'
         ]);
         $ucsPropostaProponente = new UcsPropostaProponente();
         $ucsPropostaProponente->fill($request->all());

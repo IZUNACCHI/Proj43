@@ -12,7 +12,7 @@ class PropostaProponenteMonitor extends Model
 
     protected $fillable = [
         'regime_prestacao_servicos', 'percentagem_prestacao_servicos', 'periodo',
-        'duracao', 'proposta_proponente_id'
+        'duracao', 'ciclo', 'proposta_proponente_id'
     ];
 
     protected $hidden = [

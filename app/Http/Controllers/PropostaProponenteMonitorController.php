@@ -14,6 +14,7 @@ class PropostaProponenteMonitorController extends Controller
             'percentagem_prestacao_servicos' => 'required|numeric|min:1',
             'duracao' => 'required',
             'periodo' => 'required',
+            'ciclo' => 'required',
             'proposta_proponente_id' => 'required',
         ]);
         $propostaProponenteMonitor = new PropostaProponenteMonitor();
