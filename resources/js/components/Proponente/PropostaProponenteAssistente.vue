@@ -78,8 +78,8 @@
                     <b-button
                         size="md"
                         variant="dark"
-                        v-if="ficheiroFundamentacaoAssistente"
-                        @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Fundamentacao da Proposta Proponente')"
+                        v-if="ficheiroFundamentacao"
+                        @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Fundamentação Assistente
                     </b-button>
@@ -101,7 +101,7 @@
         <b-form-invalid-feedback id="input-1-live-feedback">A duração do contrato é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Periodo" label-for="inputPeriodo" description="Ex: 13/03/2000 a 28/07/2000">
+      <b-form-group label="Periodo" label-for="inputPeriodo" description="Ex: 01/01/2022 a 31/12/2022">
         <b-form-input
           id="inputPeriodo"
           :state="!$v.propostaProponenteAssistente.periodo.$error && null"
@@ -189,6 +189,7 @@ export default {
         fileFundamentacao: {}
       },
       ficheirosAssistente: [],
+      ficheiroFundamentacao: "",
       ficheiroFundamentacaoAssistente: "",
       ficheiroFundamentacaoAssistenteModel: "",
       
@@ -251,6 +252,19 @@ export default {
     },
     onFileSelected(event) {
       this.ficheirosAssistente[event.target.name] = event.target.files[0];
+    },
+    downloadFicheiro(proposta_id, descricao) {
+      axios
+        .get("/api/downloadFicheiro/" + proposta_id + "/" + descricao, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          let blob = new Blob([response.data]);
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = descricao + ".pdf";
+          link.click();
+        });
     },
     seguinte() {
       //* Mudar para o componente Resumo Proposta
@@ -328,6 +342,17 @@ export default {
         .then(response => {
           Object.assign(this.propostaProponenteAssistente, response.data);
         });
+
+         axios
+        .get("/api/ficheiros/" + this.proposta.id_proposta_proponente)
+        .then(response => {
+          response.data.forEach(ficheiro => {
+            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+              this.ficheiroFundamentacao = ficheiro;
+            }
+          });
+        });
+     
     }
   }
 };

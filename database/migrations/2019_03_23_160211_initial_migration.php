@@ -88,12 +88,13 @@ class InitialMigration extends Migration
             $table->boolean('contrato_assinado_departamento')->default(false);
             $table->enum('role', ['professor', 'assistente', 'monitor']);
 
-            $table->decimal('remuneracao', 6, 2);
-            $table->string('escalao');
-            $table->string('indice');
+            $table->decimal('remuneracao', 6, 2)->nullable();
+            $table->string('escalao')->nullable();
+            $table->string('indice')->nullable();
             $table->enum('verificacao_serviço_docente_atribuido', ['sim', 'nao']);
             $table->enum('verificacao_outras_uo', ['sim', 'nao']);
             $table->string('nome_uo')->nullable();
+            $table->enum('verificacao_tempo_parcial', ['sim', 'nao']);
             $table->integer('tempo_parcial_uo')->nullable()->unsigned();
             $table->string('periodo_uo')->nullable();
 
@@ -105,7 +106,7 @@ class InitialMigration extends Migration
             $table->increments('id_proposta_proponente_professor');
             $table->enum('role_professor', ['coordenador', 'adjunto', 'visitante']);
             $table->enum('regime_prestacao_servicos', ['tempo_parcial', 'tempo_integral', 'dedicacao_exclusiva']);
-            $table->integer('percentagem_prestacao_servicos')->nullable();
+            $table->integer('percentagem_prestacao_servicos');
             $table->integer('percentagem_prestacao_servicos_2')->nullable();
             $table->string('fundamentacao')->nullable();
             $table->string('periodo');
@@ -124,7 +125,7 @@ class InitialMigration extends Migration
             $table->increments('id_proposta_proponente_assistente');
             $table->enum('regime_prestacao_servicos', ['tempo_parcial', 'tempo_parcial_60', 'tempo_integral', 'dedicacao_exclusiva']);
             $table->integer('percentagem_prestacao_servicos');
-            $table->integer('percentagem_prestacao_servicos_2');
+            $table->integer('percentagem_prestacao_servicos_2')->nullable();
             $table->string('fundamentacao')->nullable();
             $table->string('periodo');
             //$table->dateTime('periodo_inicial')->nullable();
@@ -271,8 +272,8 @@ class InitialMigration extends Migration
 		});
 			
 
-		
-    
+
+        
     }
 
     /**
@@ -301,6 +302,6 @@ class InitialMigration extends Migration
 		Schema::dropIfExists('ai_data');
 		Schema::dropIfExists('au_data');
 		Schema::dropIfExists('ad_data');
-		Schema::dropIfExists('config');
+        Schema::dropIfExists('config');
     }
 }

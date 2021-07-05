@@ -235,7 +235,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                         size="md"
                         variant="dark"
                         v-if="ficheiroUnidadesCurriculares"
-                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Serviço do Docente Atribuído')"
+                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Ficheiro Unidades Curriculares do docente a ser contratado')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
                     </b-button>
@@ -472,14 +472,24 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               </b-form-group>
 
              
-                <b-form-group label="Indique o tempo parcial" label-for="inputTempoParcial" v-if="proposta.verificacao_tempo_parcial == 'sim'">
-                  <b-form-input
-                    id="inputTempoParcial"
-                    v-model="proposta.tempo_parcial_uo"
-                  ></b-form-input>
-                </b-form-group>
+               
 
-                <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 13/03/2000 a 28/07/2000">
+
+                <b-form-group
+                    label="Indique o tempo parcial"
+                    label-for="inputTempoParcial"
+                    v-if="proposta.verificacao_tempo_parcial == 'sim'">
+                      <b-form-select
+                        id="inputTempoParcial"
+                        v-model="proposta.tempo_parcial_uo"
+                        :state="null"
+                        :options="percentagensArray"
+                      ></b-form-select>
+                      <b-form-invalid-feedback
+                        id="input-1-live-feedback"
+                      >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 01/01/2022 a 31/12/2022">
                   <b-form-input
                     id="inputPeriodo"
                     v-model="proposta.periodo_uo"
@@ -611,6 +621,17 @@ export default {
       verificacao_serviço_docente_atribuido: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
+      ],
+      percentagensArray: [
+        { text: "80% (10 horas)", value: "80" },
+        { text: "70% (9 horas)", value: "70" },
+        { text: "60% (8 horas)", value: "60" },
+        { text: "55% (7 horas)", value: "55" },
+        { text: "50% (6 horas)", value: "50" },
+        { text: "40% (5 horas)", value: "40" },
+        { text: "30% (4 horas)", value: "30" },
+        { text: "20% (3 horas)", value: "20" },
+        { text: "15% (2 horas)", value: "15" }
       ],
       UnidadeOrganicaESSLei: [
         { text: "SECS", value: "SECS" },
@@ -799,6 +820,7 @@ export default {
           role: { required },
 		  curso_Formacao: { required },
 		  area_cientificaFormacao: { required },
+          verificacao_serviço_docente_atribuido: {required},
       
           remuneracao: { required, numeric },
           escalao: { required },
@@ -865,6 +887,7 @@ export default {
           numero_telefone: { required, minLength: minLength(9) },
           grau: { required },
           role: { required },
+          verificacao_serviço_docente_atribuido: {required},
 
           curso_Outro: { required },
 		  area_cientificaOutro: { required },

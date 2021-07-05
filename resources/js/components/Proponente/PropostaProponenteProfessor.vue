@@ -70,8 +70,8 @@
                     <b-button
                         size="md"
                         variant="dark"
-                        v-if="ficheiro"
-                        @click="downloadFicheiro(proposta.id_proposta_proponente, 'Fundamentacao da Proposta Proponente')"
+                        v-if="ficheiroFundamentacao"
+                        @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Ficheiro de Fundamentação
                     </b-button>
@@ -93,7 +93,7 @@
         <b-form-invalid-feedback id="input-1-live-feedback">A duração do contrato é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Periodo" label-for="inputPeriodo"  description="Ex: 13/03/2000 a 28/07/2000">
+      <b-form-group label="Periodo" label-for="inputPeriodo"  description="Ex: 01/01/2022 a 31/12/2022">
         <b-form-input
           id="inputPeriodo"
           :state="!$v.propostaProponenteProfessor.periodo.$error && null"
@@ -181,7 +181,7 @@ export default {
         fileFundamentacao: {}
       },
       ficheirosProfessor: [],
-      ficheiroFun: "",
+      ficheiroFundamentacao: "",
       ficheiroFundamentacaoProfessor: "",
       ficheiroFundamentacaoProfessorModel: "",
       
@@ -233,7 +233,7 @@ export default {
     onFileSelected(event) {
       this.ficheirosProfessor[event.target.name] = event.target.files[0];
     },
-     downloadFicheiro(proposta_id, descricao) {
+    downloadFicheiro(proposta_id, descricao) {
       axios
         .get("/api/downloadFicheiro/" + proposta_id + "/" + descricao, {
           responseType: "arraybuffer"
@@ -326,13 +326,12 @@ export default {
       axios
         .get("/api/ficheiros/" + this.proposta.id_proposta_proponente)
         .then(response => {
-            if (this.proposta.regime_prestacao_servicos == "tempo_integral" ||
-                this.proposta.regime_prestacao_servicos == "dedicacao_exclusiva"){
-                if(ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
-                    this.ficheiroFun = ficheiro;
-                }
+          response.data.forEach(ficheiro => {
+            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+              this.ficheiroFundamentacao = ficheiro;
             }
-      });
+          });
+        });
     }
   }
 };
