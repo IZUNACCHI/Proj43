@@ -256,45 +256,77 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               <h3 class="pb-4">Habilitações Literárias</h3>
 
               <b-form-group>
-                <b-form-radio-group
-                  v-model="proposta.grau"
+                <b-form-checkbox-group
+                  v-model="grauTest"
                   :options="grausArray"
-                  :state="!$v.proposta.grau.$error && null"
-                  stacked
-                ></b-form-radio-group>
+                  
+                ></b-form-checkbox-group>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
-
-              <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterarias"
-                v-if="proposta.grau != 'doutoramento'">
+			  
+			  
+			  <b-form-group label="Curso do Doutoramento" label-for="inputCursoHabilitacoesLiterariasDoutoramento"
+                v-if="grauTest.includes('doutoramento')">
                 <b-form-input
-                  id="inputCursoHabilitacoesLiterarias"
-                  :state="!$v.proposta.curso.$error && null"
-                  v-model="proposta.curso"
+                  id="inputCursoHabilitacoesLiterariasDoutoramento"
+                 
+                  v-model="proposta.curso_Doutoramento"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">O Curso é obrigatório!</b-form-invalid-feedback>
+              </b-form-group>
+			  
+			  <b-form-group
+                label="Área Científica Doutoramento"
+                label-for="inputAreaCientificaHabilitacoesLiterariasDoutoramento"
+				v-if="grauTest.includes('doutoramento')"
+              >
+                <b-form-input
+                  id="inputAreaCientificaHabilitacoesLiterariasDoutoramento"
+                  v-model="proposta.area_cientificaDoutoramento"
+                  ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
+			  </b-form-group>
+			  
+              <b-form-group label="Grau Outro" label-for="inputCursoHabilitacoesLiterariasOutro"
+                v-if="grauTest.includes('outro')">
+                <b-form-input
+                  id="inputCursoHabilitacoesLiterariasOutro"
+                  v-model="proposta.curso_Outro"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+              </b-form-group>
+			  
+			  <b-form-group
+                label="Área Científica Outro"
+                label-for="inputAreaCientificaHabilitacoesLiterariasOutro"
+				v-if="grauTest.includes('outro')"
+              >
+                <b-form-input
+                  id="inputAreaCientificaHabilitacoesLiterariasOutro"
+                  v-model="proposta.area_cientificaOutro"
+                  ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
+			  </b-form-group>
+			  
+			  <b-form-group label="Grau Formação" label-for="inputCursoHabilitacoesLiterariasFormacao"
+                v-if="grauTest.includes('em_formacao')">
+                <b-form-input
+                  id="inputCursoHabilitacoesLiterariasFormacao"
+                  v-model="proposta.curso_Formacao"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
               
-              <b-form-group label="Curso" label-for="inputCursoHabilitacoesLiterarias"
-                v-if="proposta.grau == 'doutoramento'">
-                <b-form-input
-                  id="inputCursoHabilitacoesLiterarias"
-                  :state="!$v.proposta.curso.$error && null"
-                  v-model="proposta.curso"
-                ></b-form-input>
-                <b-form-invalid-feedback id="input-1-live-feedback">O Curso é obrigatório!</b-form-invalid-feedback>
-              </b-form-group>
               <b-form-group
-                label="Área Científica"
-                label-for="inputAreaCientificaHabilitacoesLiterarias"
+                label="Área Científica Formação"
+                label-for="inputAreaCientificaHabilitacoesLiterariasFormacao"
+				v-if="grauTest.includes('em_formacao')"
               >
                 <b-form-input
-                  id="inputAreaCientificaHabilitacoesLiterarias"
-                  :state="!$v.proposta.area_cientifica.$error && null"
-                  v-model="proposta.area_cientifica"
+                  id="inputAreaCientificaHabilitacoesLiterariasFormacao"
+                  v-model="proposta.area_cientificaFormacao"
                   ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
-              </b-form-group>
               </b-form-group>
             </b-card-text>
           </b-card-body>
@@ -386,6 +418,7 @@ import { required, email, minLength, numeric } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
+	  grauTest: [], 
       //? Array de Objetos para Radio Buttons
       tipoContratosArray: [
         { text: "Contratação Inicial", value: "contratacao_inicial" },
@@ -480,8 +513,12 @@ export default {
         fundamentacao_coordenador_departamento: "",
         contrato_assinado_departamento:"",
         grau: "",
-        area_cientifica: "",
-        curso: "",
+        area_cientificaDoutoramento: "",
+		area_cientificaOutro: "",
+		area_cientificaFormacao: "",
+        curso_Doutoramento: "",
+		curso_Outro: "",
+		curso_Formacao: "",
         remuneracao: "",
         escalao: "",
         indice: "",
@@ -490,6 +527,8 @@ export default {
         tempo_parcial_uo:"",
         periodo_uo:"",
         primeiro_proponente: this.$store.state.user.name,
+		verificacao_area_cientifica: "sim",
+		verificacao_curso: "sim",
       },
       propostaExistente: {},
       unidadeCurricular: {
@@ -532,8 +571,11 @@ export default {
   },
   //? Validations Vuelidate
   validations() {
+	
     if (proposta.verificacao_outras_uo == "sim" ) {
+	if(this.proposta.grau.includes("doutoramento")){
       return {
+		
         proposta: {
           tipo_contrato: { required },
           unidade_organica: { required },
@@ -542,14 +584,13 @@ export default {
           departamento_curso: {required},
           numero_telefone: { required, minLength: minLength(9) },
           grau: { required },
-          curso: { required },
-          area_cientifica: { required },
           role: { required },
-          verificacao_serviço_docente_atribuido: {required},
+		  curso_Doutoramento: { required },
+		  area_cientificaDoutoramento: { required },
       
-          /*remuneracao: { required, numeric },
+          remuneracao: { required, numeric },
           escalao: { required },
-          indice: { required },*/
+          indice: { required },
           verificacao_outras_uo: { required },
           nome_uo: { required },
           tempo_parcial_uo: { required },
@@ -565,8 +606,9 @@ export default {
           horas_semestrais: { required }
         }
       };
-    } else {
-      return{
+	  }else if(this.proposta.grau.includes("outro")){
+      return {
+		
         proposta: {
           tipo_contrato: { required },
           unidade_organica: { required },
@@ -575,15 +617,17 @@ export default {
           departamento_curso: {required},
           numero_telefone: { required, minLength: minLength(9) },
           grau: { required },
-          curso: { required },
-          area_cientifica: { required },
           role: { required },
-          verificacao_serviço_docente_atribuido: {required},
 
+          curso_Outro: { required },
+		  area_cientificaOutro: { required },
           remuneracao: { required, numeric },
           escalao: { required },
           indice: { required },
           verificacao_outras_uo: { required },
+          nome_uo: { required },
+          tempo_parcial_uo: { required },
+          periodo_uo: { required },
         },
         unidadeCurricular: {
           codigo_curso: { required },
@@ -594,8 +638,145 @@ export default {
           horas: { required },
           horas_semestrais: { required }
         }
-      }
-    }
+      };
+	  } else{
+      return {
+		
+        proposta: {
+          tipo_contrato: { required },
+          unidade_organica: { required },
+          nome_completo: { required },
+          email: { required, email },
+          departamento_curso: {required},
+          numero_telefone: { required, minLength: minLength(9) },
+          grau: { required },
+          role: { required },
+		  curso_Formacao: { required },
+		  area_cientificaFormacao: { required },
+          verificacao_serviço_docente_atribuido: {required},
+      
+          remuneracao: { required, numeric },
+          escalao: { required },
+          indice: { required },
+          verificacao_outras_uo: { required },
+          nome_uo: { required },
+          tempo_parcial_uo: { required },
+          periodo_uo: { required },
+        },
+        unidadeCurricular: {
+          codigo_curso: { required },
+          codigo_uc: { required },
+          regime: { required },
+          tipo: { required },
+          turno: { required },
+          horas: { required },
+          horas_semestrais: { required }
+        }
+      };
+	  }
+    } else {
+        if(this.proposta.grau.includes("doutoramento")){
+      return {
+		
+        proposta: {
+          tipo_contrato: { required },
+          unidade_organica: { required },
+          nome_completo: { required },
+          email: { required, email },
+          departamento_curso: {required},
+          numero_telefone: { required, minLength: minLength(9) },
+          grau: { required },
+          role: { required },
+		  curso_Doutoramento: { required },
+		  area_cientificaDoutoramento: { required },
+      
+          remuneracao: { required, numeric },
+          escalao: { required },
+          indice: { required },
+          verificacao_outras_uo: { required },
+          nome_uo: { required },
+          tempo_parcial_uo: { required },
+          periodo_uo: { required },
+        },
+        unidadeCurricular: {
+          codigo_curso: { required },
+          codigo_uc: { required },
+          regime: { required },
+          tipo: { required },
+          turno: { required },
+          horas: { required },
+          horas_semestrais: { required }
+        }
+      };
+	  }else if(this.proposta.grau.includes("outro")){
+      return {
+		
+        proposta: {
+          tipo_contrato: { required },
+          unidade_organica: { required },
+          nome_completo: { required },
+          email: { required, email },
+          departamento_curso: {required},
+          numero_telefone: { required, minLength: minLength(9) },
+          grau: { required },
+          role: { required },
+          verificacao_serviço_docente_atribuido: {required},
+
+          curso_Outro: { required },
+		  area_cientificaOutro: { required },
+          remuneracao: { required, numeric },
+          escalao: { required },
+          indice: { required },
+          verificacao_outras_uo: { required },
+          nome_uo: { required },
+          tempo_parcial_uo: { required },
+          periodo_uo: { required },
+        },
+        unidadeCurricular: {
+          codigo_curso: { required },
+          codigo_uc: { required },
+          regime: { required },
+          tipo: { required },
+          turno: { required },
+          horas: { required },
+          horas_semestrais: { required }
+        }
+      };
+	  } else{
+      return {
+		
+        proposta: {
+          tipo_contrato: { required },
+          unidade_organica: { required },
+          nome_completo: { required },
+          email: { required, email },
+          departamento_curso: {required},
+          numero_telefone: { required, minLength: minLength(9) },
+          grau: { required },
+          role: { required },
+		  curso_Formacao: { required },
+		  area_cientificaFormacao: { required },
+      
+          remuneracao: { required, numeric },
+          escalao: { required },
+          indice: { required },
+          verificacao_outras_uo: { required },
+          nome_uo: { required },
+          tempo_parcial_uo: { required },
+          periodo_uo: { required },
+        },
+        unidadeCurricular: {
+          codigo_curso: { required },
+          codigo_uc: { required },
+          regime: { required },
+          tipo: { required },
+          turno: { required },
+          horas: { required },
+          horas_semestrais: { required }
+        }
+      };
+	  }
+	  }
   },
   methods: {
     voltar(){
@@ -624,6 +805,7 @@ export default {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
     avancar: function(proposta, unidadesCurriculares) {
+		proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
       axios.get('/api/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/' + proposta.email)
         .then(response => {
         if(!response.data){
@@ -663,7 +845,7 @@ export default {
         }
       })
       
-     
+          
     },
     getUcsDeCurso(codigo_curso) {
       this.ucs = [];

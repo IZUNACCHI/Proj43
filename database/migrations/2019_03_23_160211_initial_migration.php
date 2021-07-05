@@ -69,8 +69,14 @@ class InitialMigration extends Migration
             $table->string('departamento_curso');
             
             $table->string('grau');
-            $table->string('curso');
-            $table->string('area_cientifica');
+            $table->string('curso_Doutoramento')->nullable();
+            $table->string('area_cientificaDoutoramento')->nullable();
+			 $table->string('curso_Outro')->nullable();
+            $table->string('area_cientificaOutro')->nullable();
+			 $table->string('curso_Formacao')->nullable();
+            $table->string('area_cientificaFormacao')->nullable();
+			$table->string('verificacao_curso')->nullable();
+			$table->string('verificacao_area_cientifica')->nullable();
             $table->string('fundamentacao_coordenador_curso')->nullable();
             $table->string('fundamentacao_coordenador_departamento')->nullable();
             $table->string('primeiro_proponente');
