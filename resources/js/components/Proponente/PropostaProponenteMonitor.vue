@@ -62,6 +62,174 @@
       <b-form-invalid-feedback id="input-1-live-feedback">O periodo do contrato é obrigatório!</b-form-invalid-feedback>
     </b-form-group>
 
+     <b-card no-body class="mb-1">
+        <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-button block href="#" v-b-toggle.accordion-3 variant="dark">Vencimento aplicável</b-button>
+        </b-card-header>
+        <b-collapse id="accordion-3" accordion="accordion" role="tabpanel">
+          <b-card-body>
+            <b-card-text>
+              <b-form-group label="Remuneração" label-for="inputRemuneracao">
+                <b-form-input
+                  id="inputRemuneracao"
+                  :state="null"
+                  v-model="proposta.remuneracao"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">Insira a remuneração em formato numérico!</b-form-invalid-feedback>
+              </b-form-group>
+
+              <b-form-group label="Escalão" label-for="inputEscalao">
+                <b-form-input
+                  id="inputEscalao"
+                  :state="null"
+                  v-model="proposta.escalao"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
+              </b-form-group>
+
+              <b-form-group label="Índice" label-for="inputIndice">
+                <b-form-input
+                  id="inputIndice"
+                  :state="null"
+                  v-model="proposta.indice"
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
+              </b-form-group>
+            </b-card-text>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+
+      <b-card no-body class="mb-1">
+        <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-button block href="#" v-b-toggle.accordion-4 variant="dark">Contratação para mais do que uma UO do IPL</b-button>
+        </b-card-header>
+        <b-collapse id="accordion-4" accordion="accordion" role="tabpanel">
+          <b-card-body>
+            <b-card-text>
+              <h2 class="pb-4"></h2>
+              <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
+                <b-form-radio-group
+                  v-model="proposta.verificacao_outras_uo"
+                  :options="verificacao_outras_uo_array"
+                  stacked
+                ></b-form-radio-group>
+              </b-form-group>
+              <b-form-group v-if="proposta.verificacao_outras_uo == 'sim'">
+                <b-form-group
+                    label="Indique o nome da Unidade Orgânica"
+                    label-for="inputTempoParcial"
+                    v-if="proposta.unidade_organica == 'ESECS'"
+                >
+                <b-form-select
+                    id="inputTempoParcial"
+                    v-model="proposta.nome_uo"
+                    :state="null"
+                    :options="UnidadeOrganicaESECS"
+                ></b-form-select>
+                <b-form-invalid-feedback
+                    id="input-1-live-feedback"
+                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group
+                    label="Indique o nome da Unidade Orgânica"
+                    label-for="inputTempoParcial"
+                    v-if="proposta.unidade_organica == 'ESTG'"
+                >
+                <b-form-select
+                    id="inputTempoParcial"
+                    v-model="proposta.nome_uo"
+                    :state="null"
+                    :options="UnidadeOrganicaESTG"
+                ></b-form-select>
+                <b-form-invalid-feedback
+                    id="input-1-live-feedback"
+                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group
+                    label="Indique o nome da Unidade Orgânica"
+                    label-for="inputTempoParcial"
+                    v-if="proposta.unidade_organica == 'ESAD.CR'"
+                >
+                <b-form-select
+                    id="inputTempoParcial"
+                    v-model="proposta.nome_uo"
+                    :state="null"
+                    :options="UnidadeOrganicaSAD.CR"
+                ></b-form-select>
+                <b-form-invalid-feedback
+                    id="input-1-live-feedback"
+                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group
+                    label="Indique o nome da Unidade Orgânica"
+                    label-for="inputTempoParcial"
+                    v-if="proposta.unidade_organica == 'ESSLei'"
+                >
+                <b-form-select
+                    id="inputTempoParcial"
+                    v-model="proposta.nome_uo"
+                    :state="null"
+                    :options="UnidadeOrganicaESSLei"
+                ></b-form-select>
+                <b-form-invalid-feedback
+                    id="input-1-live-feedback"
+                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group
+                    label="Indique o nome da Unidade Orgânica"
+                    label-for="inputTempoParcial"
+                    v-if="proposta.unidade_organica == 'ESTM'"
+                >
+                <b-form-select
+                    id="inputTempoParcial"
+                    v-model="proposta.nome_uo"
+                    :state="null"
+                    :options="UnidadeOrganicaESTM"
+                ></b-form-select>
+                <b-form-invalid-feedback
+                    id="input-1-live-feedback"
+                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
+                </b-form-group>
+            
+            <b-form-group label="O docente esta a tempo Parcial?">
+                <b-form-radio-group
+                  v-model="proposta.verificacao_tempo_parcial"
+                  :options="verificacao_tempo_parcial"
+                  stacked
+                ></b-form-radio-group>
+              </b-form-group>
+
+             
+               
+
+
+                <b-form-group
+                    label="Indique o tempo parcial"
+                    label-for="inputTempoParcial"
+                    v-if="proposta.verificacao_tempo_parcial == 'sim'">
+                      <b-form-select
+                        id="inputTempoParcial"
+                        v-model="proposta.tempo_parcial_uo"
+                        :state="null"
+                        :options="percentagensArray"
+                      ></b-form-select>
+                      <b-form-invalid-feedback
+                        id="input-1-live-feedback"
+                      >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 01/01/2022 a 31/12/2022">
+                  <b-form-input
+                    id="inputPeriodo"
+                    v-model="proposta.periodo_uo"
+                  ></b-form-input>
+                </b-form-group>
+              </b-form-group>
+            </b-card-text>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+
     <button class="btn btn-info mt-3 font-weight-bold" v-on:click.prevent="anterior">
       <i class="fas fa-arrow-left"></i> Anterior
     </button>
@@ -89,6 +257,64 @@ export default {
   props: ["proposta", "unidadesCurriculares", "ficheiro"],
   data() {
     return {
+    
+      verificacao_outras_uo_array: [
+        { text: "Sim", value: "sim" },
+        { text: "Não", value: "nao" }
+      ],
+      verificacao_tempo_parcial: [
+        { text: "Sim", value: "sim" },
+        { text: "Não", value: "nao" }
+      ],
+      verificacao_serviço_docente_atribuido: [
+        { text: "Sim", value: "sim" },
+        { text: "Não", value: "nao" }
+      ],
+      percentagensArray: [
+        { text: "80% (10 horas)", value: "80" },
+        { text: "70% (9 horas)", value: "70" },
+        { text: "60% (8 horas)", value: "60" },
+        { text: "55% (7 horas)", value: "55" },
+        { text: "50% (6 horas)", value: "50" },
+        { text: "40% (5 horas)", value: "40" },
+        { text: "30% (4 horas)", value: "30" },
+        { text: "20% (3 horas)", value: "20" },
+        { text: "15% (2 horas)", value: "15" }
+      ],
+      UnidadeOrganicaESSLei: [
+        { text: "SECS", value: "SECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "SADCR" },
+        { text: "ESTM", value: "ESTM" }
+      ],
+      UnidadeOrganicaESECS: [
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "SADCR" },
+        { text: "ESTM", value: "ESTM" },
+        { text: "ESSLei", value: "ESSLei" }
+      ],UnidadeOrganicaESTG: [
+        { text: "ESECS", value: "ESECS" },
+        { text: "SAD.CR", value: "ESAD.CR" },
+        { text: "ESTM", value: "ESTM" },
+        { text: "ESSLei", value: "ESSLei" }
+      ],UnidadeOrganicaSADCR: [
+        { text: "ESECS", value: "ESECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "ESTM", value: "ESTM" },
+        { text: "ESSLei", value: "ESSLei" }
+      ],UnidadeOrganicaESTM: [
+        { text: "ESECS", value: "ESECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "ESAD.CR" },
+        { text: "ESSLei", value: "ESSLei" }
+      ],UnidadeOrganica: [
+        { text: "ESECS", value: "ESECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "ESAD.CR" },
+        { text: "ESSLei", value: "ESSLei" },
+        { text: "ESTM", value: "ESTM"}
+      ],
+    
       ciclo: [
         { text: "1º Ciclo", value: "1ciclo" },
         { text: "2º Ciclo", value: "2ciclo" }
@@ -114,6 +340,14 @@ export default {
         duracao: "",
         periodo: "",
         proposta_proponente_id: "",
+         remuneracao: "",
+        escalao: "",
+        indice: "",
+        verificacao_outras_uo:"",
+        nome_uo:"",
+        tempo_parcial_uo:"",
+        periodo_uo:"",
+        primeiro_proponente: this.$store.state.user.name,
         ciclo: ""
       },
       dataFimContratoText: "",

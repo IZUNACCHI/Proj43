@@ -481,9 +481,9 @@ export default {
     voltar() {
       this.$emit("mostrarComponente", this.proposta);
       this.mostrarResumoProposta = false;
-      this.$swal.fire({
+      /*this.$swal.fire({
             title: "TeVamos voltar?",
-          })
+          })*/
     },
     submeterPropostaProfessor(propostaProponenteProfessor) {
       if (this.unidadesCurriculares.length > 0) {
