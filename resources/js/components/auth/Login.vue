@@ -16,7 +16,7 @@
           <div class="app-name pt-5">
             <div class="font-weight-lighter">Plataforma de</div>
             <div class="font-weight-bold">Gestão de Contratações</div>
-            <div class="font-weight-bold">2018.19</div>
+            <div class="font-weight-bold">{{anoLetivo}}</div>
           </div>
         </div>
       </div>
@@ -47,6 +47,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
   data: function() {
     return {
+      anoLetivo: "",
       isLoading: false,
       error: false,
       errorMessage: "",
@@ -80,7 +81,10 @@ export default {
     showProponenteView() {
       this.$router.push({ name: "proponente" });
     }
-  }
+  },
+  mounted() {
+	axios.get("api/getConfigPorNome/anoLetivo").then(response =>{this.anoLetivo=response.data;})
+	},
 };
 </script>
 

@@ -137,6 +137,44 @@
               </div>
             </div>
           </section>
+		  <section>
+		  <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Configurações</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Nome</th>
+                              <th>Valor</th>
+                              <th>Ações</th>
+                            </tr>
+                          </thead>
+                          <tbody v-for="config in configuracoes" :key="user.id">
+                            <tr>
+                              <th>{{config.id}}</th>
+                              <td>{{config.nome_configuracao}}</td>
+                              <td>{{config.valor}}</td>
+                              <td>
+                                <button
+                                 class="btn btn-primary btn-sm" v-on:click.prevent="editarConfig(config.nome_configuracao)">Editar</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+		  </section>
         </div>
       </div>
     </div>
@@ -150,6 +188,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
   data() {
     return {
+	  configuracoes:[],
       isLoading: false,
       numeroUtilizadores: 0,
       numeroPropostas: 0,
@@ -233,6 +272,30 @@ export default {
         });
 
     },
+	editarConfig(nome) {
+      const { value: valor } = this.$swal({
+          title: 'Insira o novo valor da configuração' + nome,
+          input: 'text',
+          inputPlaceholder: 'Insira um valor',
+          showCancelButton: true,
+          inputValidator: (value) => {
+            return new Promise((resolve) => {
+              if(value) {
+                this.updateConfig(nome, value);
+                resolve();
+              } else {
+                resolve('É necessário inserir um valor');
+              }
+        
+            })
+          }
+        });
+
+    },
+	updateConfig(nome, valor) {
+		axios.put("api/updateConfigPorNome/"+nome+"/"+valor).then(response => {
+		});
+	},
     updateRole(id, role) {
       axios.put("api/users/updateRole/"+id, role).then(response => {   
       });
@@ -256,6 +319,11 @@ export default {
     }
   },
   mounted() {
+	axios.get("api/getConfig").then(response => {
+        this.configuracoes = response.data;
+    });
+	
+	
     axios.get("api/users").then(response => {
         this.utilizadores = response.data;
         this.numeroUtilizadores = response.data.length;

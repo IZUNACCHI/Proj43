@@ -159,5 +159,9 @@ Route::get('/getPropostaParaNovoDocente/{emailDocente}', 'NovoDocenteController@
 Route::get('/fundamentacoes/{user_id}', 'FundamentacaoController@getFundamentacoes');
 Route::delete('/fundamentacoes/{fundamentacao_id}', 'FundamentacaoController@deleteFundamentacao');
 Route::post('/fundamentacoes/create/{user_id}/{fundamentacao}', 'FundamentacaoController@create');
+//------------------------------------------Config----------------------------------------------------
+Route::get('/getConfigPorNome/{nome}', 'ConfigController@getConfigPorNome');
+Route::get('/getConfig', 'ConfigController@getConfig');
+Route::put('/updateConfigPorNome/{nome}/{valor}', 'ConfigController@updateConfigPorNome');
 
 

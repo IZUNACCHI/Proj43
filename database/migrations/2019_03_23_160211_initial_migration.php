@@ -256,6 +256,14 @@ class InitialMigration extends Migration
             $table->integer('proposta_id')->unsigned();
             $table->foreign('proposta_id')->references('id')->on('proposta');
         });
+		
+		Schema::create('config', function (Blueprint $table) {
+			$table->increments('id');
+			$table->string('nome_configuracao');
+			$table->string('valor');
+			$table->timestamps();
+		});
+			
 
 		
     
@@ -287,5 +295,6 @@ class InitialMigration extends Migration
 		Schema::dropIfExists('ai_data');
 		Schema::dropIfExists('au_data');
 		Schema::dropIfExists('ad_data');
+		Schema::dropIfExists('config');
     }
 }
