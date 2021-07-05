@@ -42,6 +42,8 @@ class DatabaseSeeder extends Seeder
 
         DB::statement("SET foreign_key_checks=1"); //Sera preciso??
 
+        DB::statement("INSERT INTO `config` (`id`, `nome_configuracao`, `valor`, `created_at`, `updated_at`) VALUES ('1', 'anoLetivo', '2020.21', CURRENT_TIME(), CURRENT_TIME());");
+
         $this->call(UserSeeder::class);
         $this->call(DepartmentTableSeeder::class);
         $this->call(UnidadeCurricularSeeder::class);
