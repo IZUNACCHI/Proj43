@@ -16,13 +16,35 @@
                     <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">
                     Anexo à presente proposta</td></tr>
                 <tr><th bgcolor=#be5b59 colspan="4"><font color=#ffffff>Habilitações Académicas</font></th></tr>
-                <tr width="100%">
-                    <td v-if="proposta.grau=='doutoramento'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Doutoramento</td>
-                    <td v-if="proposta.grau=='outro'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Outro</td>
-                    <td v-if="proposta.grau=='em_formacao'"><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Em Formação</td>
-                    <td v-if="proposta.grau=='doutoramento'"><b>Curso: </b>{{proposta.curso}}</td>
-                    <td v-if="proposta.grau!='doutoramento'"><b>Grau: </b>{{proposta.curso}}</td>
-                    <td><b>Area Cientifica: </b>{{proposta.area_cientifica}}</td>
+                <tr width="100%" v-if="proposta.grau.includes('doutoramento')">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Doutoramento</td>
+                    <td><b>Curso: </b>{{proposta.curso_Doutoramento}}</td>
+					<td><b>Area Cientifica: </b>{{proposta.area_cientificaDoutoramento}}</td>
+                </tr>
+				<tr width="100%" v-if="!proposta.grau.includes('doutoramento')">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Doutoramento</td>
+                    <td><b>Curso: </b>{{proposta.curso_Doutoramento}}</td>
+					<td><b>Area Cientifica: </b>{{proposta.area_cientificaDoutoramento}}</td>
+                </tr>
+				<tr width="100%" v-if="proposta.grau.includes('outro')">
+					<td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Outro</td>
+                    <td><b>Grau: </b>{{proposta.curso_Outro}}</td>
+					<td><b>Area Cientifica: </b>{{proposta.area_cientificaOutro}}</td>
+                </tr>
+				<tr width="100%" v-if="!proposta.grau.includes('outro')">
+					<td><input type="checkbox" id="scales" name="scales" onclick="return false;">Outro</td>
+                    <td><b>Grau: </b>{{proposta.curso_Outro}}</td>
+					<td><b>Area Cientifica: </b>{{proposta.area_cientificaOutro}}</td>
+                </tr>
+				<tr width="100%" v-if="proposta.grau.includes('em_formacao')">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Em Formação</td>
+					<td><b>Grau: </b>{{proposta.curso_Formacao}}</td>
+                    <td><b>Area Cientifica: </b>{{proposta.area_cientificaFormacao}}</td>
+                </tr>
+				<tr width="100%" v-if="!proposta.grau.includes('em_formacao')">
+					<td><input type="checkbox" id="scales" name="scales" onclick="return false;">Em Formação</td>
+					<td><b>Grau: </b>{{proposta.curso_Formacao}}</td>
+                    <td><b>Area Cientifica: </b>{{proposta.area_cientificaFormacao}}</td>
                 </tr>
           </table><br>
 

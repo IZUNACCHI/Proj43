@@ -13,9 +13,10 @@ class PropostaProponente extends Model
     protected $fillable = [
         'unidade_organica', 'nome_completo', 'email', 'numero_telefone', 'data_de_assinatura_coordenador_departamento', 'tipo_contrato',
         'data_de_assinatura_coordenador_de_curso', 'fundamentacao_coordenador_curso',
-        'fundamentacao_coordenador_departamento', 'grau', 'curso', 'area_cientifica', 'primeiro_proponente',
+        'fundamentacao_coordenador_departamento', 'grau', 'verificacao_curso', 'verificacao_area_cientifica', 'primeiro_proponente',
         'segundo_proponente', 'role', 'departamento_curso', 'formacao', 'remuneracao', 'escalao', 'indice',
-        'verificacao_outras_uo', 'nome_uo', 'tempo_parcial_uo', 'periodo_uo',
+        'verificacao_outras_uo', 'nome_uo', 'tempo_parcial_uo', 'periodo_uo','curso_Doutoramento','curso_Outro',
+		'curso_Formacao','area_cientificaDoutoramento','area_cientificaOutro','area_cientificaFormacao',
     ];
 
     protected $hidden = [];

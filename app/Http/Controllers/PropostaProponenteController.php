@@ -32,9 +32,15 @@ class PropostaProponenteController extends Controller
             'verificacao_serviço_docente_atribuido' => 'required',
             'role' => 'required',
             'grau' => 'required',
-            'curso' => 'required',
+            'curso_Doutoramento' => 'nullable',
+			'curso_Outro' => 'nullable',
+			'curso_Formacao' => 'nullable',
+            'verificacao_curso' => 'required',
             'primeiro_proponente' => 'required',
-            'area_cientifica' => 'required',
+            'area_cientificDoutoramento' => 'nullable',
+			'area_cientificaOutro' => 'nullable',
+			'area_cientificaFormacao' => 'nullable',
+            'verificacao_area_cientifica' => 'required',
         ]);
 
         $propostaProponente = new PropostaProponente();
@@ -59,13 +65,18 @@ class PropostaProponenteController extends Controller
             'fundamentacao_coordenador_departamento' => 'nullable',
             'role' => 'required',
             'grau' => 'required',
-            'curso' => 'required',
+			'curso_Doutoramento' => 'nullable',
+			'curso_Outro' => 'nullable',
+			'curso_Formacao' => 'nullable',
+            'verificacao_curso' => 'required',
             'primeiro_proponente' => 'required',
-            'area_cientifica' => 'required',
+            'area_cientificDoutoramento' => 'nullable',
+			'area_cientificaOutro' => 'nullable',
+			'area_cientificaFormacao' => 'nullable',
             'verificacao_serviço_docente_atribuido' => 'required',
-            /*'remuneracao' => 'nullable',
+            'remuneracao' => 'nullable',
             'escalao' => 'nullable',
-            'indice' => 'nullable',*/
+            'indice' => 'nullable',
             'verificacao_outras_uo' => 'required',
             ]);
 
