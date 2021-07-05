@@ -6,7 +6,7 @@
         <b-form-input
           id="inputRemuneracao"
           :state=" null"
-          v-model="propostaProponente.remuneracao"
+          v-model="propostaSelecionada.remuneracao"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a remuneração em formato numérico!</b-form-invalid-feedback>
       </b-form-group>
@@ -15,7 +15,7 @@
         <b-form-input
           id="inputEscalao"
           :state="null"
-          v-model="propostaProponente.escalao"
+          v-model="propostaSelecionada.escalao"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
       </b-form-group>
@@ -24,7 +24,7 @@
         <b-form-input
           id="inputIndice"
           :state="null"
-          v-model="propostaProponente.indice"
+          v-model="propostaSelecionada.indice"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
       </b-form-group>
@@ -295,7 +295,7 @@ export default {
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
             axios.put('/api/propostaProponente/atualizarPropostaRemuneracao/'+
-                this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
+                this.propostaSelecionada.id_proposta_proponente, this.propostaSelecionada).then(response => {
                 axios.post('/api/recursosHumanos/propostaRecursosHumanos', propostaRecursosHumanos)
                     .then(response => {
                       let idPropostaRecursosHumanos = response.data.id_proposta_recursos_humanos;
@@ -313,6 +313,15 @@ export default {
         })
       }
     }
-  }
+  },
+  mounted() {
+  this.$store.commit('setEditarProposta');
+   
+  
+  /*axios.get("/api/allPropostasProponente").then(response => {
+      //* Associar proposta atual à proposta existente selecionada
+      Object.assign(this.proposta, response.data);
+      });*/
+   }
 };
 </script>

@@ -27,6 +27,7 @@
       <b-form-input id="inputData" type="date" v-model="propostaProponente.data_de_assinatura_coordenador_departamento">
 
       </b-form-input>
+      <b-form-invalid-feedback id="input-1-live-feedback">Tem de introduzir a data</b-form-invalid-feedback>
     </b-form-group>
 
     <button

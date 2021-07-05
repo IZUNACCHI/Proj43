@@ -7,7 +7,7 @@
         <b-form-input
           id="inputFundCoordCurso"
           :state="$v.propostaProponente.fundamentacao_coordenador_curso.$dirty ? 
-        !$v.propostaProponente.fundamentacao_coordenador_curso.$error : null"
+            !$v.propostaProponente.fundamentacao_coordenador_curso.$error : null"
           v-model="propostaProponente.fundamentacao_coordenador_curso"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a fundamentação</b-form-invalid-feedback>
@@ -19,6 +19,7 @@
           type="date"
           v-model="propostaProponente.data_de_assinatura_coordenador_de_curso"
         ></b-form-input>
+        <b-form-invalid-feedback id="input-1-live-feedback">Tem de introduzir a data</b-form-invalid-feedback>
       </b-form-group>
 
       <button
@@ -55,7 +56,7 @@ export default {
   },
   validations: {
     propostaProponente: {
-      fundamentacao_coordenador_curso: {  },
+      fundamentacao_coordenador_curso: { required },
       data_de_assinatura_coordenador_de_curso: { required },
       
     }
@@ -90,14 +91,15 @@ export default {
                           msg: "Pedido de email enviado..."
                         });
             this.$emit("voltarProponentes", this.propostaProponente);
-            //axios.post("/api/ficheiro", this.ficheiro.proposta).then(response => {});   
+            /*axios.post("/api/ficheiro", this.ficheiro.proposta).then(response => {});   
                       this.$swal(
                                 "Sucesso",
                                 "Proposta editada com sucesso!!",
                                 "success"
                               );
                               this.isLoading = false;
-                              this.voltar();    
+                              this.voltar();
+            */ 
           });
           }
         });

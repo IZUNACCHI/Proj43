@@ -1,5 +1,6 @@
 <template>
   <div>
+  
     <div v-if="this.$store.state.user.roleDB == 'proponente_departamento'">
       <button class="btn btn-danger" @click="voltarProponentes">Voltar</button>
       <button class="btn btn-danger" v-on:click.prevent="gerarPdfPropostaProponente()">Dowload</button>
@@ -505,7 +506,7 @@
                 tratamento nos termos da legislação de proteção de dados em vigor.</b></p>
           </div>
           
-        <div v-if="propostaSelecionada.id_proposta_recursos_humanos != null">
+        <div v-if="propostaSelecionada.status != 'pendente'">
 		<pdf
 			:src="fichUnidadesCurriculares"
                 
@@ -733,7 +734,7 @@
 		</div>
    </div>
    </div>
-   <div class="tabelasRestantes" v-if="propostaSelecionada.id_proposta_recursos_humanos == null"> 
+   <div class="tabelasRestantes" v-if="propostaSelecionada.status == 'pendente'"> 
    <div >
            <table width="100%" border="1px" align=center>
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>

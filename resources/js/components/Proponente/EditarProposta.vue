@@ -2,7 +2,7 @@
   <div>
     <button class="btn btn-danger" @click="voltar">Voltar</button>
     <br><br>
-    
+    <!--
       <b-form-group label="Propostas existentes" description="Campo opcional">
         <b-form-select
           :options="propostasExistentes"
@@ -16,7 +16,7 @@
             >-- Por favor selecione uma proposta existente, caso exista --</option>
           </template>
         </b-form-select>
-      </b-form-group>
+      </b-form-group>-->
     <b-form-group
       description="Legislação: art. 8.º do ECPDESP na redacção que lhe foi dada pelo Decreto-Lei
       n.º 207/2009, de 31 de Agosto, alterado pela Lei nº 7/2010, de 13 de Maio e
