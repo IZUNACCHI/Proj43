@@ -481,6 +481,8 @@ export default {
     voltar() {
       this.$emit("mostrarComponente", this.proposta);
       this.mostrarResumoProposta = false;
+      this.$emit('voltar');
+       this.$emit("voltar", this.proposta);
       /*this.$swal.fire({
             title: "TeVamos voltar?",
           })*/
@@ -679,7 +681,14 @@ export default {
                               );
                               this.isLoading = false;
                               this.voltar();
-                            });*/
+                            });*/this.$swal(
+                                "Sucesso",
+                                "Proposta editada com sucesso!!",
+                                "success"
+                              );
+                              this.isLoading = false;
+                              this.voltar();
+                   
                         //}
                       });
                   });
@@ -744,7 +753,7 @@ export default {
                       }
                       this.$swal(
                                 "Sucesso",
-                                "Proposta editada com sucesso!!",
+                                "Proposta criada com sucesso!!",
                                 "success"
                               );
                               this.isLoading = false;
@@ -793,6 +802,14 @@ export default {
                         }
                       });
                   });
+                  this.$swal(
+                                "Sucesso",
+                                "Proposta editada com sucesso!!",
+                                "success"
+                              );
+                              this.isLoading = false;
+                              this.voltar();
+                    
               }
             }
           });
@@ -998,7 +1015,14 @@ export default {
                           });
                       }
                     });
-                });
+                });this.$swal(
+                                "Sucesso",
+                                "Proposta editada com sucesso!!",
+                                "success"
+                              );
+                              this.isLoading = false;
+                              this.voltar();
+                    
             }
           }
           });
@@ -1127,6 +1151,14 @@ export default {
                                     this.voltar();
                             });
                       }
+                      this.$swal(
+                                "Sucesso",
+                                "Proposta editada com sucesso!!",
+                                "success"
+                              );
+                              this.isLoading = false;
+                              this.voltar();
+                   
                     });
                 });
             }
