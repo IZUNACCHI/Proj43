@@ -286,17 +286,17 @@
                         <p v-if="proposta.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{proposta.nome_uo}}</b> Tempo parcial <b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                         {{proposta.tempo_parcial_uo}}%</b><br>
-                        Periodio <b>{{proposta.periodo_uo}}</b></p>
+                        Periodo <b>{{proposta.periodo_uo}}</b></p>
                         <p v-else>Sim, UO <b>{{proposta.nome_uo}}</b> Tempo parcial
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
-                        Periodio <b>{{proposta.periodo_uo}}</b></p></td>
+                        Periodo <b>{{proposta.periodo_uo}}</b></p></td>
                     <td rowspan="2" v-if="proposta.verificacao_outras_uo=='nao'">
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                         <b>Sim</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                         <b>Não</b>
                         <p>Se sim, indique:, UO ___________________ Tempo parcial ____________________%<br>
-                        Periodio ________________________________</p></td>
+                        Periodo ________________________________</p></td>
                 </tr><tr>
                     <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
           </table>

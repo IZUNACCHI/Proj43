@@ -48,7 +48,7 @@
       </b-form-group>
       <b-form-group
         label="Fundamentação"
-        description="(cfr. acta do CTC - art. 5º, nº3) N.B Contracto e renovações não podem ter duração superior a 4 anos"
+        description="(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos"
         v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
         propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'"
       >

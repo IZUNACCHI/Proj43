@@ -88,7 +88,7 @@ class InitialMigration extends Migration
             $table->boolean('contrato_assinado_departamento')->default(false);
             $table->enum('role', ['professor', 'assistente', 'monitor']);
 
-            $table->decimal('remuneracao', 6, 2)->nullable();
+            $table->decimal('remuneracao', 10, 2)->nullable();
             $table->string('escalao')->nullable();
             $table->string('indice')->nullable();
             $table->enum('verificacao_serviço_docente_atribuido', ['sim', 'nao']);

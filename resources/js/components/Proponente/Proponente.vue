@@ -256,17 +256,17 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               <h3 class="pb-4">Habilitações Literárias</h3>
 
               <b-form-group>
-                <b-form-checkbox-group
-                  v-model="grauTest"
-                  :options="grausArray"
-                  
-                ></b-form-checkbox-group>
+                <b-form-checkbox
+                  v-model="grauTestDoutoramento"
+                  value="doutoramento"
+				  unchecked-value=""
+                >Doutoramento</b-form-checkbox>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
 			  
 			  
 			  <b-form-group label="Curso do Doutoramento" label-for="inputCursoHabilitacoesLiterariasDoutoramento"
-                v-if="grauTest.includes('doutoramento')">
+                v-if="grauTestDoutoramento">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasDoutoramento"
                  
@@ -278,7 +278,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
 			  <b-form-group
                 label="Área Científica Doutoramento"
                 label-for="inputAreaCientificaHabilitacoesLiterariasDoutoramento"
-				v-if="grauTest.includes('doutoramento')"
+				v-if="grauTestDoutoramento"
               >
                 <b-form-input
                   id="inputAreaCientificaHabilitacoesLiterariasDoutoramento"
@@ -287,8 +287,17 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
 			  </b-form-group>
 			  
+			  <b-form-group>
+                <b-form-checkbox
+                  v-model="grauTestOutro"
+                  value="outro"
+				  unchecked-value=""
+                >Outro</b-form-checkbox>
+                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+              </b-form-group>
+			  
               <b-form-group label="Grau Outro" label-for="inputCursoHabilitacoesLiterariasOutro"
-                v-if="grauTest.includes('outro')">
+                v-if="grauTestOutro">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasOutro"
                   v-model="proposta.curso_Outro"
@@ -299,7 +308,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
 			  <b-form-group
                 label="Área Científica Outro"
                 label-for="inputAreaCientificaHabilitacoesLiterariasOutro"
-				v-if="grauTest.includes('outro')"
+				v-if="grauTestOutro"
               >
                 <b-form-input
                   id="inputAreaCientificaHabilitacoesLiterariasOutro"
@@ -308,8 +317,17 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
 			  </b-form-group>
 			  
+			  <b-form-group>
+                <b-form-checkbox
+                  v-model="grauTestFormacao"
+                  value="em_formacao"
+				  unchecked-value=""
+                >Formação</b-form-checkbox>
+                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+              </b-form-group>
+			  
 			  <b-form-group label="Grau Formação" label-for="inputCursoHabilitacoesLiterariasFormacao"
-                v-if="grauTest.includes('em_formacao')">
+                v-if="grauTestFormacao">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasFormacao"
                   v-model="proposta.curso_Formacao"
@@ -320,7 +338,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               <b-form-group
                 label="Área Científica Formação"
                 label-for="inputAreaCientificaHabilitacoesLiterariasFormacao"
-				v-if="grauTest.includes('em_formacao')"
+				v-if="grauTestFormacao"
               >
                 <b-form-input
                   id="inputAreaCientificaHabilitacoesLiterariasFormacao"
@@ -418,7 +436,10 @@ import { required, email, minLength, numeric } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
-	  grauTest: [], 
+	  grauTest: [],
+	  grauTestDoutoramento: '',
+		grauTestFormacao: '',
+		grauTestOutro: '',
       //? Array de Objetos para Radio Buttons
       tipoContratosArray: [
         { text: "Contratação Inicial", value: "contratacao_inicial" },
@@ -805,7 +826,8 @@ export default {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
     avancar: function(proposta, unidadesCurriculares) {
-		proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
+		//proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
+		proposta.grau= this.grauTestDoutoramento + this.grauTestOutro + this.grauTestFormacao;
       axios.get('/api/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/' + proposta.email)
         .then(response => {
         if(!response.data){
