@@ -166,7 +166,7 @@ class PropostaProponenteController extends Controller
     
     public function inserirPropostaAssinadaCurso($propostaProponenteID, Request $request){
       $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);
-      $propostaAAtualizar->contrato_assinado_departamento = $request->contrato_assinado_departamento;
+      $propostaAAtualizar->contrato_assinado_curso = $request->contrato_assinado_curso;
       $propostaAAtualizar->save();
 
       return response()->json($propostaAAtualizar, 200);

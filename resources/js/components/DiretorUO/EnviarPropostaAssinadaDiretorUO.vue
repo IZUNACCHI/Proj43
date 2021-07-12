@@ -1,131 +1,132 @@
 <template>
   <div>
-    <br><br>
+    <h2 class="pb-4"> Ficheiros a inserir</h2>
+    <h4 class="pb-4"> Por favor, insira os seguintes ficheiros para dar continuidade à proposta
+        de contratação/renovação/alteração
+    </h4>
     
-    <h2 class="pb-4">Ficheiro Proposta Assinada Diretor de UO</h2>
-    <h4 class="pb-4"> Por favor, insira o ficheiro para dar continuidade à proposta
-        de contratação/renovação/alteração </h4>
-    <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.nome_completo}}</label>
-      <b-form-group label="Ficheiro da Proposta Assinada" class="mt-3">
+    <b-form-group label="Ficheiro da Proposta Assinada" class="mt-3">
         <b-form-file
-          v-model="ficheiroAInserir.filePropostaAssinada"
+          v-model="ficheirosAInserir.fileAssinado"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
           browse-text="Procurar"
-          name="ficheiroPropostaAssinada"
+          name="ficheiroAssinado"
           v-validate="{ required: true }"
-          :state="validateState('ficheiroPropostaAssinada')"
+          :state="validateState('ficheiroAssinado')"
           @change="onFileSelected"
         ></b-form-file>
-      </b-form-group>
-      <b-form-group class="mt-5">
-        <b-form-checkbox
-          id="checkboxReconhecimento"
-          v-model="propostaDiretor.propostaAssinada"
-          name="checkboxReconhecimento"
-          value="1"
-          unchecked-value="0"
-          :state="$v.propostaDiretor.propostaAssinada.$dirty ? !$v.propostaDiretor.propostaAssinada.$error : null"
-        >Tenho conhecimento que a proposta fica definitiva.</b-form-checkbox>
-        <b-form-invalid-feedback id="input-1-live-feedback">Tem de reconhecer a proposta</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group>
         <b-button
           size="md"
           variant="dark"
-          v-if="ficheiroPropostaAssinada"
-          @click="downloadFicheiro(ficheiroPropostaAssinada.proposta_id, 'Proposta Assinada')">
-          <i class="far fa-file-pdf"></i> Atual Proposta Assinada
+          v-if="ficheiroAssinado"
+          @click="downloadFicheiro(ficheiroAssinado.proposta_id, 'Proposta Assinado Diretor UO')"
+        >
+          <i class="far fa-file-pdf"></i> Atual Ficheiro Assinado
         </b-button>
       </b-form-group>
+    <b-form-group class="mt-5">
+        <b-form-checkbox
+          id="checkBoxIncricao"
+          v-model="propostaProponente.contrato_assinado_diretor_uo""
+          name="checkBoxContratoAssinadoDiretorUO"
+          value="1"
+          unchecked-value="0"
+          :state="$v.propostaProponente.contrato_assinado_diretor_uo.$dirty ? !$v.propostaProponente.contrato_assinado_diretor_uo.$error : null"
+        >Tomei Conhecimento que a proposta fica Definitiva</b-form-checkbox>
+        <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+    </b-form-group>
     <button
         class="btn btn-success mt-3 font-weight-bold"
-        v-on:click.prevent="submeter(propostaDiretor)">
-        Submeter Ficheiro</button>
-    
-
+        v-on:click.prevent="submeter(ficheirosAInserir)">
+        Submeter Ficheiros
+    </button>
+    <button class="btn btn-success mt-3 font-weight-bold"
+        @click="voltar">Voltar</button>
   </div>
 </template>
-
 <script>
-import { required } from "vuelidate/lib/validators";
-
+import { required, email, minLength } from "vuelidate/lib/validators";
 export default {
+
   props: ["propostaSelecionada"],
   data() {
     return {
       proposta:"",
-      propostaDiretor: {
-        propostaAssinada: "",
+      propostaProponente: {
+        contrato_assinado_diretor_uo: ""
       },
-      ficheiroAInserir:{
-       filePropostaAssinada:{},
+      ficheirosAInserir:{
+        fileAssinado:{},
       },
       ficheiros:[],
-      ficheiroPropostaAssinada:"",
-    };
+      ficheiroAssinado:"",
+      };
   },
   validations: {
-    propostaDiretor: {
-      propostaAssinada: { required }
+    propostaProponente: {
+      contrato_assinado_diretor_uo: { required },
     }
   },
   methods: {
-    
     validateState(ref) {
       return this.veeErrors.has(ref) ? false : null;
-    },
-    downloadFicheiro(proposta_id, descricao) {
-      axios
-        .get("/api/downloadFicheiro/" + proposta_id + "/" + descricao, {
-          responseType: "arraybuffer"
-        })
-        .then(response => {
-          let blob = new Blob([response.data]);
-          let link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          link.download = descricao + ".pdf";
-          link.click();
-        });
     },
     onFileSelected(event) {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
-    submeter(propostaDiretor){
-        this.ficheiroAInserir.filePropostaAssinada = new FormData();
-        let proposta_diretor_id = this.propostaSelecionada.id_proposta_diretor_uo;
-        
-        this.ficheiroAInserir.filePropostaAssinada.append("file",this.ficheiros["ficheiropropostaAssinada"]);
-        this.ficheiroAInserir.filePropostaAssinada.append("descricao","Proposta Assinada");
-
-        this.$v.propostaDiretor.$touch();
-        if (!this.$v.propostaDiretor.$invalid) {
-            this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
+    voltar(){
+      this.$emit('voltar');
+      this.$emit("voltar", this.proposta);
+      
+    },
+    submeter(ficheirosAInserir){
+        //this.$v.propostaDiretor.$touch();
+        this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
                         text: 'Não poderá realizar mais nenhuma alteração',
                         type: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Sim',
-                        cancelButtonText: 'Não'}).then((result) => {  
-        if(result.value){
-        axios
-            .post("/api/diretorUO/propostaAssinada", this.propostaAssinada)
-            .then(response => {
-            this.ficheiroAInserir.filePropostaAssinada.append("proposta_id", proposta_proponente_id);
-            axios.post('/api/ficheiro', this.ficheiroAInserir.filePropostaAssinada).then(response => {})
-                .catch(error => {
-                    console.log("ERRO: ",error.response.data);
-            });
-            this.$swal(
-                "Sucesso",
-                "Proposta assinada com sucesso!!",
-                "success"
-            );
+                        cancelButtonText: 'Não'}).then((result) => {
+          if(result.value){
+              this.ficheirosAInserir.fileAssinado = new FormData();
+              this.ficheirosAInserir.fileAssinado.append(
+                "file",
+                this.ficheiros["ficheiroAssinado"]
+              );
+              this.ficheirosAInserir.fileAssinado.append(
+                "descricao",
+                "Proposta Assinado Diretor UO"
+              );
+              this.ficheirosAInserir.fileAssinado.append(
+                "proposta_id",
+                this.propostaSelecionada.id
+              );
+
+              axios.post('/api/ficheiro', this.ficheirosAInserir.fileAssinado).then(response => {
+                axios.put('/api/diretorUO/propostaAssinada/'+
+                    this.propostaSelecionada.id_proposta_diretor_uo, this.propostaProponente).then(response => {
+                    this.$swal(
+                        "Sucesso",
+                        "Proposta assinada com sucesso!!",
+                        "success"
+                    )
+                });
+                this.$emit('voltar');
+                this.$emit("voltar", this.proposta);
+                 
+              });
+          }
         });
-        }
-      });
-      }
-    }},
+    }
+  },
+  mounted() {
+    this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente todos os ficheiros necessários', 'info')
+  }
 };
+
 </script>

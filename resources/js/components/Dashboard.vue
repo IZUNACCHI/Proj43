@@ -11,6 +11,9 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right>
             <template slot="button-content">{{ user.name }}</template>
+            <b-dropdown-item v-on:click.prevent="mostrarServicoDocenteAtribuido">
+              <i class="fas fa-sign-out-alt"></i> Serviço Docente Atribuido
+            </b-dropdown-item>
 			<b-dropdown-item v-on:click.prevent="mostrarFundamentacoes">
               <i class="fas fa-sign-out-alt"></i> Fundamentações
             </b-dropdown-item>
@@ -41,6 +44,7 @@
             <i class="fas fa-plus"></i> Nova Proposta
           </button>
 		  <fundamentacao v-if="isFundamentacaoVisible"></fundamentacao>
+          <servico-docente-atribuido v-if="isServicoDocenteAtribuido"></servico-docente-atribuido>
           <tabela-diretor v-if="isDashboardVisible"></tabela-diretor>
           <proponente v-if="isNovaPropostaVisible" v-on:voltar="mostrarProponentes"></proponente>
           <tabela-ctc v-if="user.roleDB == 'ctc'"></tabela-ctc>
@@ -110,7 +114,7 @@
                           <td>{{ propostaHistorico.nome_completo }}</td>
                           <td>{{ propostaHistorico.tipo_contrato }}</td>
                           <td>{{ propostaHistorico.unidade_organica }}</td>
-                          <td>
+                          <td><!--
                             <button
                               type="button"
                               class="btn btn-info"
@@ -125,11 +129,35 @@
                               v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
                               (propostaHistorico.fundamentacao_coordenador_departamento == null)"
                             >Assinar</button>
+                            -->
+
                             <button
                               type="button"
                               class="btn btn-info"
                               @click="verDetalhesCoordenadorDepartamento(propostaHistorico, index)"
+                              v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
+                              (propostaHistorico.fundamentacao_coordenador_departamento != null)"
                             >Ver detalhes</button>
+                            <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="verAssinarCoordenadorCurso(propostaHistorico, index)"
+                              v-if="(propostaHistorico.contrato_assinado_departamento != 1) &&
+                                    (propostaHistorico.fundamentacao_coordenador_curso != null) &&
+                                    (propostaHistorico.fundamentacao_coordenador_departamento != null)""
+                            >Assinar</button>
+                          
+                           <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="editarProposta(propostaHistorico, index)"
+                              v-if="((user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento != null) ||
+                                   ((user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso == null) ||
+                                    (user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso != null))) &&
+                                    (propostaHistorico.contrato_assinado_curso != 1 && propostaHistorico.contrato_assinado_departamento != 1)"
+                            >Editar</button>
+
+
                             <!--<button
                               type="button"
                               class="btn btn-info"
@@ -202,23 +230,26 @@
                               type="button"
                               class="btn btn-info"
                               @click="verDetalhesCoordenadorCurso(propostaHistorico, index)"
-                              v-if="(propostaHistorico.fundamentacao_coordenador_curso == null) ||
-                              (propostaHistorico.fundamentacao_coordenador_departamento == null)"
+                              v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
+                              (propostaHistorico.fundamentacao_coordenador_departamento != null)"
                             >Ver detalhes</button>
                             <button
                               type="button"
                               class="btn btn-info"
                               @click="verAssinarCoordenadorCurso(propostaHistorico, index)"
-                              v-if="(propostaHistorico.fundamentacao_coordenador_curso != null) ||
-                              (propostaHistorico.fundamentacao_coordenador_departamento != null)"
+                              v-if="(propostaHistorico.contrato_assinado_curso != 1) &&
+                                    (propostaHistorico.fundamentacao_coordenador_curso != null) &&
+                                    (propostaHistorico.fundamentacao_coordenador_departamento != null)""
                             >Assinar</button>
-                          </td><td>
+                          
                            <button
                               type="button"
                               class="btn btn-info"
                               @click="editarProposta(propostaHistorico, index)"
-                              v-if="(user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso == null) ||
-                              (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento == null)"
+                              v-if="((user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso != null) ||
+                                   ((user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento == null) ||
+                                    (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento != null))) &&
+                                    (propostaHistorico.contrato_assinado_curso != 1 && propostaHistorico.contrato_assinado_departamento != 1)"
                             >Editar</button>
                           </td>
                           <!--<td>
@@ -226,6 +257,9 @@
                               type="button"
                               class="btn btn-info"
                               @click="gerarPdfProposta(propostaHistorico, index)"
+                              v-if="(user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso == null) ||
+                              (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento == null)"
+                            
                               >Dowload</button>
                           </td>-->
                         </tr>
@@ -270,6 +304,7 @@ export default {
     return {
       isDashboardVisible: true,
 	  isFundamentacaoVisible: false,
+      isServicoDocenteAtribuido: false,
       isNovaPropostaVisible: false,
       isActiveProponente: false,
       isActiveDiretorUO: false,
@@ -308,6 +343,7 @@ export default {
       this.isEnviarPropostaDepartamentoVisible = false;
       this.isActiveSD = false;
 	  this.isFundamentacaoVisible = false;
+      this.isServicoDocenteAtribuido = false;
     },
     home() {
       this.isDashboardVisible = true;
@@ -318,6 +354,7 @@ export default {
       this.isEnviarPropostaDepartamentoVisible = false;
 
 	  this.isFundamentacaoVisible = false;
+      this.isServicoDocenteAtribuido = false;
     },
     verDetalhesCoordenadorCurso(propostaPendenteCoordenadorCurso, index) {
       this.isResumoPropostaVisible = true;
@@ -325,6 +362,7 @@ export default {
       this.isEnviarPropostaDepartamentoVisible = false;
       this.isDashboardVisible = false;
 	  this.isFundamentacaoVisible = false;
+      this.isServicoDocenteAtribuido = false;
       this.propostaSelecionada = Object.assign(
         {},
         propostaPendenteCoordenadorCurso
@@ -341,6 +379,7 @@ export default {
       this.isResumoPropostaVisible = true;
       this.isDashboardVisible = true;
       this.isFundamentacaoVisible = false;
+      this.isServicoDocenteAtribuido = false;
       this.propostaSelecionada = Object.assign(
         {},
         propostaPendenteCoordenadorDepartamento
@@ -355,6 +394,7 @@ export default {
       this.isEnviarPropostaDepartamentoVisible = false;
       this.isDashboardVisible = true;
       this.isFundamentacaoVisible = false;
+      this.isServicoDocenteAtribuido = false;
       this.propostaSelecionada = Object.assign(
         {},
         propostaAssinarCoordenadorCurso
@@ -374,6 +414,7 @@ export default {
       );
       this.mostrarTabela = false;
       this.isDashboardVisible = false;
+      this.isServicoDocenteAtribuido = false;
       
     },
     /*
@@ -466,16 +507,30 @@ export default {
 
 	mostrarFundamentacoes() {
 		this.isFundamentacaoVisible = true;
+        this.isServicoDocenteAtribuido = false;
 		this.isNovaPropostaVisible = false;
 		this.mostrarTabela = false;
 		this.isResumoPropostaVisible = false;
 		this.isDashboardVisible = true;
 		this.isEditarPropostaVisible = false;
 		},
+    mostrarServicoDocenteAtribuido() {
+        this.isServicoDocenteAtribuido = true;
+		this.isFundamentacaoVisible = false;
+		this.isNovaPropostaVisible = false;
+		this.mostrarTabela = false;
+		this.isResumoPropostaVisible = false;
+		this.isDashboardVisible = false;
+		this.isEditarPropostaVisible = false;
+		},
+
+
+      
     mostrarProponentes() {
       this.isEnviarPropostaCursoVisible = false;
       this.isEnviarPropostaDepartamentoVisible = false;
 	  this.isFundamentacaoVisible = false;
+      this.isServicoDocenteAtribuido = false;
       this.isNovaPropostaVisible = false;
       this.mostrarTabela = true;
       this.isResumoPropostaVisible = false;

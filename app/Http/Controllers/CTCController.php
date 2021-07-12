@@ -16,6 +16,7 @@ class CTCController extends Controller
          ->join('proposta_proponente', 'proposta_proponente.id_proposta_proponente', 'proposta.proposta_proponente_id')
          ->join('proposta_diretor_uo', 'proposta.proposta_diretor_uo_id', '=', 'proposta_diretor_uo.id_proposta_diretor_uo')
          ->whereNotNull('proposta.proposta_diretor_uo_id')
+         ->where('contrato_assinado_uo', '!=', '0')
          ->whereNull('proposta.proposta_ctc_id')
          ->where('proposta_diretor_uo.parecer', 'Favoravel')
          ->get();
@@ -93,7 +94,7 @@ class CTCController extends Controller
         return $arrayADevolver;
     }
 
-   public function inserirPropostaAssinada(Request $request){
+   /*public function inserirPropostaAssinada(Request $request){
       if($request->propostaAssinada == true){
          $request->propostaAssinada = 1;
       }
@@ -108,5 +109,13 @@ class CTCController extends Controller
       $propostaAAtualizar->save();
 
       return response()->json($propostaAAtualizar, 200);
+    }*/
+
+    public function inserirPropostaAssinada($ctc_id, Request $request){
+      $propostaCTC = PropostaCTC::findOrFail($ctc_id);
+      $propostaCTC->contrato_assinado_ctc = $request->contrato_assinado_ctc;
+      $propostaCTC->save();
+
+      return response()->json($propostaCTC, 200);
     }
 }

@@ -82,6 +82,9 @@
                 <br />
                 <button class="btn btn-primary" v-on:click.prevent="adicionarUC">Adicionar UC</button>
                 <adicionar-ucs v-on:fecharUcs="fecharUcs" v-if="mostrarCompAddUC"></adicionar-ucs>
+                <br />
+                <button class="btn btn-primary" v-on:click.prevent="adicionarRenumeracao">Adicionar Renumeração</button>
+                <adicionar-renumeracao v-on:fecharRenumeracao="fecharRenumeracao" v-if="mostrarCompAddRenumeracao"></adicionar-renumeracao>
               </div>
                 </div>
               </div>
@@ -137,6 +140,49 @@
               </div>
             </div>
           </section>
+          <section>
+		  <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Vencimento</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Categoria</th>
+                              <th>Renumeração</th>
+                              <th>Indice</th>
+                              <th>Escalão</th>
+                              <th>Ações</th>
+                            </tr>
+                          </thead>
+                          <tbody v-for="listVencimentos in listaVencimentos">
+                            <tr>
+                              <th>{{listVencimentos.descricao}}</th>
+                              <td>{{listVencimentos.renumeracao}}</td>
+                              <td>{{listVencimentos.indice}}</td>
+                              <td>{{listVencimentos.escalao}}</td>
+                              <td>
+                                <button
+                                 class="btn btn-primary btn-sm" v-on:click.prevent="bloquearVencimento(listVencimentos.id)">Eliminar</button>
+                                <button
+                                 class="btn btn-primary btn-sm" v-on:click.prevent="editarVencimento(listVencimentos.id)">Editar</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+		  </section>
+        
 		  <section>
 		  <div class="container-fluid">
               <div class="row">
@@ -156,7 +202,7 @@
                               <th>Ações</th>
                             </tr>
                           </thead>
-                          <tbody v-for="config in configuracoes" :key="user.id">
+                          <tbody v-for="config in configuracoes">
                             <tr>
                               <th>{{config.id}}</th>
                               <td>{{config.nome_configuracao}}</td>
@@ -189,12 +235,14 @@ export default {
   data() {
     return {
 	  configuracoes:[],
+      listaVencimentos:[],
       isLoading: false,
       numeroUtilizadores: 0,
       numeroPropostas: 0,
       utilizadores: [],
       role: '',
       mostrarCompAddCurso:false,
+      mostrarCompAddRenumeracao:false,
       mostrarCompAddUC:false
     }
   },
@@ -205,11 +253,19 @@ export default {
     adicionarCurso(){
       this.mostrarCompAddCurso = true;
       this.mostrarCompAddUC = false;
+      this.mostrarCompAddRenumeracao = false;
     },
 
     adicionarUC(){
       this.mostrarCompAddUC = true;
       this.mostrarCompAddCurso = false;
+      this.mostrarCompAddRenumeracao = false;
+    },
+
+    adicionarRenumeracao(){
+      this.mostrarCompAddUC = false;
+      this.mostrarCompAddCurso = false;
+      this.mostrarCompAddRenumeracao = true;
     },
 
     fecharCurso(){
@@ -218,6 +274,13 @@ export default {
 
     fecharUcs(){
       this.mostrarCompAddUC = false;
+    },
+
+    fecharRenumeracao(){
+      this.mostrarCompAddRenumeracao = false;
+      axios.get("api/vencimentos").then(response => {
+        this.listaVencimentos = response.data;
+        });
     },
 
     logout() {
@@ -292,8 +355,40 @@ export default {
         });
 
     },
+    editarVencimento(id) {
+      const { value: renumeracao } = this.$swal({
+          title: 'Insira o novo valor da renumeração',
+          input: 'text',
+          inputPlaceholder: 'Insira um valor',
+          showCancelButton: true,
+          inputValidator: (value) => {
+            return new Promise((resolve) => {
+              if(value) {
+                this.updateVencimento(id, value);
+                resolve();
+              } else {
+                resolve('É necessário inserir um valor');
+              }
+            })
+          }
+        });
+    },
+    bloquearVencimento(vencimentoID){
+      axios.put('/api/block/' + vencimentoID).then(response => {
+        axios.get("api/vencimentos").then(response => {
+        this.listaVencimentos = response.data;
+        });
+      });
+    },
 	updateConfig(nome, valor) {
 		axios.put("api/updateConfigPorNome/"+nome+"/"+valor).then(response => {
+		});
+	},
+    updateVencimento(id, valor) {
+		axios.put("api/vencimento/"+id, valor).then(response => {
+            axios.get("api/vencimentos").then(response => {
+                this.listaVencimentos = response.data;
+            });
 		});
 	},
     updateRole(id, role) {
@@ -322,7 +417,10 @@ export default {
 	axios.get("api/getConfig").then(response => {
         this.configuracoes = response.data;
     });
-	
+
+	axios.get("api/vencimentos").then(response => {
+        this.listaVencimentos = response.data;
+    });
 	
     axios.get("api/users").then(response => {
         this.utilizadores = response.data;

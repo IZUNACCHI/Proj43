@@ -10,7 +10,7 @@ class PropostaDiretorUO extends Model
     protected $primaryKey = 'id_proposta_diretor_uo';
 
     protected $fillable = [
-        'reconhecimento', 'parecer', 'data_assinatura_uo', 'diretor_uo_id'
+        'reconhecimento', 'parecer', 'data_assinatura_uo', 'diretor_uo_id', 'contrato_assinado_uo',
     ];
 
     protected $hidden = [];

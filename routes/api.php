@@ -52,7 +52,7 @@ Route::put('/propostaProponente/fundamentacaoCoordenadorCurso/{propostaID}', 'Pr
 Route::get('/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/{email}', 'PropostaProponenteController@verificarSeJaExistemPropostasAtivasParaDocenteASerContratado');
 Route::put('/apagarPropostasProponente/{idProposta}', 'PropostaProponenteController@apagarPropostasProponente');
 
-Route::put('/propostaProponente/propostaAssinadaCurso{propostaID}', 'PropostaProponenteController@inserirPropostaAssinadaCurso');
+Route::put('/propostaProponente/propostaAssinadaCurso/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinadaCurso');
 Route::put('/propostaProponente/propostaAssinadaDepartamento/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinadaDepartamento');
 Route::put('/propostaProponente/atualizarPropostaRemuneracao/{propostaID}', 'PropostaProponenteController@atualizarProposta');
 
@@ -103,7 +103,7 @@ Route::get('/diretorUO/getUCSPropostaSelecionada/{proposta_proponente_id}', 'Dir
 Route::post('/diretorUO/propostaDiretor', 'DiretorUOController@store');
 Route::get('/diretorUO/historicoPropostas', 'DiretorUOController@getHistoricoPropostas');
 
-Route::post('/diretorUo/propostaAssinada', 'DiretorUOController@inserirPropostaAssinada');
+Route::put('/diretorUO/propostaAssinada/{propostaID}', 'DiretorUOController@inserirPropostaAssinada');
 
 
 //? Estatisticas
@@ -115,7 +115,7 @@ Route::get('/ctc/getPropostasPendentesCTC', 'CTCController@getPropostasPendentes
 Route::post('/ctc/propostaCTC', 'CTCController@store');
 Route::get('/ctc/getHistoricoPropostasCTC', 'CTCController@getHistoricoPropostasCTC');
 
-Route::post('/ctc/propostaAssinada', 'CTCController@inserirPropostaAssinada');
+Route::put('/ctc/propostaAssinada/{propostaID}', 'CTCController@inserirPropostaAssinada');
 
 
 //? Estatisticas
@@ -155,10 +155,21 @@ Route::put('/unblock/{id}', 'UserController@getUnblocked');
 
 //-------------------------------------------Novos Docentes--------------------------------------------
 Route::get('/getPropostaParaNovoDocente/{emailDocente}', 'NovoDocenteController@getProposta');
+
 //----------------------------------------Fundamentacoes-----------------------------------------------
 Route::get('/fundamentacoes/{user_id}', 'FundamentacaoController@getFundamentacoes');
 Route::delete('/fundamentacoes/{fundamentacao_id}', 'FundamentacaoController@deleteFundamentacao');
 Route::post('/fundamentacoes/create/{user_id}/{fundamentacao}', 'FundamentacaoController@create');
+
+//------------------------------------------Renumeracao-------------------------------------------------
+Route::get('/vencimentos', 'VencimentosController@getVencimentos');
+Route::delete('/vencimento/{renumeracao_id}', 'VencimentosController@deleteVencimento');
+Route::post('/vencimento/criarVencimento', 'VencimentosController@create');
+Route::put('/block/{id}', 'VencimentosController@getBlocked');
+Route::put('/vencimento/{id}', 'VencimentosController@updateRenumeracao');
+Route::get('/verificarSeJaExistemCategoriaVencimento/{descricao}', 'VencimentosController@verificarSeJaExistemCategoriaVencimento');
+
+
 //------------------------------------------Config----------------------------------------------------
 Route::get('/getConfigPorNome/{nome}', 'ConfigController@getConfigPorNome');
 Route::get('/getConfig', 'ConfigController@getConfig');

@@ -124,7 +124,7 @@ export default {
                     this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
                     this.$swal(
                         "Sucesso",
-                        "Proposta concluida com sucesso!!",
+                        "Proposta assinada com sucesso!!",
                         "success"
                     )});
                     this.$emit('voltar');

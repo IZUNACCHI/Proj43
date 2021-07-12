@@ -41,6 +41,8 @@ Vue.component('adicionarUcs', require('../components/Backoffice/AdicionarUcs.vue
 Vue.component('fundamentacao', require('../components/utils/Fundamentacao.vue').default);
 Vue.component('assinarPropostaDiretor', require('../components/DiretorUO/EnviarPropostaAssinadaDiretorUO.vue').default);
 Vue.component('assinarPropostaCTC', require('../components/CTC/EnviarPropostaAssinadaCTC.vue').default);
+Vue.component('servicoDocenteAtribuido', require('../components/utils/ServicoDocenteAtribuido.vue').default);
+Vue.component('adicionarRenumeracao', require('../components/Backoffice/adicionarVencimento.vue').default);
 
 
 const routes = [

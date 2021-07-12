@@ -180,6 +180,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               </button>
 
               <b-form-group>
+              <div class="table-responsive">
                 <table class="table mt-3" width="100%" v-if="unidadesCurriculares.length">
                   <thead>
                     <th>Código UC</th>
@@ -214,6 +215,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     </tr>
                   </tbody>
                 </table>
+              </div>
               </b-form-group>
               <br /></b-form-group>
               <div v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'">
@@ -245,7 +247,6 @@ abrigo do art. 8.º do ECPDESP, do IPL"
           </b-card-body>
         </b-collapse>
       </b-card>
-     
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-2 variant="dark">Habilitações Literárias</b-button>
@@ -352,6 +353,8 @@ abrigo do art. 8.º do ECPDESP, do IPL"
       </b-card>
       
 
+      
+
       <b-form-group
         label="Qual será o papel a desempenhar pelo docente a ser contratado?"
         class="mt-5"
@@ -437,7 +440,7 @@ export default {
   data() {
     return {
 	  grauTest: [],
-	  grauTestDoutoramento: '',
+      grauTestDoutoramento: '',
 		grauTestFormacao: '',
 		grauTestOutro: '',
       //? Array de Objetos para Radio Buttons
@@ -826,8 +829,9 @@ export default {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
     avancar: function(proposta, unidadesCurriculares) {
-		//proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
+      //proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
 		proposta.grau= this.grauTestDoutoramento + this.grauTestOutro + this.grauTestFormacao;
+      
       axios.get('/api/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/' + proposta.email)
         .then(response => {
         if(!response.data){

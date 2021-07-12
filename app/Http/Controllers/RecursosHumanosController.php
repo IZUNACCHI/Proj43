@@ -51,12 +51,12 @@ class RecursosHumanosController extends Controller
         'tempo_parcial_uo' => 'nullable',
         'periodo_uo' => 'nullable',*/
         'numero_funcionario' => 'required',
-        'contratacao_comunicada' => 'required',
+        //'contratacao_comunicada' => 'required',
         'inscricao' => 'required',
         'despacho_presidente_ipl' => 'required',
-        'contrato_redigido' => 'required',
+        /*'contrato_redigido' => 'required',
         'contrato_anexo' => 'required',
-        'cessacao_social' => 'required',
+        'cessacao_social' => 'required',*/
         'NISS_ou_numero_CGA' => 'required',
         'data_nascimento' => 'required',
         'numero_CC' => 'required',

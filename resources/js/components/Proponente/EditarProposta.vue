@@ -245,8 +245,7 @@
         </b-collapse>
       </b-card>
 
-     
-      <b-card no-body class="mb-1">
+     <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-2 variant="dark">Habilitações Literárias</b-button>
         </b-card-header>
@@ -350,178 +349,6 @@
           </b-card-body>
         </b-collapse>
       </b-card>
-      
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block href="#" v-b-toggle.accordion-3 variant="dark">Vencimento aplicável</b-button>
-        </b-card-header>
-        <b-collapse id="accordion-3" accordion="accordion" role="tabpanel">
-          <b-card-body>
-            <b-card-text>
-              <b-form-group label="Remuneração" label-for="inputRemuneracao">
-                <b-form-input
-                  id="inputRemuneracao"
-                  :state="null"
-                  v-model="propostaSelecionada.remuneracao"
-                ></b-form-input>
-                <b-form-invalid-feedback id="input-1-live-feedback">Insira a remuneração em formato numérico!</b-form-invalid-feedback>
-              </b-form-group>
-
-              <b-form-group label="Escalão" label-for="inputEscalao">
-                <b-form-input
-                  id="inputEscalao"
-                  :state="null"
-                  v-model="propostaSelecionada.escalao"
-                ></b-form-input>
-                <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
-              </b-form-group>
-
-              <b-form-group label="Índice" label-for="inputIndice">
-                <b-form-input
-                  id="inputIndice"
-                  :state="null"
-                  v-model="propostaSelecionada.indice"
-                ></b-form-input>
-                <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
-              </b-form-group>
-
-            </b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block href="#" v-b-toggle.accordion-4 variant="dark">Contratação para mais do que uma UO do IPL</b-button>
-        </b-card-header>
-        <b-collapse id="accordion-4" accordion="accordion" role="tabpanel">
-          <b-card-body>
-            <b-card-text>
-              <h2 class="pb-4"></h2>
-              <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
-                <b-form-radio-group
-                  v-model="propostaSelecionada.verificacao_outras_uo"
-                  :options="verificacao_outras_uo_array"
-                  stacked
-                ></b-form-radio-group>
-              </b-form-group>
-              <b-form-group v-if="propostaSelecionada.verificacao_outras_uo == 'sim'">
-                <b-form-group
-                    label="Indique o nome da Unidade Orgânica"
-                    label-for="inputTempoParcial"
-                    v-if="propostaSelecionada.unidade_organica == 'ESECS'"
-                >
-                <b-form-select
-                    id="inputTempoParcial"
-                    v-model="propostaSelecionada.nome_uo"
-                    :state="null"
-                    :options="UnidadeOrganicaESECS"
-                ></b-form-select>
-                <b-form-invalid-feedback
-                    id="input-1-live-feedback"
-                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
-                </b-form-group>
-                <b-form-group
-                    label="Indique o nome da Unidade Orgânica"
-                    label-for="inputTempoParcial"
-                    v-if="propostaSelecionada.unidade_organica == 'ESTG'"
-                >
-                <b-form-select
-                    id="inputTempoParcial"
-                    v-model="propostaSelecionada.nome_uo"
-                    :state="null"
-                    :options="UnidadeOrganicaESTG"
-                ></b-form-select>
-                <b-form-invalid-feedback
-                    id="input-1-live-feedback"
-                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
-                </b-form-group>
-                <b-form-group
-                    label="Indique o nome da Unidade Orgânica"
-                    label-for="inputTempoParcial"
-                    v-if="propostaSelecionada.unidade_organica == 'ESAD.CR'"
-                >
-                <b-form-select
-                    id="inputTempoParcial"
-                    v-model="propostaSelecionada.nome_uo"
-                    :state="null"
-                    :options="UnidadeOrganicaSAD.CR"
-                ></b-form-select>
-                <b-form-invalid-feedback
-                    id="input-1-live-feedback"
-                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
-                </b-form-group>
-                <b-form-group
-                    label="Indique o nome da Unidade Orgânica"
-                    label-for="inputTempoParcial"
-                    v-if="propostaSelecionada.unidade_organica == 'ESSLei'"
-                >
-                <b-form-select
-                    id="inputTempoParcial"
-                    v-model="propostaSelecionada.nome_uo"
-                    :state="null"
-                    :options="UnidadeOrganicaESSLei"
-                ></b-form-select>
-                <b-form-invalid-feedback
-                    id="input-1-live-feedback"
-                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
-                </b-form-group>
-                <b-form-group
-                    label="Indique o nome da Unidade Orgânica"
-                    label-for="inputTempoParcial"
-                    v-if="propostaSelecionada.unidade_organica == 'ESTM'"
-                >
-                <b-form-select
-                    id="inputTempoParcial"
-                    v-model="propostaSelecionada.nome_uo"
-                    :state="null"
-                    :options="UnidadeOrganicaESTM"
-                ></b-form-select>
-                <b-form-invalid-feedback
-                    id="input-1-live-feedback"
-                >Tem de escolher uma Unidade Organica!</b-form-invalid-feedback>
-                </b-form-group>
-            
-            <b-form-group label="O docente esta a tempo Parcial?">
-                <b-form-radio-group
-                  v-model="propostaSelecionada.verificacao_tempo_parcial"
-                  :options="verificacao_tempo_parcial"
-                  stacked
-                ></b-form-radio-group>
-              </b-form-group>
-
-             
-                <b-form-group label="Indique o tempo parcial" label-for="inputTempoParcial" v-if="propostaSelecionada.verificacao_tempo_parcial == 'sim'">
-                  <b-form-input
-                    id="inputTempoParcial"
-                    v-model="propostaSelecionada.tempo_parcial_uo"
-                  ></b-form-input>
-                </b-form-group>
-
-                <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 13/03/2000 a 28/07/2000">
-                  <b-form-input
-                    id="inputPeriodo"
-                    v-model="propostaSelecionada.periodo_uo"
-                  ></b-form-input>
-                </b-form-group>
-              </b-form-group>
-
-      
-
-
-
-
-
-
-
-            </b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-
-
-
-
       <b-form-group
         label="Qual será o papel a desempenhar pelo docente a ser contratado?"
         class="mt-5"
@@ -629,50 +456,9 @@ export default {
         { text: "Semestral", value: "Semestral" },
         { text: "Anual", value: "Anual" }
       ],
-      verificacao_outras_uo_array: [
-        { text: "Sim", value: "sim" },
-        { text: "Não", value: "nao" }
-      ],
-      verificacao_tempo_parcial: [
-        { text: "Sim", value: "sim" },
-        { text: "Não", value: "nao" }
-      ],
       verificacao_serviço_docente_atribuido: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
-      ],
-      UnidadeOrganicaESSLei: [
-        { text: "SECS", value: "SECS" },
-        { text: "ESTG", value: "ESTG" },
-        { text: "SAD.CR", value: "SADCR" },
-        { text: "ESTM", value: "ESTM" }
-      ],
-      UnidadeOrganicaESECS: [
-        { text: "ESTG", value: "ESTG" },
-        { text: "SAD.CR", value: "SADCR" },
-        { text: "ESTM", value: "ESTM" },
-        { text: "ESSLei", value: "ESSLei" }
-      ],UnidadeOrganicaESTG: [
-        { text: "ESECS", value: "ESECS" },
-        { text: "SAD.CR", value: "ESAD.CR" },
-        { text: "ESTM", value: "ESTM" },
-        { text: "ESSLei", value: "ESSLei" }
-      ],UnidadeOrganicaSADCR: [
-        { text: "ESECS", value: "ESECS" },
-        { text: "ESTG", value: "ESTG" },
-        { text: "ESTM", value: "ESTM" },
-        { text: "ESSLei", value: "ESSLei" }
-      ],UnidadeOrganicaESTM: [
-        { text: "ESECS", value: "ESECS" },
-        { text: "ESTG", value: "ESTG" },
-        { text: "SAD.CR", value: "ESAD.CR" },
-        { text: "ESSLei", value: "ESSLei" }
-      ],UnidadeOrganica: [
-        { text: "ESECS", value: "ESECS" },
-        { text: "ESTG", value: "ESTG" },
-        { text: "SAD.CR", value: "ESAD.CR" },
-        { text: "ESSLei", value: "ESSLei" },
-        { text: "ESTM", value: "ESTM"}
       ],
      proposta: {
         tipo_contrato: "",
@@ -694,13 +480,6 @@ export default {
         curso_Doutoramento: "",
 		curso_Outro: "",
 		curso_Formacao: "",
-        remuneracao: "",
-        escalao: "",
-        indice: "",
-        verificacao_outras_uo:"",
-        nome_uo:"",
-        tempo_parcial_uo:"",
-        periodo_uo:"",
         primeiro_proponente: this.$store.state.user.name,
 		verificacao_area_cientifica: "sim",
 		verificacao_curso: "sim",
@@ -737,23 +516,14 @@ export default {
       },
       ficheiros: [],
       ficheiroUnidadesCurriculares: "",
-      ficheiroFunda:"",
-      ficheiroCurriculo: "",
-      ficheiroHabilitacoes: "",
-      ficheiroRelatorio: "",
-      ficheiroCurriculoModel: "",
-      ficheiroHabilitacoesModel: "",
       ficheiroUnidadesCurricularesModel: "",
-      ficheiroRelatorioModel: "",
     }
   },
   //? Validations Vuelidate
  validations() {
 	
-    if (proposta.verificacao_outras_uo == "sim" ) {
 	if(this.proposta.grau.includes("doutoramento")){
       return {
-		
         proposta: {
           tipo_contrato: { required },
           unidade_organica: { required },
@@ -766,13 +536,6 @@ export default {
 		  curso_Doutoramento: { required },
 		  area_cientificaDoutoramento: { required },
       
-          remuneracao: { required, numeric },
-          escalao: { required },
-          indice: { required },
-          verificacao_outras_uo: { required },
-          nome_uo: { required },
-          tempo_parcial_uo: { required },
-          periodo_uo: { required },
         },
         unidadeCurricular: {
           codigo_curso: { required },
@@ -799,13 +562,6 @@ export default {
 
           curso_Outro: { required },
 		  area_cientificaOutro: { required },
-          remuneracao: { required, numeric },
-          escalao: { required },
-          indice: { required },
-          verificacao_outras_uo: { required },
-          nome_uo: { required },
-          tempo_parcial_uo: { required },
-          periodo_uo: { required },
         },
         unidadeCurricular: {
           codigo_curso: { required },
@@ -831,14 +587,6 @@ export default {
           role: { required },
 		  curso_Formacao: { required },
 		  area_cientificaFormacao: { required },
-      
-          remuneracao: { required, numeric },
-          escalao: { required },
-          indice: { required },
-          verificacao_outras_uo: { required },
-          nome_uo: { required },
-          tempo_parcial_uo: { required },
-          periodo_uo: { required },
         },
         unidadeCurricular: {
           codigo_curso: { required },
@@ -851,8 +599,7 @@ export default {
         }
       };
 	  }
-    } else {
-        if(this.proposta.grau.includes("doutoramento")){
+      if(this.proposta.grau.includes("doutoramento")){
       return {
 		
         proposta: {
@@ -866,14 +613,6 @@ export default {
           role: { required },
 		  curso_Doutoramento: { required },
 		  area_cientificaDoutoramento: { required },
-      
-          remuneracao: { required, numeric },
-          escalao: { required },
-          indice: { required },
-          verificacao_outras_uo: { required },
-          nome_uo: { required },
-          tempo_parcial_uo: { required },
-          periodo_uo: { required },
         },
         unidadeCurricular: {
           codigo_curso: { required },
@@ -900,13 +639,6 @@ export default {
 
           curso_Outro: { required },
 		  area_cientificaOutro: { required },
-          remuneracao: { required, numeric },
-          escalao: { required },
-          indice: { required },
-          verificacao_outras_uo: { required },
-          nome_uo: { required },
-          tempo_parcial_uo: { required },
-          periodo_uo: { required },
         },
         unidadeCurricular: {
           codigo_curso: { required },
@@ -918,8 +650,8 @@ export default {
           horas_semestrais: { required }
         }
       };
-	  } else{
-      return {
+	  }else{
+        return {
 		
         proposta: {
           tipo_contrato: { required },
@@ -932,14 +664,6 @@ export default {
           role: { required },
 		  curso_Formacao: { required },
 		  area_cientificaFormacao: { required },
-      
-          remuneracao: { required, numeric },
-          escalao: { required },
-          indice: { required },
-          verificacao_outras_uo: { required },
-          nome_uo: { required },
-          tempo_parcial_uo: { required },
-          periodo_uo: { required },
         },
         unidadeCurricular: {
           codigo_curso: { required },
@@ -952,7 +676,7 @@ export default {
         }
       };
 	  }
-	  }
+	  
   },
   methods: {
     voltar() {
@@ -1065,72 +789,38 @@ export default {
         this.$store.commit('setPropostaExistente');
     },
     avancar: function(proposta, unidadesCurriculares) {
-		proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
-      //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
-      /*this.ficheiro.fileCurriculo = new FormData();
-      this.ficheiro.fileCurriculo.append(
-        "file",
-        this.ficheiros["ficheiroCurriculo"]
-      );
-      this.ficheiro.fileCurriculo.append(
-        "descricao",
-        "Curriculo do docente a ser contratado"
-      );
-      
-      if (this.propostaSelecionada.tipo_contrato == "contratacao_inicial") {
-        this.ficheiro.fileHabilitacoes = new FormData();
-        this.ficheiro.fileHabilitacoes.append(
-          "file",
-          this.ficheiros["ficheiroHabilitacoes"]
+	    proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
+        //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+        this.ficheiro.fileUnidadesCurriculares = new FormData();
+        this.ficheiro.fileUnidadesCurriculares.append(
+            "file",
+            this.ficheiros["ficheiroUnidadesCurriculares"]
         );
-        this.ficheiro.fileHabilitacoes.append(
-          "descricao",
-          "Habilitacoes do docente a ser contratado"
+        this.ficheiro.fileUnidadesCurriculares.append(
+            "descricao",
+            "Ficheiro Unidades Curriculares do docente a ser contratado"
         );
-      }
 
-      this.ficheiro.fileRelatorio = new FormData();
-      this.ficheiro.fileRelatorio.append(
-        "file",
-        this.ficheiros["ficheiroRelatorio"]
-      );
-      this.ficheiro.fileRelatorio.append(
-        "descricao",
-        "Relatorio dos 2 proponentes"
-      );*/
-
-     
-         //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
-      this.ficheiro.fileUnidadesCurriculares = new FormData();
-      this.ficheiro.fileUnidadesCurriculares.append(
-        "file",
-        this.ficheiros["ficheiroUnidadesCurriculares"]
-      );
-      this.ficheiro.fileUnidadesCurriculares.append(
-        "descricao",
-        "Ficheiro Unidades Curriculares do docente a ser contratado"
-      );
-
-      this.roleSelecionado = proposta.role;
-      //this.$v.propostaSelecionada.$touch();
-      this.$validator.validateAll().then(result => {
-        if (result) {
-          //if (!this.$v.propostaSelecionada.$invalid && unidadesCurriculares.length > 0) {
-            this.$store.commit("setProposta", proposta);
-            this.isFinalized = true;
-            this.isShow = false;
-            this.progresso.valor++;
-            this.voltarVar = false;
-          //}
-        } else {
-          this.$bvToast.toast('O formulário possui erros, por favor verifique!', {
-          title: 'Mensagem de Erro',
-          variant: 'danger',
-          appendToast: true,
-          solid: true
-        })
-        }
-      });
+        this.roleSelecionado = proposta.role;
+        //this.$v.propostaSelecionada.$touch();
+        this.$validator.validateAll().then(result => {
+            if (result) {
+            //if (!this.$v.propostaSelecionada.$invalid && unidadesCurriculares.length > 0) {
+                this.$store.commit("setProposta", proposta);
+                this.isFinalized = true;
+                this.isShow = false;
+                this.progresso.valor++;
+                this.voltarVar = false;
+            //}
+            } else {
+                this.$bvToast.toast('O formulário possui erros, por favor verifique!', {
+                title: 'Mensagem de Erro',
+                variant: 'danger',
+                appendToast: true,
+                solid: true
+                })
+            }
+        });
     },
   },
   mounted() {

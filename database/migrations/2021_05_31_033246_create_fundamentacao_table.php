@@ -19,6 +19,16 @@ class CreateFundamentacaoTable extends Migration {
 			$table->integer('user_id')->unsigned()->index('user_id_foreign');
 			$table->timestamps();
 		});
+        Schema::create('vencimentos', function (Blueprint $table){
+            $table->increments('id');
+            $table->string('descricao')->nullable();
+            $table->decimal('renumeracao', 6, 2)->nullable();
+            $table->string('escalao')->nullable();
+            $table->string('indice')->nullable();
+            $table->softDeletes();
+            $table->rememberToken();
+            $table->timestamps();
+        });
 	}
 
 
@@ -30,6 +40,7 @@ class CreateFundamentacaoTable extends Migration {
 	public function down()
 	{
 		Schema::drop('fundamentacao');
+        Schema::drop('vencimentos');
 	}
 
 }

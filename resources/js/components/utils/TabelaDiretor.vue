@@ -59,6 +59,7 @@
                       type="button"
                       class="btn btn-info"
                       @click="mostrarAssinarDiretorUO(propostaHistorico, index)"
+                      v-if="(propostaHistorico.contrato_assinado_uo != 1)"
                     >Assinar</button>
                     <button
                       type="button"

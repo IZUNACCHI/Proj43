@@ -1,7 +1,16 @@
 <template>
   <div>
     <div v-show="isShowProfessor">
-      <h2 class="pb-4">Professor</h2>
+      <!--<h2 class="pb-4">Professor</h2>-->
+
+       <b-card no-body class="mb-1">
+        <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Professor</b-button>
+        </b-card-header>
+        <b-collapse visible id="accordion-1" accordion="accordion" role="tabpanel">
+          <b-card-body>
+            <b-card-text>
+     
       <b-form-group label="Categoria específica do professor a ser contratado">
         <b-form-radio-group
           v-model="propostaProponenteProfessor.role_professor"
@@ -46,11 +55,24 @@
             :options="percentagensArray"
           ></b-form-select>
       </b-form-group>
+      <b-form-group class="mt-5">
+        <b-form-checkbox
+          v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva' "
+          id="checkBoxFundamentacao"
+          v-model="propostaProponenteProfessor.fundamentacao"
+          name="checkBoxFundamentacao"
+          value="1"
+          unchecked-value="0"
+          :state="null"
+        ><b>Fundamentação</b></b-form-checkbox>
+        <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+        
+        
+      
       <b-form-group
-        label="Fundamentação"
         description="(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos"
-        v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
-        propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva'"
+        v-if="propostaProponenteProfessor.fundamentacao == '1'"
       >
 
         <b-form-group>
@@ -67,15 +89,18 @@
         <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group>
-                    <b-button
-                        size="md"
-                        variant="dark"
-                        v-if="ficheiroFundamentacao"
-                        @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
-                    >
-                    <i class="far fa-file-pdf"></i> Atual Ficheiro de Fundamentação
+        <b-button
+         size="md"
+         variant="dark"
+         v-if="ficheiroFundamentacao"
+         @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
+        >
+          <i class="far fa-file-pdf"></i> Atual Ficheiro de Fundamentação
                     </b-button>
                 </b-form-group>
+
+      </b-form-group>
+
       <!--
         <b-form-textarea
           v-model="propostaProponenteProfessor.fundamentacao"
@@ -112,7 +137,10 @@
           :options="avaliacao_periodo_anterior_array"
         ></b-form-select>
       </b-form-group>
-
+      </b-card-text>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
       
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -281,7 +309,7 @@
           </b-card-body>
         </b-collapse>
       </b-card>
-
+      
       <button class="btn btn-info mt-3 font-weight-bold" v-on:click.prevent="anterior">
         <i class="fas fa-arrow-left"></i> Anterior
       </button>
@@ -309,7 +337,10 @@ export default {
   props: ["proposta", "unidadesCurriculares", "ficheiro"],
   data() {
     return {
-    
+      verificacao_fundamentacao: [
+        { text: "Sim", value: "sim" },
+        { text: "Não", value: "nao" }
+      ],
       verificacao_outras_uo_array: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
@@ -396,19 +427,19 @@ export default {
         regime_prestacao_servicos: "",
         percentagem_prestacao_servicos: "",
         percentagem_prestacao_servicos_2: "",
-        fundamentacao: "",
         duracao: "",
         periodo: "",
         proposta_proponente_id: "",
         avaliacao_periodo_anterior:"",
-        remuneracao: "",
+        fundamentacao: 0,
+     /*   remuneracao: "",
         escalao: "",
         indice: "",
         verificacao_outras_uo:"",
         nome_uo:"",
         tempo_parcial_uo:"",
         periodo_uo:"",
-        primeiro_proponente: this.$store.state.user.name,
+       */ primeiro_proponente: this.$store.state.user.name,
       },
       ficheiroProponenteProfessor: {
         fileRelatorio: {},
@@ -493,7 +524,7 @@ export default {
           this.propostaProponenteProfessor.percentagem_prestacao_servicos =
             "100";
         }
-
+            //if(this.propostaProponenteProfessor.fundamentacao=='1'){
             //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
             this.ficheiroProponenteProfessor.fileFundamentacao = new FormData();
             this.ficheiroProponenteProfessor.fileFundamentacao.append(

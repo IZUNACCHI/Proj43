@@ -16,6 +16,7 @@ class SecretariadoDirecaoController extends Controller
             ->join('proposta_diretor_uo', 'proposta.proposta_diretor_uo_id', 'proposta_diretor_uo.id_proposta_diretor_uo')
             ->join('proposta_ctc', 'proposta.proposta_ctc_id', 'proposta_ctc.id_proposta_ctc')
             ->whereNotNull('proposta.proposta_ctc_id')
+            ->where('contrato_assinado_ctc', '!=', '0')
             ->whereNull('proposta.proposta_secretariado_direcao_id')
             ->where('status', '!=', 'rejeitado')
             ->get();

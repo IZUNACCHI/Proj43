@@ -19,6 +19,8 @@ class DiretorUOController extends Controller
       ->join('proposta', 'proposta_proponente.id_proposta_proponente', 'proposta.proposta_proponente_id')
       ->whereNotNull('proposta.proposta_proponente_id')
       ->whereNull('proposta.proposta_diretor_uo_id')
+      ->where('contrato_assinado_departamento', '!=', '0')
+      ->where('contrato_assinado_curso', '!=', '0')
       ->whereNotNull('proposta_proponente.fundamentacao_coordenador_departamento')
       ->whereNotNull('proposta_proponente.fundamentacao_coordenador_curso')
       ->get();
@@ -95,8 +97,15 @@ class DiretorUOController extends Controller
         return $arrayPropostas;
     }
 
-   public function inserirPropostaAssinada(Request $request){
-      if($request->propostaAssinada == true){
+   //public function inserirPropostaAssinada($proposta_proponente_id, Request $request){
+   public function inserirPropostaAssinada($diretor_id, Request $request){
+      $propostaDiretorUO = PropostaDiretorUO::findOrFail($diretor_id);
+      $propostaDiretorUO->contrato_assinado_uo = $request->contrato_assinado_diretor_uo;
+      $propostaDiretorUO->save();
+
+      return response()->json($propostaDiretorUO, 200);
+    }
+     /* if($request->propostaAssinada == true){
          $request->propostaAssinada = 1;
       }
       else{
@@ -109,8 +118,14 @@ class DiretorUOController extends Controller
       $propostaAAtualizar->contrato_assinado_uo = $request->propostaAssinada;
       $propostaAAtualizar->save();
 
+      return response()->json($propostaAAtualizar, 200);*/
+      /*$propostaAAtualizar = PropostaDiretorUO::findOrFail($proposta_proponente_id);
+      $propostaAAtualizar->contrato_assinado_uo = $request->propostaAssinada;
+      $propostaAAtualizar->save();
+
       return response()->json($propostaAAtualizar, 200);
-    }
+    }*/
+
 
     public function getPropostasPorTipoParecer($diretor_id)
     {

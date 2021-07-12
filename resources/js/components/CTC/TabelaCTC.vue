@@ -56,6 +56,7 @@
                       type="button"
                       class="btn btn-info"
                       @click="mostrarAssinarCTC(propostaHistorico, index)"
+                      v-if="(propostaHistorico.contrato_assinado_ctc != 1)"
                     >Assinar</button>
                     <button
                       type="button"

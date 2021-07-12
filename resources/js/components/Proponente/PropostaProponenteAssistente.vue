@@ -1,7 +1,14 @@
 <template>
   <div>
     <div v-show="isShowAssistente">
-      <h2 class="pb-4">Assistente</h2>
+
+     <b-card no-body class="mb-1">
+        <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Monitor</b-button>
+        </b-card-header>
+        <b-collapse visible id="accordion-1" accordion="accordion" role="tabpanel">
+          <b-card-body>
+            <b-card-text>
       <b-form-group label="Regime de prestação de serviços">
         <b-form-radio-group
           v-model="propostaProponenteAssistente.regime_prestacao_servicos"
@@ -53,12 +60,27 @@
         >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
       
       </b-form-group>
+      {{propostaProponenteAssistente.fundamentacao}}
+      <b-form-group class="mt-5">
+        <b-form-checkbox
+          v-if="propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva'"
+          id="checkBoxFundamentacao"
+          v-model="propostaProponenteAssistente.fundamentacao"
+          name="checkBoxFundamentacao"
+          value="1"
+          unchecked-value="0"
+          :state="null"
+        ><b>Fundamentação</b></b-form-checkbox>
+        <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+        
+
+
+
       <b-form-group
-        label="Fundamentação"
         description="(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos"
-        v-if="propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
-        propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
-        propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva'"
+        v-if="propostaProponenteAssistente.fundamentacao == '1'"
       >
 
         <b-form-group>
@@ -75,15 +97,16 @@
         <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
       <b-form-group>
-                    <b-button
-                        size="md"
-                        variant="dark"
-                        v-if="ficheiroFundamentacao"
-                        @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
-                    >
-                    <i class="far fa-file-pdf"></i> Atual Fundamentação Assistente
-                    </b-button>
-                </b-form-group>
+        <b-button
+          size="md"
+          variant="dark"
+          v-if="ficheiroFundamentacao"
+          @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
+        >
+        <i class="far fa-file-pdf"></i> Atual Fundamentação Assistente
+        </b-button>
+      </b-form-group>
+      </b-form-group>
       <!--
         <b-form-textarea
           v-model="propostaProponenteAssistente.fundamentacao"
@@ -120,7 +143,10 @@
           :options="avaliacao_periodo_anterior_array"
         ></b-form-select>
       </b-form-group>
-
+      </b-card-text>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
        <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-3 variant="dark">Vencimento aplicável</b-button>
@@ -259,24 +285,20 @@
                 ></b-form-radio-group>
               </b-form-group>
 
-             
-               
-
-
-                <b-form-group
-                    label="Indique o tempo parcial"
-                    label-for="inputTempoParcial"
-                    v-if="proposta.verificacao_tempo_parcial == 'sim'">
-                      <b-form-select
-                        id="inputTempoParcial"
-                        v-model="proposta.tempo_parcial_uo"
-                        :state="null"
-                        :options="percentagensArray"
-                      ></b-form-select>
-                      <b-form-invalid-feedback
-                        id="input-1-live-feedback"
-                      >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
-                </b-form-group>
+              <b-form-group
+                label="Indique o tempo parcial"
+                label-for="inputTempoParcial"
+                v-if="proposta.verificacao_tempo_parcial == 'sim'">
+                  <b-form-select
+                  id="inputTempoParcial"
+                  v-model="proposta.tempo_parcial_uo"
+                  :state="null"
+                  :options="percentagensArray"
+              ></b-form-select>
+              <b-form-invalid-feedback
+                  id="input-1-live-feedback"
+              >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
+              </b-form-group>
                 <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 01/01/2022 a 31/12/2022">
                   <b-form-input
                     id="inputPeriodo"
@@ -310,7 +332,7 @@
   </div>
 </template>
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
   props: ["proposta", "unidadesCurriculares", "ficheiro"],
@@ -373,7 +395,6 @@ export default {
         { text: "ESSLei", value: "ESSLei" },
         { text: "ESTM", value: "ESTM"}
       ],
-    
       percentagensArray: [
         { text: "55% (7 horas)", value: "55" },
         { text: "50% (6 horas)", value: "50" },
@@ -404,7 +425,7 @@ export default {
         regime_prestacao_servicos: "",
         percentagem_prestacao_servicos: "",
         percentagem_prestacao_servicos_2: "",
-        fundamentacao: "",
+        fundamentacao: 0,
         duracao: "",
         periodo: "",
         avaliacao_periodo_anterior:"",
@@ -440,25 +461,27 @@ export default {
     //     }
     //   };
     // }
-    if (
-      this.propostaProponenteAssistente.regime_prestacao_servicos ==
-        "tempo_integral" ||
-      this.propostaProponenteAssistente.regime_prestacao_servicos ==
-        "dedicacao_exclusiva"
-    ) {
+    if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+       this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
       return {
         propostaProponenteAssistente: {
           regime_prestacao_servicos: { required },
           //fundamentacao: { required },
           duracao: { required },
-          periodo: { required }
+          periodo: { required },
+          remuneracao: { required, numeric },
+          escalao: { required },
+          indice: { required },
+          verificacao_outras_uo: { required },
+         /* if(this.proposta.verificacao_outras_uo == "sim" ) {
+            nome_uo: { required },
+            tempo_parcial_uo: { required },
+            periodo_uo: { required },
+          }*/
         }
       };
     } else {
-      if (
-        this.propostaProponenteAssistente.regime_prestacao_servicos ==
-        "tempo_parcial_60"
-      ) {
+      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60") {
         return {
           propostaProponenteAssistente: {
             regime_prestacao_servicos: { required },
@@ -466,6 +489,15 @@ export default {
             percentagem_prestacao_servicos: { required },
             duracao: { required },
             periodo: { required },
+            remuneracao: { required, numeric },
+            escalao: { required },
+            indice: { required },
+            verificacao_outras_uo: { required },
+            /*if(this.proposta.verificacao_outras_uo == "sim" ) {
+                nome_uo: { required },
+                tempo_parcial_uo: { required },
+                periodo_uo: { required },
+            }*/
           }
         };
       } else {
@@ -474,7 +506,16 @@ export default {
             regime_prestacao_servicos: { required },
             percentagem_prestacao_servicos: { required },
             duracao: { required },
-            periodo: { required }
+            periodo: { required },
+            remuneracao: { required, numeric },
+            escalao: { required },
+            indice: { required },
+            verificacao_outras_uo: { required },
+            /*if(this.proposta.verificacao_outras_uo == "sim" ) {
+                nome_uo: { required },
+                tempo_parcial_uo: { required },
+                periodo_uo: { required },
+            }*/
           }
         };
       }

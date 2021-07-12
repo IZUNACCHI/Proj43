@@ -38,7 +38,7 @@
     <!--<div>
         <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.id_proposta_proponente}} {{propostaSelecionada.grau}}</label>
     </div>-->
-
+    {{this.numPages}}
     <div id="downloadPdf" class="total1" width="100%">
     <div  width="100%">
       <div width="100%" >
@@ -528,7 +528,7 @@
                 tratamento nos termos da legislação de proteção de dados em vigor.</b></p>
           </div>
           
-        <div v-if="propostaSelecionada.status != 'pendente'">
+        <div v-if="propostaSelecionada.status == 'finalizada'">
 		<pdf
 			:src="fichUnidadesCurriculares"
                 
@@ -756,7 +756,7 @@
 		</div>
    </div>
    </div>
-   <div class="tabelasRestantes" v-if="propostaSelecionada.status == 'pendente'"> 
+   <div class="tabelasRestantes" v-if="propostaSelecionada.status != 'finalizada'"> 
    <div >
            <table width="100%" border="1px" align=center>
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
@@ -1350,7 +1350,7 @@ export default {
       pageCount13: 0,
       pageCount14: 0,
       pageCount15: 0,
-      src: pdf.createLoadingTask('storage/ficheiros/exemplo.pdf'),
+      //src: pdf.createLoadingTask('storage/ficheiros/exemplo.pdf'),
 	  numPages: undefined,
       curriculo: false,
       habilitacoes: false,
@@ -1867,7 +1867,8 @@ export default {
           })
       });
     this.src.promise.then(pdf => {
-		this.numPages = pdf.numPages;
+		this.numPages = 1;
+        console.log(this.numPages);
     });    
   }
 };
