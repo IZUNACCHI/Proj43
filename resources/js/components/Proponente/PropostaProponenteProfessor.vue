@@ -65,13 +65,12 @@
           value="1"
           unchecked-value="0"
           :state="null"
-        ><b>Fundamentação</b></b-form-checkbox>
+        ><b>Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
         
         
       
       <b-form-group
-        description="(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos"
         v-if="propostaProponenteProfessor.fundamentacao == '1'"
       >
 
@@ -146,14 +145,47 @@
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-3 variant="dark">Vencimento aplicável</b-button>
         </b-card-header>
+
         <b-collapse id="accordion-3" accordion="accordion" role="tabpanel">
           <b-card-body>
             <b-card-text>
+
+            
+        
+		<b-form-group label="Categoria" description="Campo Opcional">
+		<b-form-select
+            id="inputCategoria"
+            readonly="true"
+            v-model="propostaExistente"
+            @change="associarProposta()"
+            :state="!propostaExistente.$error && null"
+            :options="listaVencimentos"
+            >
+            <template slot="first">
+            <option
+              :value="null"
+              disabled
+            >-- Por favor selecione --</option>
+          </template>
+        </b-form-select>
+    </b-form-group>
+    
+                <b-form-group label="Categoria" label-for="inputEscalao">
+                <b-form-input
+                  id="inputEscalao"
+                  :state="null"
+                  v-model="proposta.descricao"
+                  disabled
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
+              </b-form-group>
+
               <b-form-group label="Remuneração" label-for="inputRemuneracao">
                 <b-form-input
-                  id="inputRemuneracao"
+                  id="inputRenumeracao"
                   :state="null"
-                  v-model="proposta.remuneracao"
+                  v-model="proposta.renumeracao"
+                  disabled
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira a remuneração em formato numérico!</b-form-invalid-feedback>
               </b-form-group>
@@ -163,6 +195,7 @@
                   id="inputEscalao"
                   :state="null"
                   v-model="proposta.escalao"
+                  disabled
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
               </b-form-group>
@@ -172,6 +205,7 @@
                   id="inputIndice"
                   :state="null"
                   v-model="proposta.indice"
+                  disabled
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
               </b-form-group>
@@ -337,6 +371,8 @@ export default {
   props: ["proposta", "unidadesCurriculares", "ficheiro"],
   data() {
     return {
+    
+      listaVencimentos:[],
       verificacao_fundamentacao: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
@@ -445,6 +481,7 @@ export default {
         fileRelatorio: {},
         fileFundamentacao: {}
       },
+      propostaExistente: {},
       ficheirosProfessor: [],
       ficheiroFundamentacao: "",
       ficheiroFundamentacaoProfessor: "",
@@ -492,7 +529,19 @@ export default {
     }
   },
   methods: {
-  validateState(ref) {
+    getVencimentos(){
+		axios.get("/api/vencimentos").then(response => {
+		    response.data.forEach(proposta => {
+              this.listaVencimentos.push({
+                text: proposta.descricao,
+              
+                value: proposta,
+                
+              });
+		    });
+		});
+	},
+    validateState(ref) {
       return this.veeErrors.has(ref) ? false : null;
     },
     onFileSelected(event) {
@@ -576,7 +625,13 @@ export default {
       this.isShowProfessor = true;
       this.avancar = false;
       this.$emit("decrementarBarraProgresso");
-    }
+    },
+    associarProposta() {
+      //* Limpar Objectos
+      Object.assign(this.propostaExistente, {});
+      //* Associar vencimento à proposta
+      Object.assign(this.proposta, this.propostaExistente);
+      }
   },
   mounted() {
     Object.assign(this.propostaProponenteProfessor, this.$store.state.propostaProponenteProfessor);
@@ -597,7 +652,10 @@ export default {
             }
           });
         });
+      this.propostaExistente=this.proposta.descricao;
     }
+	this.getVencimentos();
+	
   }
 };
 </script>

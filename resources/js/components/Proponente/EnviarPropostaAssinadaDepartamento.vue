@@ -37,6 +37,7 @@
         >Tomei Conhecimento que a proposta fica Definitiva</b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
     </b-form-group>
+    {{propostaProponente.contrato_assinado_departamento}}
     <button
         class="btn btn-success mt-3 font-weight-bold"
         v-on:click.prevent="submeter(ficheirosAInserir)">

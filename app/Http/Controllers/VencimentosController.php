@@ -11,7 +11,7 @@ class VencimentosController extends Controller
     public function getVencimentos(){
 		
 		//return Vencimentos::where('user_id', $user_id)->get();
-        return Vencimentos::all();;
+        return Vencimentos::all();
 	}
 
 

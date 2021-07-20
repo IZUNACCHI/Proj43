@@ -543,6 +543,7 @@ export default {
         curso_Doutoramento: "",
 		curso_Outro: "",
 		curso_Formacao: "",
+        descricao: "",
         remuneracao: "",
         escalao: "",
         indice: "",

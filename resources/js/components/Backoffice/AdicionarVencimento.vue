@@ -1,19 +1,28 @@
 <template>
     <div>
 
-    <b-form-group label="Descrição" label-for="inputCurso">
+   <<!-- <b-form-group label="Descrição" label-for="inputCurso">
         <b-form-select
             id="inputCurso"
             :options="categoriaDescricao"
             v-model="vencimento.descricao"
             :state="null"
         ></b-form-select>
-       <!-- <b-form-input
+       -- <b-form-input
         id="inputDescricaoVencimento"
         :state="null"
         v-model="vencimento.descricao"
-      ></b-form-input>-->
+      ></b-form-input>--
+
         <b-form-invalid-feedback id="input-1-live-feedback">O Curso é obrigatório!</b-form-invalid-feedback>
+    </b-form-group>-->
+    <b-form-group label="Descrição" label-for="inputCodigoUC">
+      <b-form-input
+        id="inputDescricaoVencimento"
+        :state="null"
+        v-model="vencimento.descricao"
+      ></b-form-input>
+      <b-form-invalid-feedback id="input-1-live-feedback">Categoria obrigatorio</b-form-invalid-feedback>
     </b-form-group>
 
     <b-form-group label="Renumeração" label-for="inputNomeUC">
@@ -79,20 +88,20 @@ export default {
     },
     methods:{
         criarVencimento(vencimento){
-            axios.get('/api/verificarSeJaExistemCategoriaVencimento/' + vencimento.descricao)
+            /*axios.get('/api/verificarSeJaExistemCategoriaVencimento/' + vencimento.descricao)
             .then(response => {
             if(!response.data){
-        
+        */
                 axios.post('/api/vencimento/criarVencimento', vencimento).then(response => {
                     this.$swal('Sucesso', 'Vencimento criado com sucesso', 'success')
                     this.$emit('fecharCurso');
 
                 })
-                .catch(error => {
+              /*  .catch(error => {
                     this.$swal('Erro', 'Já existe um Vencimento com essa discrição', 'error')
-                });
-                }
-            });
+                });*/
+                //}
+           // });
         }
     },
     mounted(){
