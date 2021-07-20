@@ -220,7 +220,7 @@
                     <td v-if="tipoPropostaRole.regime_prestacao_servicos=='dedicacao_exclusiva'">Dedicação Exclusiva
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked></td>
                 </tr><tr>
-                    <td colspan="2"><b>Fundamentação</b>
+                    <td colspan="3"><b>Fundamentação</b>
                         <input type="checkbox" v-if="ficheiroFundamentacao" id="scales" name="scales" onclick="return false;" checked>
                         <input type="checkbox" v-else id="scales" name="scales" onclick="return false;">
                         (cfr. acta do CTC – art. 5.º, n.º 3)
@@ -392,8 +392,9 @@
                 </tr><tr>
                     <td>
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
-                        Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        Fundamentação
+                        <b>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</b><br>
+						<br><br><br><br><br><br>
                         <b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
@@ -401,21 +402,21 @@
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
                         <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
-                        <b>Ass.:</b> _______________________________<br>
+                        <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
                     <td>
                     <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
-                        Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
-                        <b>Ass.:</b> _______________________________<br>
+                        Fundamentação
+                        <b>{{propostaSelecionada.fundamentacao_coordenador_curso}}</b><br>
+                        <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
                     <td v-if="propostaSelecionada.primeiro_proponente=='proponente_curso'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
                         <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
-                        <b>Ass.:</b> _______________________________<br>
+                        <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
                 </tr>
@@ -757,7 +758,7 @@
    </div>
    </div>
    <div class="tabelasRestantes" v-if="propostaSelecionada.status != 'finalizada'"> 
-   <div >
+   <div data-html2canvas-ignore="true">
            <table width="100%" border="1px" align=center>
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
                 <tr v-if="ficheiroUnidadesCurriculares">
@@ -1227,7 +1228,7 @@
           <br>
 </div>
 </div>          
-        <div class="total" v-if="this.$store.state.user.roleDB != 'recursos_humanos'" style ="width:120%; left:-30.2 ;">
+        <div class="total" data-html2canvas-ignore="true" v-if="this.$store.state.user.roleDB != 'recursos_humanos'" style ="width:120%; left:-30.2 ;">
             <pdf :src="fichAssinado"></pdf><br>
         </div>
 
@@ -1272,31 +1273,6 @@
       :propostaSelecionada="propostaSelecionada"
       v-on:mostrarRh="voltarRecursosHumanos"
     ></proposta-recursos>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    
-
-
-
-
-        
-
-
-
 </div>
 
 
@@ -1476,22 +1452,21 @@ export default {
         });
     },
     exportarPDF() {
-      var doc = new jsPDF();
+      var doc = new jsPDF('p', 'pt', 'a4');
       doc.fromHTML($("#proposta").get(0), 20, 20);
       doc.save("Proposta Contratação " + this.propostaSelecionada.nome_completo+".pdf");
     },
     
     gerarPdfPropostaProponente(){
-      
-        var doc = new jsPDF();
+        var doc = new jsPDF('p', 'pt', 'a4');
         //Introduz um elemento html para o pdf
         doc.setFont('PTSans');
         doc.setFontSize(10);
         doc.setFont("Roboto-Regular");
         doc.html(downloadPdf, { 
                 html2canvas: {
-                    scale: 0.226,
-                    scrollY:0
+                    scale: 0.395,
+                    scrollY: 0
                 },
                 x: 15,
                 y: 0, 
@@ -1504,57 +1479,58 @@ export default {
 
     
     gerarPdfCtc(){
-        var doc = new jsPDF();
+		
+        var doc = new jsPDF('p', 'pt', 'a4');
         //Introduz um elemento html para o pdf
         doc.setFont('PTSans');
         doc.setFontSize(10);
         doc.setFont("Roboto-Regular");
-        doc.html(ctcPdf, { 
+        doc.html(downloadPdf, { 
                 html2canvas: {
-                    scale: 0.226,
-                    scrollY:0
+                    scale: 0.395,
+                    scrollY: 0
                 },
-                x: 0,
+                x: 15,
                 y: 0, 
                 callback: function (doc) {
                 doc.save("Proposta Contratação.pdf");
                 }
-            });  
+            });
     },
 
     gerarPdfRecursosHumanos(){
-        var doc = new jsPDF();
+        var doc = new jsPDF('p', 'pt', 'a4');
         //Introduz um elemento html para o pdf
         doc.setFont('PTSans');
         doc.setFontSize(10);
         doc.setFont("Roboto-Regular");
-        doc.html(recursosHumanos, { 
+        doc.html(downloadPdf, { 
                 html2canvas: {
-                    scale: 0.226,
-                    scrollY:0
+                    scale: 0.395,
+                    scrollY: 0
                 },
-                x: 10,
-                y: 10, 
+                x: 15,
+                y: 0, 
                 callback: function (doc) {
                 doc.save("Proposta Contratação.pdf");
                 }
-            });  
+            });
     },
 
     
     gerarPdfUo(){
-        var doc = new jsPDF();
+        var doc = new jsPDF('p', 'pt', 'a4');
         //Introduz um elemento html para o pdf
         doc.setFont('PTSans');
         doc.setFontSize(10);
         doc.setFont("Roboto-Regular");
-        doc.html(Uo, { 
+        doc.html(downloadPdf, { 
                 html2canvas: {
-                    scale: 0.226,
-                    scrollY:0
+                    scale: 0.395,
+                    scrollY: 0
                 },
-                x: 5,
-                y: 10, 
+                x: 15,
+                y: 0, 
                 callback: function (doc) {
                 doc.save("Proposta Contratação.pdf");
                 }
