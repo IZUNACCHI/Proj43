@@ -39,9 +39,9 @@
         <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.id_proposta_proponente}} {{propostaSelecionada.grau}}</label>
     </div>-->
     {{this.numPages}}
-    <div id="downloadPdf" class="total1" width="100%">
-    <div  width="100%">
-      <div width="100%" >
+    <div id="downloadPdf" class="total1" width="93%">
+    <div  >
+      <div  >
         <div class="tabelaCabecalho"><table>
             <td><!--<img src="images/logo.svg" alt="Instituto Politécnico de Leiria" class="pr-5">-->
         </td><td width="50%"><p style='text-align:center; font-size: 20px'><b>Proposta de contratação<br>
@@ -70,7 +70,7 @@
                    <th colspan="3"><font color=#ffffff>A Preencher pelo DSRH</font></th>
                 </tr>
                 <tr>
-                    <td><b>Número de Funcionário:</b>{{propostaSelecionada.numero_funcionario}}<br>
+                    <td><b>Número de Funcionário:</b>{{propostaSelecionada.numero_funcionario}}{{contagemficheiro}}<br>
                     <b>Contratação Comunidada</b>
                         <input v-if="propostaSelecionada.contratacao_comunicada == '1'" type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                         <input v-else type="checkbox" id="scales" name="scales" onclick="return false;"><br>
@@ -433,7 +433,7 @@
                     <td v-else><b>Reconheço interesse e a necessidade da contratação/renovação</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                     </td>
-                    <td rowspan="2" width="60%"><b>Data: </b>{{propostaSelecionada.data_assinatura_uo}}<br> <b>Assinatura: </b>____________________</td>
+                    <td rowspan="2" width="60%"><br> <b><br><br><br>Assinatura: </b>____________________<br><b>Data: </b>{{propostaSelecionada.data_assinatura_uo}}</td>
                 </tr><tr>
                     
                     <td v-if="propostaSelecionada.parecer=='Favoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
@@ -459,7 +459,7 @@
                 <tr>
                     <td><b>Votos a Favor: </b>{{propostaSelecionada.votos_a_favor}}</td>
                     <td><b>Votos Contra: </b>{{propostaSelecionada.votos_contra}}</td>
-                    <td rowspan="3"><b>Data: </b>{{propostaSelecionada.data_assinatura_ctc}}  <br><b>Assinatura:</b>____________________</td>
+                    <td rowspan="3"><br><b><br><br><br>Assinatura:</b>____________________<br><b>Data: </b>{{propostaSelecionada.data_assinatura_ctc}} </td>
                 </tr><tr>
                     <td><b>Votos em branco: </b>{{propostaSelecionada.votos_brancos}}</td>
                     <td><b>Votos Nulos: </b>{{propostaSelecionada.votos_nulos}}</td>
@@ -776,10 +776,16 @@
                     <tr v-if="uc">
                         <td colspan="3" style="height: 50%">
                             <pdf
-			                    v-for="i in numPages"
-			                    :key="i"
 			                    :src="fichUnidadesCurriculares"
-			                    :page="i"
+        	                    @num-pages="pageCount101 = $event"
+			                    @page-loaded="currentPage1 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="aa in pageCount101"
+			                    :key="aa"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="aa"
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
@@ -787,7 +793,7 @@
                     <td> Ficheiro da Fundamentação</td>
                     <td><b-button class="botao"
                             variant="dark"
-                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Fundamentacao da Proposta Proponente Assistente', propostaSelecionada.nome_completo)">
+                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Fundamentacao da Proposta Proponente', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro da Fundamentação
                     </b-button></td><td>
                         <b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
@@ -798,65 +804,108 @@
                     <tr v-if="fundamentacao">
                         <td colspan="3" style="height: 50%">
                             <pdf
-			                    v-for="i in numPages"
-			                    :key="i"
 			                    :src="fichFundamentacao"
-			                    :page="i"
+                
+			                    @num-pages="pageCount102 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="bb in pageCount102"
+			                    :key="bb"
+			                    :src="fichFundamentacao"
+			                    :page="bb"
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
-
-
-
-
-                <!--<tr v-if="ficheiroAssinadoCoordenadorCurso">
+                    <tr v-if="ficheiroPropostaAssinadoCurso">
                     <td> Ficheiro Assinado Coordenador de Curso</td>
                     <td><b-button class="botao"
                             variant="dark"
                             @click="downloadFicheiro(ficheiroAssinadoCoordenadorCurso.proposta_id, 'Proposta Assinado Coordenador Curso', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
                     </b-button></td><td>
-                        <b-button class="botao" v-on:click="uc = !uc"
+                        <b-button class="botao" v-on:click="assinadoCurso = !assinadoCurso"
                             variant="dark">
                             Visualizar
                         </b-button>
                      </td>
-                    <tr v-if="uc">
+                    <tr v-if="assinadoCurso">
                         <td colspan="3" style="height: 50%">
                             <pdf
-			                    v-for="i in numPages"
-			                    :key="i"
-			                    :src="fichFundamentacao"
-			                    :page="i"
+			                    :src="fichPropostaAssinadoCurso"
+                
+			                    @num-pages="pageCount103 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="cc in pageCount103"
+			                    :key="cc"
+			                    :src="fichPropostaAssinadoCurso"
+			                    :page="cc"
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
-                            <pdf name="fade" :src="fichAssinadoCoordenadorCurso"></pdf>
                         </td></tr>
-                </tr><tr v-if="ficheiroAssinadoCoordenadorDepartamento">
+                </tr><tr v-if="ficheiroPropostaAssinadoDepartamento">
                     <td> Ficheiro Assinado Coordenador Departamento</td>
                     <td><b-button class="botao"
                             variant="dark"
                             @click="downloadFicheiro(ficheiroAssinadoCoordenadorDepartamento.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
                     </b-button></td><td>
-                        <b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
+                        <b-button class="botao" v-on:click="assinadoDepartamento = !assinadoDepartamento"
                             variant="dark">
                             Visualizar
                         </b-button>
                      </td>
-                    <tr v-if="fundamentacao">
+                    <tr v-if="assinadoDepartamento">
                         <td colspan="3" style="height: 50%">
                             <pdf
-			                    v-for="i in numPages"
-			                    :key="i"
-			                    :src="fichFundamentacao"
-			                    :page="i"
+			                    :src="fichPropostaAssinadoDepartamento"
+                
+			                    @num-pages="pageCount104 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="dd in pageCount104"
+			                    :key="dd"
+			                    :src="fichPropostaAssinadoDepartamento"
+			                    :page="dd"
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
-                            <pdf name="fade" :src="fichFundamentacao"></pdf>
                         </td></tr>
-
-                        -->
+                        
+                </tr><tr v-if="ficheiroPropostaAssinadoUO">
+                    <td> Ficheiro Assinado Coordenador Diretor UO</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorDepartamento.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="assinadoUO = !assinadoUO"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="assinadoUO">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichPropostaAssinadoUO"
+                
+			                    @num-pages="pageCount105 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="ee in pageCount105"
+			                    :key="ee"
+			                    :src="fichPropostaAssinadoUO"
+			                    :page="ee"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
                 </tr><tr v-if="ataCTC">
                     <td>Cópia da Ata do CTC</td>
                     <td><b-button
@@ -876,13 +925,47 @@
                     <tr v-if="ata">
                         <td colspan="3" style="height: 50%">
                             <pdf
-			                    v-for="i in numPages"
-			                    :key="i"
+			                    v-for="ff in numPages"
+			                    :key="ff"
 			                    :src="fichAtaCTC"
-			                    :page="i"
+			                    :page="ff"
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
+
+
+
+                        
+                </tr><tr v-if="ficheiroPropostaAssinadoCTC">
+                    <td> Ficheiro Assinado Coordenador Diretor UO</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorDepartamento.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
+                            <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="assinadoCTC = !assinadoCTC"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="assinadoCTC">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichPropostaAssinadoCTC"
+                
+			                    @num-pages="pageCount107 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="gg in pageCount107"
+			                    :key="gg"
+			                    :src="fichPropostaAssinadoCTC"
+			                    :page="gg"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+
 
 
                     </tr><tr v-if="ficheiroCurriculo">
@@ -900,11 +983,18 @@
                          </td><tr v-if="curriculo" style="width: 100%">
                             <td colspan="3" style=" TABLE-LAYOUT: fixed; WORD-BREAK:BREAK-ALL;">
                                 <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
-			                            :src="fichCurriculo"
-			                            :page="i"
-			                            style="display: inline-block; width: 100%"
+			                        :src="fichCurriculo"
+                
+			                        @num-pages="pageCount108 = $event"
+			                        @page-loaded="currentPage2 = $event"
+                                    style="display: inline-block; width: 1%; opacity: 0"
+		                        ></pdf>
+                                <pdf
+			                        v-for="hh in pageCount108"
+			                        :key="hh"
+			                        :src="fichCurriculo"
+			                        :page="hh"
+			                        style="display: inline-block; width: 100%"
 		                        ></pdf>
                             </td>
                         </tr>
@@ -922,13 +1012,21 @@
                          </td></td>
                         <tr v-if="habilitacoes">
                             <td colspan="3" style="height: 50%">
-                                <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
-			                            :src="fichCertificadoHabilitacoes"
-			                            :page="i"
-			                            style="display: inline-block; width: 100%"
-		                            ></pdf>
+                            <pdf
+			                    :src="fichCertificadoHabilitacoes"
+                
+			                    @num-pages="pageCount109 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="ii in pageCount109"
+			                    :key="ii"
+			                    :src="fichCertificadoHabilitacoes"
+			                    :page="ii"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        
                             </td>
                         </tr>
                     </tr><tr v-if="ficheiroNIF">
@@ -950,10 +1048,17 @@
                             <tr v-if="nif">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
+			                            :src="fichCertificadoHabilitacoes"
+                
+			                            @num-pages="pageCount110 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="jj in pageCount110"
+			                            :key="jj"
 			                            :src="fichNIF"
-			                            :page="i"
+			                            :page="jj"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
                                 </td></tr>
@@ -976,12 +1081,20 @@
                             <tr v-if="cga">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
 			                            :src="fichCGA"
-			                            :page="i"
+                
+			                            @num-pages="pageCount111 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="ll in pageCount111"
+			                            :key="ll"
+			                            :src="fichCGA"
+			                            :page="ll"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr v-if="ficheiroCC">
                             <td>Cópia do Cartão Cidadão</td>
@@ -1002,10 +1115,17 @@
                             <tr v-if="cc">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
 			                            :src="fichCC"
-			                            :page="i"
+                
+			                            @num-pages="pageCount112 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="mm in pageCount112"
+			                            :key="mm"
+			                            :src="fichCC"
+			                            :page="mm"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
                                 </td></tr>
@@ -1029,12 +1149,20 @@
                             <tr v-if="iban">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
 			                            :src="fichIBAN"
-			                            :page="i"
+                
+			                            @num-pages="pageCount113 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="nn in pageCount113"
+			                            :key="nn"
+			                            :src="fichIBAN"
+			                            :page="nn"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr v-if="ficheiroCertificadoRegistoCriminal">
                             <td>Certificado de Registo Criminal</td>
@@ -1055,10 +1183,17 @@
                             <tr v-if="criminal">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
-			                            :src="fichCertificadoRegstoCriminal"
-			                            :page="i"
+			                            :src="fichCertificadoRegistoCriminal"
+                
+			                            @num-pages="pageCount114 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="oo in pageCount114"
+			                            :key="oo"
+			                            :src="fichCertificadoRegistoCriminal"
+			                            :page="oo"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
                                 </td></tr>
@@ -1079,13 +1214,22 @@
                                 </b-button>
                              </td>
                             <tr v-if="robustez">
-                                <td colspan="3" style="height: 50%"><pdf
-			                            v-for="i in numPages"
-			                            :key="i"
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
 			                            :src="fichDeclaracaoRobustezFisica"
-			                            :page="i"
+                
+			                            @num-pages="pageCount115 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="pp in pageCount115"
+			                            :key="pp"
+			                            :src="fichRobustezFisica"
+			                            :page="pp"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr v-if="ficheiroBoletimVacinas">
                             <td>Cópia do Boletim Vacinas</td>
@@ -1106,12 +1250,20 @@
                             <tr v-if="vacinas">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
 			                            :src="fichBoletimVacinas"
-			                            :page="i"
+                
+			                            @num-pages="pageCount116 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="qq in pageCount116"
+			                            :key="qq"
+			                            :src="fichBoletinVacinas"
+			                            :page="qq"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr v-if="ficheiroFichaIdentificacao">
                             <td>Ficha Identificacao</td>
@@ -1132,12 +1284,20 @@
                             <tr v-if="identificacao">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
 			                            :src="fichFichaIdentificacao"
-			                            :page="i"
+                
+			                            @num-pages="pageCount117 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="rr in pageCount117"
+			                            :key="rr"
+			                            :src="fichFichaIdentifcacao"
+			                            :page="rr"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr v-if="ficheiroDeclaracaoRenuncia">
                             <td>DCD/Renuncia ADSE</td>
@@ -1158,12 +1318,20 @@
                             <tr v-if="adse">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
 			                            :src="fichDeclaracaoRenuncia"
-			                            :page="i"
+                
+			                            @num-pages="pageCount118 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="ss in pageCount118"
+			                            :key="ss"
+			                            :src="fichDeclaracaoRenuncia"
+			                            :page="ss"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr v-if="ficheiroDeclaracaoArtigo99">
                             <td>Declaracao Artº 99 do IRS</td>
@@ -1183,13 +1351,21 @@
                              </td>
                             <tr v-if="artigo">
                                 <td colspan="3" style="height: 50%">
-                                <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
+                                    <pdf
 			                            :src="fichDeclaracaoArtigo99"
-			                            :page="i"
+                
+			                            @num-pages="pageCount119 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="tt in pageCount119"
+			                            :key="tt"
+			                            :src="fichDeclaracaoArtigo99"
+			                            :page="tt"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr v-if="ficheiroConsultaOutrasEscolas">
                             <td>Resposta à Consulta das Outras Escolas</td>
@@ -1210,12 +1386,20 @@
                             <tr v-if="consulta">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            v-for="i in numPages"
-			                            :key="i"
 			                            :src="fichConsultaOutrasEscolas"
-			                            :page="i"
+                
+			                            @num-pages="pageCount120 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="uu in pageCount120"
+			                            :key="uu"
+			                            :src="fichConsultaOutrasEscolas"
+			                            :page="uu"
 			                            style="display: inline-block; width: 100%"
 		                            ></pdf>
+                        
                                 </td></tr>
                         </tr><tr>
 
@@ -1321,11 +1505,28 @@ export default {
       pageCount9: 0,
       pageCount10: 0,
       pageCount11: 0,
+      contagemficheiro: 0,
       pageCount12: 0,
       pageCount16: 0,
       pageCount13: 0,
       pageCount14: 0,
       pageCount15: 0,
+      pageCount101: 0,
+      pageCount102: 0,
+      pageCount103: 0,
+      pageCount104: 0,
+      pageCount105: 0,
+      pageCount106: 0,
+      pageCount107: 0,
+      pageCount108: 0,
+      pageCount109: 0,
+      pageCount110: 0,
+      pageCount111: 0,
+      pageCount112: 0,
+      pageCount116: 0,
+      pageCount113: 0,
+      pageCount114: 0,
+      pageCount115: 0,
       //src: pdf.createLoadingTask('storage/ficheiros/exemplo.pdf'),
 	  numPages: undefined,
       curriculo: false,
@@ -1333,8 +1534,10 @@ export default {
       relatorio: false,
       uc: false,
       fundamentacao: false,
-      assCurso: false,
-      assDepartemento: false,
+      assinadoCurso: false,
+      assinadoDepartamento: false,
+      assinadoUO: false,
+      assinadoCTC: false,
       ata: false,
       nif: false,
       cga: false,
@@ -1369,6 +1572,8 @@ export default {
       ficheiroFundamentacao: "",
       ficheiroAssinadoCoordenadorCurso: "",
       ficheiroAssinadoCoordenadorDepartamento: "",
+      ficheiroPropostaAssinadoUO: "",
+      ficheiroPropostaAssinadoCTC: "",
       
       ataCTC: "",
       ficheiroNIF:"",
@@ -1468,7 +1673,7 @@ export default {
                     scale: 0.395,
                     scrollY: 0
                 },
-                x: 15,
+                x: 5,
                 y: 0, 
                 callback: function (doc) {
                 doc.save("Proposta Contratação.pdf");
@@ -1557,252 +1762,81 @@ export default {
         this.propostaID = response.data.id;
         console.log(this.propostaID)
         axios.get("/api/ficheiros/" + this.propostaID).then(response => {
-        if(this.propostaSelecionada.verificacao_serviço_docente_atribuido == "sim"){
-          this.ficheiros = response.data;
-          this.ficheiroUnidadesCurriculares = this.ficheiros[0];
-          this.fichUnidadesCurriculares = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Unidades_Curriculares_do_docente_a_ser_contratado.pdf";
 
-          if(this.tipoPropostaRole.regime_prestacao_servicos=="dedicacao_exclusiva" ||
-             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
-             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
-                this.ficheiroFundamentacao = this.ficheiros[1];
-                this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
+         this.ficheiros = response.data;
+    
+         if(this.propostaSelecionada.verificacao_serviço_docente_atribuido == "sim"){
+            this.ficheiroUnidadesCurriculares = this.ficheiros[this.contagemficheiro];
+            this.fichUnidadesCurriculares = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Unidades_Curriculares_do_docente_a_ser_contratado.pdf";
+	        this.contagemficheiro=this.contagemficheiro+1;
+         }
+         if(this.tipoPropostaRole.regime_prestacao_servicos=="dedicacao_exclusiva" ||
+            this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
+            this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
+            this.ficheiroFundamentacao = this.ficheiros[this.contagemficheiro];
+            this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
+	        this.contagemficheiro=this.contagemficheiro+1;
+         }
+         this.ficheiroPropostaAssinadoDepartamento = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoDepartamento = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Departamento.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
 
-                this.ataCTC = this.ficheiros[2];
-                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
-         
-                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
-                    this.ficheiroCurriculo = this.ficheiros[3];
-                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[4];
-                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+         this.ficheiroPropostaAssinadoCurso = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoCurso = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Curso.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroPropostaAssinadoUO = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoUO = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Diretor_UO.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
 
-                    this.ficheiroNIF = this.ficheiros[5];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[6];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[7];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[8];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[9];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[10];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[11];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[12];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[13];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[14];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[15];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }else{
-                    this.ficheiroNIF = this.ficheiros[3];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[4];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[5];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[6];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[7];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[8];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[9];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[10];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[11];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[12];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[13];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }
-            }else{
-                this.ataCTC = this.ficheiros[1];
-                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
-         
-                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
-                    this.ficheiroCurriculo = this.ficheiros[2];
-                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[3];
-                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+         this.ataCTC = this.ficheiros[this.contagemficheiro];
+         this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
 
-                    this.ficheiroNIF = this.ficheiros[4];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[5];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[6];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[7];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[8];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[9];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[10];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[11];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[12];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[13];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[14];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }else{
-                    this.ficheiroNIF = this.ficheiros[2];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[3];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[4];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[5];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[6];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[7];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[8];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[9];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[10];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[11];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[12];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }
-            }
-          }else{
-            this.ficheiros = response.data;
-            if(this.tipoPropostaRole.regime_prestacao_servicos=="dedicacao_exclusiva" ||
-             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
-             this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
-                this.ficheiroFundamentacao = this.ficheiros[0];
-                this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
+         this.ficheiroPropostaAssinadoCTC = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
 
-                this.ataCTC = this.ficheiros[1];
-                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
-         
-                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
-                    this.ficheiroCurriculo = this.ficheiros[2];
-                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[3];
-                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
+         if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
+            this.ficheiroCurriculo = this.ficheiros[this.contagemficheiro];
+            this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";vi
+            this.contagemficheiro=this.contagemficheiro+1;
+            this.ficheiroCertificadoHabilitacoes = this.ficheiros[this.contagemficheiro];
+            this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf";
+            this.contagemficheiro=this.contagemficheiro+1;
+         }
 
-                    this.ficheiroNIF = this.ficheiros[4];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[5];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[6];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[7];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[8];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[9];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[10];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[11];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[12];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[13];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[14];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }else{
-                    this.ficheiroNIF = this.ficheiros[2];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[3];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[4];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[5];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[6];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[7];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[8];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[9];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[10];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[11];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[12];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }
-            }else{
-                this.ataCTC = this.ficheiros[0];
-                this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
-         
-                if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
-                    this.ficheiroCurriculo = this.ficheiros[1];
-                    this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf",
-                    this.ficheiroCertificadoHabilitacoes = this.ficheiros[2];
-                    this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf",
-
-                    this.ficheiroNIF = this.ficheiros[3];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[4];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[5];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[6];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[7];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[8];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[9];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[10];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[11];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[12];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[13];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }else{
-                    this.ficheiroNIF = this.ficheiros[1];
-                    this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
-                    this.ficheiroCGA = this.ficheiros[2];
-                    this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
-                    this.ficheiroCC = this.ficheiros[3];
-                    this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
-                    this.ficheiroIBAN = this.ficheiros[4];
-                    this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
-                    this.ficheiroCertificadoRegistoCriminal = this.ficheiros[5];
-                    this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
-                    this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[6];
-                    this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
-                    this.ficheiroBoletimVacinas = this.ficheiros[7];
-                    this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
-                    this.ficheiroFichaIdentificacao = this.ficheiros[8];
-                    this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
-                    this.ficheiroDeclaracaoArtigo99 = this.ficheiros[9];
-                    this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
-                    this.ficheiroDeclaracaoRenuncia = this.ficheiros[10];
-                    this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
-                    this.ficheiroConsultaOutrasEscolas = this.ficheiros[11];
-                    this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
-                }
-            }
-          }
-
-
+         this.ficheiroNIF = this.ficheiros[this.contagemficheiro];
+         this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCGA = this.ficheiros[this.contagemficheiro];
+         this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCC = this.ficheiros[this.contagemficheiro];
+         this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroIBAN = this.ficheiros[this.contagemficheiro];
+         this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCertificadoRegistoCriminal = this.ficheiros[this.contagemficheiro];
+         this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[this.contagemficheiro];
+         this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroBoletimVacinas = this.ficheiros[this.contagemficheiro];
+         this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroFichaIdentificacao = this.ficheiros[this.contagemficheiro];
+         this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroDeclaracaoArtigo99 = this.ficheiros[this.contagemficheiro];
+         this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroDeclaracaoRenuncia = this.ficheiros[this.contagemficheiro];
+         this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroConsultaOutrasEscolas = this.ficheiros[this.contagemficheiro];
+         this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
           
           /*this.ficheiroRelatorioProponentes = this.ficheiros[0];
           this.fichRelatorioProponentes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Relatorio_dos_2_proponentes.pdf",
@@ -1842,7 +1876,7 @@ export default {
             console.log(response);
           })
       });
-    this.src.promise.then(pdf => {
+    this.src.then(pdf => {
 		this.numPages = 1;
         console.log(this.numPages);
     });    

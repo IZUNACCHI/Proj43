@@ -141,7 +141,7 @@
                             <button
                               type="button"
                               class="btn btn-info"
-                              @click="verAssinarCoordenadorCurso(propostaHistorico, index)"
+                              @click="verAssinarCoordenadorDepartamento(propostaHistorico, index)"
                               v-if="(propostaHistorico.contrato_assinado_departamento != 1) &&
                                     (propostaHistorico.fundamentacao_coordenador_curso != null) &&
                                     (propostaHistorico.fundamentacao_coordenador_departamento != null)""
