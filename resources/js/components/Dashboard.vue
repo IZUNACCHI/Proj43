@@ -71,7 +71,7 @@
               COORDENADOR DEPARTAMENTO
               <div class="separator">
                 <b-tabs content-class="mt-3" align="left">
-                  <b-tab title="Propostas Pendentes" active>
+                  <b-tab title="Propostas Pendentes" >
                     <table class="table">
                       <thead>
                         <th>Nome docente a ser contratado</th>
@@ -98,7 +98,7 @@
                       </tbody>
                     </table>
                   </b-tab>
-                  <b-tab title="Histórico de Propostas">
+                  <b-tab title="Histórico de Propostas" active>
                     <table class="table">
                       <thead>
                         <th>Nome docente a ser contratado</th>
@@ -338,7 +338,7 @@ export default {
       //* Componente Proponente fica visivel
       this.isNovaPropostaVisible = true;
       this.isDashboardVisible = false;
-
+      this.isResumoPropostaVisible = false;
       this.isEnviarPropostaCursoVisible = false;
       this.isEnviarPropostaDepartamentoVisible = false;
       this.isActiveSD = false;

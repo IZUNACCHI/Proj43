@@ -169,22 +169,46 @@
           </template>
         </b-form-select>
     </b-form-group>
-    
+    <!--
                 <b-form-group label="Categoria" label-for="inputEscalao">
                 <b-form-input
                   id="inputEscalao"
                   :state="null"
-                  v-model="proposta.descricao"
+                  v-model="propostaProponenteProfessor.descricao"
                   disabled
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
-              </b-form-group>
+              </b-form-group>-->
 
+              <b-form-group label="Vencimentos" label-for="inputTabelaVencimentos">
+              <div class="table-responsive">
+                <table class="table mt-3" width="100%">
+                  <thead>
+                    <tr>
+                      <td><b>Descricao</b></td>
+                      <td colspan="2">{{propostaProponenteProfessor.descricao}}</td>      
+                    </tr>
+                    <th>Remuneração</th>
+                    <th>Indice</th>
+                    <th>Escalão</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{propostaProponenteProfessor.remuneracao}}</td>
+                      <td>{{propostaProponenteProfessor.indice}}</td>      
+                      <td>{{propostaProponenteProfessor.escalao}}</td>
+                      
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              </b-form-group>
+              <!--
               <b-form-group label="Remuneração" label-for="inputRemuneracao">
                 <b-form-input
-                  id="inputRenumeracao"
+                  id="inputRemuneracao"
                   :state="null"
-                  v-model="proposta.renumeracao"
+                  v-model="propostaProponenteProfessor.remuneracao"
                   disabled
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira a remuneração em formato numérico!</b-form-invalid-feedback>
@@ -194,7 +218,7 @@
                 <b-form-input
                   id="inputEscalao"
                   :state="null"
-                  v-model="proposta.escalao"
+                  v-model="propostaProponenteProfessor.escalao"
                   disabled
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
@@ -204,11 +228,11 @@
                 <b-form-input
                   id="inputIndice"
                   :state="null"
-                  v-model="proposta.indice"
+                  v-model="propostaProponenteProfessor.indice"
                   disabled
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
-              </b-form-group>
+              </b-form-group>-->
             </b-card-text>
           </b-card-body>
         </b-collapse>
@@ -224,12 +248,12 @@
               <h2 class="pb-4"></h2>
               <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
                 <b-form-radio-group
-                  v-model="proposta.verificacao_outras_uo"
+                  v-model="propostaProponenteProfessor.verificacao_outras_uo"
                   :options="verificacao_outras_uo_array"
                   stacked
                 ></b-form-radio-group>
               </b-form-group>
-              <b-form-group v-if="proposta.verificacao_outras_uo == 'sim'">
+              <b-form-group v-if="propostaProponenteProfessor.verificacao_outras_uo == 'sim'">
                 <b-form-group
                     label="Indique o nome da Unidade Orgânica"
                     label-for="inputTempoParcial"
@@ -237,7 +261,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteProfessor.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESECS"
                 ></b-form-select>
@@ -252,7 +276,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteProfessor.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESTG"
                 ></b-form-select>
@@ -267,7 +291,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteProfessor.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaSAD.CR"
                 ></b-form-select>
@@ -282,7 +306,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteProfessor.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESSLei"
                 ></b-form-select>
@@ -297,7 +321,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteProfessor.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESTM"
                 ></b-form-select>
@@ -308,7 +332,7 @@
             
             <b-form-group label="O docente esta a tempo Parcial?">
                 <b-form-radio-group
-                  v-model="proposta.verificacao_tempo_parcial"
+                  v-model="propostaProponenteProfessor.verificacao_tempo_parcial"
                   :options="verificacao_tempo_parcial"
                   stacked
                 ></b-form-radio-group>
@@ -321,10 +345,10 @@
                 <b-form-group
                     label="Indique o tempo parcial"
                     label-for="inputTempoParcial"
-                    v-if="proposta.verificacao_tempo_parcial == 'sim'">
+                    v-if="propostaProponenteProfessor.verificacao_tempo_parcial == 'sim'">
                       <b-form-select
                         id="inputTempoParcial"
-                        v-model="proposta.tempo_parcial_uo"
+                        v-model="propostaProponenteProfessor.tempo_parcial_uo"
                         :state="null"
                         :options="percentagensArray"
                       ></b-form-select>
@@ -335,7 +359,7 @@
                 <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 01/01/2022 a 31/12/2022">
                   <b-form-input
                     id="inputPeriodo"
-                    v-model="proposta.periodo_uo"
+                    v-model="propostaProponenteProfessor.periodo_uo"
                   ></b-form-input>
                 </b-form-group>
               </b-form-group>
@@ -368,7 +392,7 @@
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  props: ["proposta", "unidadesCurriculares", "ficheiro"],
+  props: ["proposta", "estado", "unidadesCurriculares", "ficheiro"],
   data() {
     return {
     
@@ -468,14 +492,14 @@ export default {
         proposta_proponente_id: "",
         avaliacao_periodo_anterior:"",
         fundamentacao: 0,
-     /*   remuneracao: "",
+        remuneracao: "",
         escalao: "",
         indice: "",
         verificacao_outras_uo:"",
         nome_uo:"",
         tempo_parcial_uo:"",
         periodo_uo:"",
-       */ primeiro_proponente: this.$store.state.user.name,
+        primeiro_proponente: this.$store.state.user.name,
       },
       ficheiroProponenteProfessor: {
         fileRelatorio: {},
@@ -534,7 +558,6 @@ export default {
 		    response.data.forEach(proposta => {
               this.listaVencimentos.push({
                 text: proposta.descricao,
-              
                 value: proposta,
                 
               });
@@ -606,12 +629,17 @@ export default {
     },
     anterior() {
       //* Mudar para o componente Proponente
-      
+      /*
       if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
         this.$emit("mostrarProponente", this.proposta);
       }else{
 	  this.$emit("mostrarProponente");
-	  }
+	  }*/
+       //Mudar para o componente Proponente
+      this.$emit("mostrarProponente");
+      if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
+        this.$emit("mostrarProponente", this.proposta);
+      }
     },
     mostrarComponente() {
       this.isShowProfessor = true;
@@ -630,7 +658,7 @@ export default {
       //* Limpar Objectos
       Object.assign(this.propostaExistente, {});
       //* Associar vencimento à proposta
-      Object.assign(this.proposta, this.propostaExistente);
+      Object.assign(this.propostaProponenteProfessor, this.propostaExistente);
       }
   },
   mounted() {
@@ -652,7 +680,7 @@ export default {
             }
           });
         });
-      this.propostaExistente=this.proposta.descricao;
+      this.propostaExistente=this.proposta.descricao.toString();
     }
 	this.getVencimentos();
 	

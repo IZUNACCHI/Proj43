@@ -12,6 +12,8 @@ class PropostaProponenteMonitor extends Model
 
     protected $fillable = [
         'regime_prestacao_servicos', 'percentagem_prestacao_servicos', 'periodo',
+        'descricao', 'remuneracao', 'escalao', 'indice',
+        'verificacao_outras_uo', 'nome_uo', 'tempo_parcial_uo', 'periodo_uo',
         'duracao', 'ciclo', 'proposta_proponente_id'
     ];
 

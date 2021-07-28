@@ -22,7 +22,7 @@ class VencimentosController extends Controller
 	
 	public function create(Request $request){
 		$vencimentos = Vencimentos::create([
-		'renumeracao' => $request->renumeracao,
+		'remuneracao' => $request->remuneracao,
         'descricao' => $request->descricao,
 		'indice' => $request->indice,
 		'escalao' => $request->escalao,
@@ -39,10 +39,10 @@ class VencimentosController extends Controller
         return response()->json([$vencimentos, 200]);
     }
 
-    public function updateRenumeracao(Request $request, $id)
+    public function updateRemuneracao(Request $request, $id)
     {
         $user = Vencimentos::where('id', $id)->first();
-        $user->renumeracao = $request->getContent();
+        $user->remuneracao = $request->getContent();
         $user->save();
 
         return response()->json($user, 200);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!--<button class="btn btn-danger" @click="voltar" v-if="voltarVar">Voltar</button>-->
+  <!--<button class="btn btn-danger" @click="voltar" v-if="voltarVar">Voltar</button>-->
     <br><br>
     <div v-if="isShow">
     <b-form-group
@@ -421,7 +421,15 @@ abrigo do art. 8.º do ECPDESP, do IPL"
       :ficheiro="ficheiro"
       v-if="roleSelecionado == 'monitor' && isFinalized"
     ></proposta-proponente-monitor>
-
+    <!--
+    <resumo-proposta
+      :proposta="proposta"
+      :unidadesCurriculares="unidadesCurriculares"
+      :ficheiro="ficheiro"
+      v-on:mostrarComponente="mostrarComponente"
+      v-on:mostrarPropostaProponente_assistente="mostrarComponenteAssistente"
+    ></resumo-proposta>
+    -->
     <b-progress class="mt-3" :max="progresso.max" height="2rem">
       <b-progress-bar :value="progresso.valor" variant="success">
         Progresso:
@@ -430,7 +438,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
     </b-progress>
     <br />
      Os dados recolhidos no âmbito deste processo têm como finalidade a celebração de contrato de trabalho em funções públicas e serão objeto de
-tratamento nos termos da legislação de proteção de dados em vigor. 
+tratamento nos termos da legislação de proteção de dados em vigor OLA OLA. 
     <!-----------------------------FIM CONTRATAÇÃO INICIAL-------------------------------------->
   </div>
 </template>
@@ -523,6 +531,9 @@ export default {
         { text: "ESSLei", value: "ESSLei" },
         { text: "ESTM", value: "ESTM"}
       ],
+      estado: {
+        concluido: false,
+      },
       proposta: {
         tipo_contrato: "",
         unidade_organica: this.$store.state.user.unidade_organica,
@@ -575,11 +586,15 @@ export default {
       roleSelecionado: "",
       isFinalized: false,
       isShow: true,
+      isProgesso: false,
+      isShowBarraProgresso: true,
       propostasExistentes: [],
       progresso: {
         valor: 1,
+        concluido: 0,
         max: 3
       },
+      isNovaPropostaVisible: true,
       ficheiro: {
         fileRelatorio: {},
         fileUnidadesCurriculares: {},

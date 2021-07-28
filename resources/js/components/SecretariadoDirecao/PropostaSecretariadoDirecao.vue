@@ -11,6 +11,7 @@
       <b-form-textarea
         v-model="propostaSecretariadoDirecao.convite"
         :state="$v.propostaSecretariadoDirecao.convite.$dirty ? !$v.propostaSecretariadoDirecao.convite.$error : null"
+        rows="10"
       ></b-form-textarea>
       <b-form-invalid-feedback id="input-1-live-feedback">Tem de preencher o convite!</b-form-invalid-feedback>
     </b-form-group>

@@ -22,7 +22,7 @@ class CreateFundamentacaoTable extends Migration {
         Schema::create('vencimentos', function (Blueprint $table){
             $table->increments('id');
             $table->string('descricao')->nullable();
-            $table->decimal('renumeracao', 6, 2)->nullable();
+            $table->decimal('remuneracao', 6, 2)->nullable();
             $table->string('escalao')->nullable();
             $table->string('indice')->nullable();
             $table->softDeletes();

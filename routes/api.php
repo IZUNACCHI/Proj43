@@ -55,6 +55,9 @@ Route::put('/apagarPropostasProponente/{idProposta}', 'PropostaProponenteControl
 Route::put('/propostaProponente/propostaAssinadaCurso/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinadaCurso');
 Route::put('/propostaProponente/propostaAssinadaDepartamento/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinadaDepartamento');
 Route::put('/propostaProponente/atualizarPropostaRemuneracao/{propostaID}', 'PropostaProponenteController@atualizarProposta');
+Route::put('/monitor/atualizarPropostaRemuneracao/{propostaID}', 'PropostaProponenteMonitorController@atualizarProposta');
+Route::put('/assistente/atualizarPropostaRemuneracao/{propostaID}', 'PropostaProponenteAssistenteController@atualizarProposta');
+Route::put('/professor/atualizarPropostaRemuneracao/{propostaID}', 'PropostaProponenteProfessorController@atualizarProposta');
 
 
 //? Estatisticas
@@ -161,12 +164,12 @@ Route::get('/fundamentacoes/{user_id}', 'FundamentacaoController@getFundamentaco
 Route::delete('/fundamentacoes/{fundamentacao_id}', 'FundamentacaoController@deleteFundamentacao');
 Route::post('/fundamentacoes/create/{user_id}/{fundamentacao}', 'FundamentacaoController@create');
 
-//------------------------------------------Renumeracao-------------------------------------------------
+//------------------------------------------Remuneracao-------------------------------------------------
 Route::get('/vencimentos', 'VencimentosController@getVencimentos');
-Route::delete('/vencimento/{renumeracao_id}', 'VencimentosController@deleteVencimento');
+Route::delete('/vencimento/{remuneracao_id}', 'VencimentosController@deleteVencimento');
 Route::post('/vencimento/criarVencimento', 'VencimentosController@create');
 Route::put('/block/{id}', 'VencimentosController@getBlocked');
-Route::put('/vencimento/{id}', 'VencimentosController@updateRenumeracao');
+Route::put('/vencimento/{id}', 'VencimentosController@updateRemuneracao');
 Route::get('/verificarSeJaExistemCategoriaVencimento/{descricao}', 'VencimentosController@verificarSeJaExistemCategoriaVencimento');
 
 

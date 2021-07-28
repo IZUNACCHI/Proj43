@@ -12,8 +12,9 @@ class PropostaProponenteProfessor extends Model
 
     protected $fillable = [
         'role_professor', 'tipo_contrato', 'regime_prestacao_servicos','percentagem_prestacao_servicos_2',
-        'fundamentacao', 'percentagem_prestacao_servicos', 'periodo', 'duracao',
-        'avaliacao_periodo_anterior', 'proposta_proponente_id'
+        'fundamentacao', 'percentagem_prestacao_servicos', 'periodo', 'duracao', 'descricao', 'remuneracao', 'escalao', 'indice',
+        'verificacao_outras_uo', 'nome_uo', 'tempo_parcial_uo', 'periodo_uo',
+        'avaliacao_periodo_anterior', 'proposta_proponente_id' 
     ];
 
     protected $hidden = [];

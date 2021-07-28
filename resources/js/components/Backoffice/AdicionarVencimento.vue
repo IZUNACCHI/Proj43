@@ -27,9 +27,9 @@
 
     <b-form-group label="Renumeração" label-for="inputNomeUC">
       <b-form-input
-        id="inputRenumeracaoVencimento"
+        id="inputRemuneracaoVencimento"
         :state="null"
-        v-model="vencimento.renumeracao"
+        v-model="vencimento.remuneracao"
       ></b-form-input>
       <b-form-invalid-feedback id="input-1-live-feedback">Nome de UC obrigatorio</b-form-invalid-feedback>
     </b-form-group>
@@ -65,7 +65,7 @@ export default {
         return {
             vencimento:{
                 descricao:"",
-                renumeracao:"",
+                remuneracao:"",
                 indice:"",
                 escalao:"",
             },
@@ -81,7 +81,7 @@ export default {
     },
     validations:{
         vencimento:{
-            renumeracao: { required },
+            remuneracao: { required },
             indice:{ required },
             escalao:{ required },
         }
@@ -112,7 +112,7 @@ export default {
             response.data.forEach(curso => {
                 this.cursos.push({
                 text: vencimento.descricao,
-                value: vencimento.renumeracao,
+                value: vencimento.remuneracao,
                 value: vencimento.indice,
                 value: vencimento.escalao
                 });

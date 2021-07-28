@@ -83,21 +83,12 @@ class InitialMigration extends Migration
             $table->string('segundo_proponente')->nullable();
             //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])
             //$table->enum('segundo_proponente_role', ['proponente_departamento', 'proponente_curso'])->nullable();
+
             
+            $table->enum('verificacao_serviço_docente_atribuido', ['sim', 'nao']);
             $table->boolean('contrato_assinado_curso')->default(false);
             $table->boolean('contrato_assinado_departamento')->default(false);
             $table->enum('role', ['professor', 'assistente', 'monitor']);
-
-            $table->string('descricao')->nullable();
-            $table->decimal('renumeracao', 10, 2)->nullable();
-            $table->string('escalao')->nullable();
-            $table->string('indice')->nullable();
-            $table->enum('verificacao_serviço_docente_atribuido', ['sim', 'nao']);
-            $table->enum('verificacao_outras_uo', ['sim', 'nao']);
-            $table->string('nome_uo')->nullable();
-            $table->enum('verificacao_tempo_parcial', ['sim', 'nao']);
-            $table->integer('tempo_parcial_uo')->nullable()->unsigned();
-            $table->string('periodo_uo')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
@@ -116,6 +107,17 @@ class InitialMigration extends Migration
             //$table->dateTime('periodo_final')->nullable();
             $table->string('duracao');
             $table->enum('avaliacao_periodo_anterior', ['positiva', 'negativa'])->nullable();
+            
+            $table->string('descricao')->nullable();
+            $table->decimal('remuneracao', 6, 2)->nullable();
+            $table->string('escalao')->nullable();
+            $table->string('indice')->nullable();
+            $table->enum('verificacao_outras_uo', ['sim', 'nao']);
+            $table->string('nome_uo')->nullable();
+            $table->enum('verificacao_tempo_parcial', ['sim', 'nao']);
+            $table->integer('tempo_parcial_uo')->nullable()->unsigned();
+            $table->string('periodo_uo')->nullable();
+
             //Signature???
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
@@ -137,6 +139,18 @@ class InitialMigration extends Migration
             $table->enum('avaliacao_periodo_anterior', ['positiva', 'negativa'])->nullable();
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+
+            $table->string('descricao')->nullable();
+            $table->decimal('remuneracao', 10, 2)->nullable();
+            $table->string('escalao')->nullable();
+            $table->string('indice')->nullable();
+            $table->enum('verificacao_outras_uo', ['sim', 'nao']);
+            $table->string('nome_uo')->nullable();
+            $table->enum('verificacao_tempo_parcial', ['sim', 'nao']);
+            $table->integer('tempo_parcial_uo')->nullable()->unsigned();
+            $table->string('periodo_uo')->nullable();
+
+
             //Signature???
             $table->softDeletes();
             $table->timestamps();
@@ -153,6 +167,17 @@ class InitialMigration extends Migration
             $table->string('ciclo');
             $table->integer('proposta_proponente_id')->unsigned();
             $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            
+            $table->string('descricao')->nullable();
+            $table->decimal('remuneracao', 10, 2)->nullable();
+            $table->string('escalao')->nullable();
+            $table->string('indice')->nullable();
+            $table->enum('verificacao_outras_uo', ['sim', 'nao']);
+            $table->string('nome_uo')->nullable();
+            $table->enum('verificacao_tempo_parcial', ['sim', 'nao']);
+            $table->integer('tempo_parcial_uo')->nullable()->unsigned();
+            $table->string('periodo_uo')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

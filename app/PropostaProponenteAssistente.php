@@ -12,6 +12,8 @@ class PropostaProponenteAssistente extends Model
 
     protected $fillable =[
         'regime_prestacao_servicos', 'percentagem_prestacao_servicos', 'percentagem_prestacao_servicos_2',
+        'descricao', 'remuneracao', 'escalao', 'indice',
+        'verificacao_outras_uo', 'nome_uo', 'tempo_parcial_uo', 'periodo_uo',
         'fundamentacao', 'periodo', 'duracao', 'avaliacao_periodo_anterior', 'proposta_proponente_id'
     ];
 

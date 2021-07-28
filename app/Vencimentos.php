@@ -11,7 +11,7 @@ class Vencimentos extends Model
     protected $fillable = [
         'id',
         'descricao',
-        'renumeracao',
+        'remuneracao',
 		'escalao',
 		'indice',
     ];
@@ -24,7 +24,7 @@ class Vencimentos extends Model
         }
 
         $request->validate([
-            'renumeracao' => 'required|numeric',
+            'remuneracao' => 'required|numeric',
             'escalao' => 'required'
             'indice' => 'required'
         ]);

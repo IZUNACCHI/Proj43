@@ -83,8 +83,9 @@
                 <button class="btn btn-primary" v-on:click.prevent="adicionarUC">Adicionar UC</button>
                 <adicionar-ucs v-on:fecharUcs="fecharUcs" v-if="mostrarCompAddUC"></adicionar-ucs>
                 <br />
-                <button class="btn btn-primary" v-on:click.prevent="adicionarRenumeracao">Adicionar Renumeração</button>
-                <adicionar-renumeracao v-on:fecharRenumeracao="fecharRenumeracao" v-if="mostrarCompAddRenumeracao"></adicionar-renumeracao>
+                <button class="btn btn-primary" v-on:click.prevent="adicionarRemuneracao">Adicionar Renumeração</button>
+                <adicionar-remuneracao v-on:fecharRemuneracao="fecharRemuneracao" v-if="mostrarCompAddRemuneracao">
+                </adicionar-remuneracao>
               </div>
                 </div>
               </div>
@@ -163,7 +164,7 @@
                           <tbody v-for="listVencimentos in listaVencimentos">
                             <tr>
                               <th>{{listVencimentos.descricao}}</th>
-                              <td>{{listVencimentos.renumeracao}}</td>
+                              <td>{{listVencimentos.remuneracao}}</td>
                               <td>{{listVencimentos.indice}}</td>
                               <td>{{listVencimentos.escalao}}</td>
                               <td>
@@ -242,7 +243,7 @@ export default {
       utilizadores: [],
       role: '',
       mostrarCompAddCurso:false,
-      mostrarCompAddRenumeracao:false,
+      mostrarCompAddRemuneracao:false,
       mostrarCompAddUC:false
     }
   },
@@ -253,19 +254,19 @@ export default {
     adicionarCurso(){
       this.mostrarCompAddCurso = true;
       this.mostrarCompAddUC = false;
-      this.mostrarCompAddRenumeracao = false;
+      this.mostrarCompAddRemuneracao = false;
     },
 
     adicionarUC(){
       this.mostrarCompAddUC = true;
       this.mostrarCompAddCurso = false;
-      this.mostrarCompAddRenumeracao = false;
+      this.mostrarCompAddRemuneracao = false;
     },
 
-    adicionarRenumeracao(){
+    adicionarRemuneracao(){
       this.mostrarCompAddUC = false;
       this.mostrarCompAddCurso = false;
-      this.mostrarCompAddRenumeracao = true;
+      this.mostrarCompAddRemuneracao = true;
     },
 
     fecharCurso(){
@@ -276,8 +277,8 @@ export default {
       this.mostrarCompAddUC = false;
     },
 
-    fecharRenumeracao(){
-      this.mostrarCompAddRenumeracao = false;
+    fecharRemuneracao(){
+      this.mostrarCompAddRemuneracao = false;
       axios.get("api/vencimentos").then(response => {
         this.listaVencimentos = response.data;
         });
@@ -356,7 +357,7 @@ export default {
 
     },
     editarVencimento(id) {
-      const { value: renumeracao } = this.$swal({
+      const { value: remuneracao } = this.$swal({
           title: 'Insira o novo valor da renumeração',
           input: 'text',
           inputPlaceholder: 'Insira um valor',

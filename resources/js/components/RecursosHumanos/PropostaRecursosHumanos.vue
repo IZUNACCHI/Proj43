@@ -2,6 +2,59 @@
   <div>
     <div class="jumbotron">
       <h3>Finalização da Proposta (Recursos Humanos)</h3>
+        <b-form-group label="Categoria" description="Campo Opcional">
+		    <b-form-select
+                id="inputCategoria"
+                readonly="true"
+                v-model="propostaExistente"
+                @change="associarProposta()"
+                :state="!propostaExistente.$error && null"
+                :options="listaVencimentos"
+                >
+                <template slot="first">
+                <option
+                  :value="null"
+                  disabled
+                >-- Por favor selecione --</option>
+              </template>
+            </b-form-select>
+        </b-form-group>
+              <!--
+              <b-form-group label="Categoria" label-for="inputEscalao">
+                <b-form-input
+                  id="inputEscalao"
+                  :state="null"
+                  v-model="tipoPropostaRole.descricao"
+                  disabled
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
+              </b-form-group>-->
+
+              <b-form-group label="Vencimentos" label-for="inputTabelaVencimentos">
+              <div class="table-responsive">
+                <table class="table mt-3" width="100%">
+                  <thead>
+                    <tr>
+                      <td><b>Descricao</b></td>
+                      <td colspan="2">{{tipoPropostaRole.descricao}}</td>      
+                    </tr>
+                    <th>Remuneração</th>
+                    <th>Indice</th>
+                    <th>Escalão</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{tipoPropostaRole.remuneracao}}</td>
+                      <td>{{tipoPropostaRole.indice}}</td>      
+                      <td>{{tipoPropostaRole.escalao}}</td>
+                      
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              </b-form-group>
+
+      <!--
       <b-form-group label="Remuneração" label-for="inputRemuneracao">
         <b-form-input
           id="inputRemuneracao"
@@ -28,7 +81,7 @@
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
       </b-form-group>
-
+      -->
       <b-form-group label="Número de funcionário" label-for="inputNumero">
         <b-form-input
           id="inputNumero"
@@ -262,6 +315,7 @@ export default {
   props:["propostaSelecionada"],
   data() {
     return {
+      listaVencimentos:[],
       /*inscricao_array: [
         { text: "Segurança Social", value: "seguranca_social" },
         { text: "Caixa Geral de Aposentações", value: "CGA" }
@@ -277,6 +331,10 @@ export default {
         contrato_anexo: {},
         cessacao_social: {},
       },
+      
+      propostaExistente: {},
+      
+      tipoPropostaRole: [],
       ficheiros:[],
       incricaoSSocial: "",
       contratacaoComunicada: "",
@@ -288,6 +346,7 @@ export default {
         escalao: "",
         indice: ""
         },
+      id_professor_assistente_monitor: "",
       propostaRecursosHumanos: {
         /*remuneracao: "",
         escalao: "",
@@ -335,6 +394,17 @@ export default {
     }
   },
   methods: {
+    getVencimentos(){
+		axios.get("/api/vencimentos").then(response => {
+		    response.data.forEach(proposta => {
+              this.listaVencimentos.push({
+                text: proposta.descricao,
+                value: proposta,
+                
+              });
+		    });
+		});
+	},
     onFileSelected(event) {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
@@ -361,7 +431,7 @@ export default {
             }if(propostaRecursosHumanos.contratacao_comunicada=='1'){
                 this.ficheiro.contratacao_comunicada = new FormData();
                 this.ficheiro.contratacao_comunicada.append("file", this.ficheiros["contratacaoComunicada"]);
-                this.ficheiro.contratacao_comunicada.append("descricao", "Contratação Comunicada");
+                this.ficheiro.contratacao_comunicada.append("descricao", "Contratacao Comunicada");
             }if(propostaRecursosHumanos.contrato_redigido=='1'){
                 this.ficheiro.contrato_redigido = new FormData();
                 this.ficheiro.contrato_redigido.append("file", this.ficheiros["contratoRedigido"]);
@@ -373,10 +443,20 @@ export default {
             }if(propostaRecursosHumanos.cessacao_social=='1'){
                 this.ficheiro.cessacao_social = new FormData();
                 this.ficheiro.cessacao_social.append("file", this.ficheiros["cessacaoSocial"]);
-                this.ficheiro.cessacao_social.append("descricao", "Cessação Social");
+                this.ficheiro.cessacao_social.append("descricao", "Cessacao Social");
             }
-            axios.put('/api/propostaProponente/atualizarPropostaRemuneracao/'+
-                this.propostaSelecionada.id_proposta_proponente, this.propostaSelecionada).then(response => {
+            if(this.propostaSelecionada.role==assistente){
+                this.id_professor_assistente_monitor == this.tipoPropostaRole.id_proposta_proponente_assistente;
+            }
+            if(this.propostaSelecionada.role==professor){
+                this.id_professor_assistente_monitor == this.tipoPropostaRole.id_proposta_proponente_professor;
+            }
+            if(this.propostaSelecionada.role==monitor){
+                this.id_professor_assistente_monitor == this.tipoPropostaRole.id_proposta_proponente_monitor;
+            }
+
+            axios.put('/api/'+this.propostaSelecionada.role+'/atualizarPropostaRemuneracao/'+
+                this.id_professor_assistente_monitor, this.tipoPropostaRole).then(response => {
                 axios.post('/api/recursosHumanos/propostaRecursosHumanos', propostaRecursosHumanos)
                     .then(response => {
                       let idPropostaRecursosHumanos = response.data.id_proposta_recursos_humanos;
@@ -412,7 +492,13 @@ export default {
           }
         })
       }
-    }
+    },
+    associarProposta() {
+      //* Limpar Objectos
+      Object.assign(this.propostaExistente, {});
+      //* Associar vencimento à proposta
+      Object.assign(this.tipoPropostaRole, this.propostaExistente);
+      }
   },
   mounted() {
   this.$store.commit('setEditarProposta');
@@ -422,6 +508,18 @@ export default {
       //* Associar proposta atual à proposta existente selecionada
       Object.assign(this.proposta, response.data);
       });*/
+      axios
+      .get(
+        "/api/diretorUO/getPropostaProponente/" +
+          this.propostaSelecionada.role +
+          "/" +
+          this.propostaSelecionada.id_proposta_proponente
+      )
+      .then(response => {
+        this.tipoPropostaRole = response.data[0];
+      });
+
+	this.getVencimentos();
    }
 };
 </script>

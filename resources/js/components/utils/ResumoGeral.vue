@@ -1,6 +1,5 @@
 <template>
   <div>
-  
     <div v-if="this.$store.state.user.roleDB == 'proponente_departamento'">
       <button class="btn btn-danger" @click="voltarProponentes">Voltar</button>
       <button class="btn btn-danger" v-on:click.prevent="gerarPdfPropostaProponente()">Dowload</button>
@@ -37,8 +36,8 @@
     </div>
     <!--<div>
         <label><strong>Nome do Docente:</strong> {{ propostaSelecionada.id_proposta_proponente}} {{propostaSelecionada.grau}}</label>
-    </div>-->
-    {{this.numPages}}
+    </div>
+    {{this.numPages}}-->
     <div id="downloadPdf" class="total1" width="93%">
     <div  >
       <div  >
@@ -352,27 +351,27 @@
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
                 <tr>
-                    <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
-                    <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
-                    <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
+                    <td><b>Remuneração: </b>{{tipoPropostaRole.remuneracao}}€</td>
+                    <td><b>Escalão: </b>{{tipoPropostaRole.escalao}}</td>
+                    <td><b>Índice: </b>{{tipoPropostaRole.indice}}</td></tr>
           </table><br>
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
                 <tr>
                     <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                    <td rowspan="2" v-if="tipoPropostaRole.verificacao_outras_uo=='sim'">
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                         <b>Sim</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                         <b>Não</b>
-                        <p v-if="propostaSelecionada.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{propostaSelecionada.nome_uo}}</b> Tempo parcial <b>
+                        <p v-if="tipoPropostaRole.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{tipoPropostaRole.nome_uo}}</b> Tempo parcial <b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        {{propostaSelecionada.tempo_parcial_uo}}%</b><br>
-                        Periodio <b>{{propostaSelecionada.periodo_uo}}</b></p>
-                        <p v-else>Sim, UO <b>{{propostaSelecionada.nome_uo}}</b> Tempo parcial
+                        {{tipoPropostaRole.tempo_parcial_uo}}%</b><br>
+                        Periodio <b>{{tipoPropostaRole.periodo_uo}}</b></p>
+                        <p v-else>Sim, UO <b>{{tipoPropostaRole.nome_uo}}</b> Tempo parcial
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
-                        Periodio <b>{{propostaSelecionada.periodo_uo}}</b></p></td>
-                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='nao'">
+                        Periodio <b>{{tipoPropostaRole.periodo_uo}}</b></p></td>
+                    <td rowspan="2" v-if="tipoPropostaRole.verificacao_outras_uo=='nao'">
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                         <b>Sim</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
@@ -530,230 +529,379 @@
           </div>
           
         <div v-if="propostaSelecionada.status == 'finalizada'">
-		<pdf
-			:src="fichUnidadesCurriculares"
+		
+                <div v-if="ficheiroUnidadesCurriculares">
+                    <pdf
+			            :src="fichUnidadesCurriculares"
+        	            @num-pages="pageCount101 = $event"
+			            @page-loaded="currentPage1 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="aa in pageCount101"
+			            :key="aa"
+			            :src="fichUnidadesCurriculares"
+			            :page="aa"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                    </div>
+					<div v-if="ficheiroFundamentacao">
+                    <pdf
+			            :src="fichFundamentacao"
+                        @num-pages="pageCount102 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="bb in pageCount102"
+			            :key="bb"
+			            :src="fichFundamentacao"
+			            :page="bb"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                    <div v-if="ficheiroPropostaAssinadoCurso">
+                    <pdf
+			            :src="fichPropostaAssinadoCurso"
+                        @num-pages="pageCount103 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="cc in pageCount103"
+			            :key="cc"
+			            :src="fichPropostaAssinadoCurso"
+			            :page="cc"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroPropostaAssinadoDepartamento">
+                    <pdf
+			            :src="fichPropostaAssinadoDepartamento"
                 
-			@num-pages="pageCount1 = $event"
-			@page-loaded="currentPage1 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="a in pageCount1"
-			:key="a"
-			:src="fichUnidadesCurriculares"
-			:page="a"
-			style="display: inline-block; width: 100%"
-		></pdf>
-        <!--{{currentPage2}} / {{pageCount2}}
-		<pdf
-			:src="fichFundamentacao"
+                        @num-pages="pageCount104 = $event"
+	                    @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+	                ></pdf>
+                    <pdf
+	                    v-for="dd in pageCount104"
+	                    :key="dd"
+	                    :src="fichPropostaAssinadoDepartamento"
+	                    :page="dd"
+	                    style="display: inline-block; width: 100%"
+	                ></pdf>
+                </div>
+                        
+                <div v-if="ficheiroPropostaAssinadoUO">
+                    <pdf
+			            :src="fichPropostaAssinadoUO"
                 
-			@num-pages="pageCount2 = $event"
-			@page-loaded="currentPage2 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="b in pageCount2"
-			:key="b"
-			:src="fichFundamentacao"
-			:page="b"
-			style="display: inline-block; width: 100%"
-		></pdf>-->
-		<pdf
-			:src="fichAtaCTC"
+			            @num-pages="pageCount105 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="ee in pageCount105"
+			            :key="ee"
+			            :src="fichPropostaAssinadoUO"
+			            :page="ee"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ataCTC">
+                    <pdf
+			            :src="fichAtaCTC"
                 
-			@num-pages="pageCount3 = $event"
-			@page-loaded="currentPage3 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="c in pageCount3"
-			:key="c"
-			:src="fichAtaCTC"
-			:page="c"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichCurriculo"
+			            @num-pages="pageCount105 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="ff in pageCount105"
+			            :key="ff"
+			            :src="fichAtaCTC"
+			            :page="ff"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+
+                    
+
+
+                        
+                </div><div v-if="ficheiroPropostaAssinadoCTC">
+                    <pdf
+			            :src="fichPropostaAssinadoCTC"
                 
-			@num-pages="pageCount4 = $event"
-			@page-loaded="currentPage4 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="d in pageCount4"
-			:key="d"
-			:src="fichCurriculo"
-			:page="d"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichCertificadoHabilitacoes"
+						@num-pages="pageCount107 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="gg in pageCount107"
+			            :key="gg"
+			            :src="fichPropostaAssinadoCTC"
+						:page="gg"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                    
+
+
+                </div><div v-if="ficheiroCurriculo">
+                    <pdf
+			            :src="fichCurriculo"
                 
-			@num-pages="pageCount5 = $event"
-			@page-loaded="currentPage5 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="e in pageCount5"
-			:key="e"
-			:src="fichCertificadoHabilitacoes"
-			:page="e"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichNIF"
+			            @num-pages="pageCount108 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="hh in pageCount108"
+			            :key="hh"
+			            :src="fichCurriculo"
+			            :page="hh"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroCertificadoHabilitacoes">
+                    <pdf
+			            :src="fichCertificadoHabilitacoes"
                 
-			@num-pages="pageCount6 = $event"
-			@page-loaded="currentPage6 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="f in pageCount6"
-			:key="f"
-			:src="fichNIF"
-			:page="f"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichCGA"
+			            @num-pages="pageCount109 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="ii in pageCount109"
+			            :key="ii"
+			            :src="fichCertificadoHabilitacoes"
+			            :page="ii"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                        
+                </div><div v-if="ficheiroNIF">
+                    <pdf
+			            :src="fichNIF"
                 
-			@num-pages="pageCount7 = $event"
-			@page-loaded="currentPage7 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="g in pageCount7"
-			:key="g"
-			:src="fichCGA"
-			:page="g"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichCC"
+			            @num-pages="pageCount110 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="jj in pageCount110"
+			            :key="jj"
+			            :src="fichNIF"
+			            :page="jj"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroCGA">
+                    <pdf
+			            :src="fichCGA"
                 
-			@num-pages="pageCount8 = $event"
-			@page-loaded="currentPage8 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="h in pageCount8"
-			:key="h"
-			:src="fichCC"
-			:page="h"
-			style="display: inline-block; width: 100%"
-		></pdf>
-        <pdf
-			:src="fichIBAN"
+			        @num-pages="pageCount111 = $event"
+			        @page-loaded="currentPage2 = $event"
+                    style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="ll in pageCount111"
+			            :key="ll"
+			            :src="fichCGA"
+			            :page="ll"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                        
+                </div><div v-if="ficheiroCC">
+                    <pdf
+			            :src="fichCC"
                 
-			@num-pages="pageCount9 = $event"
-			@page-loaded="currentPage9 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="i in pageCount9"
-			:key="i"
-			:src="fichIBAN"
-			:page="i"
-			style="display: inline-block; width: 100%"
-		></pdf>
-        <pdf
-			:src="fichCertificadoRegstoCriminal"
+			            @num-pages="pageCount112 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="mm in pageCount112"
+			            :key="mm"
+			            :src="fichCC"
+			            :page="mm"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroIBAN">
+                    <pdf
+			            :src="fichIBAN"
                 
-			@num-pages="pageCount10 = $event"
-			@page-loaded="currentPage10 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="j in pageCount10"
-			:key="j"
-			:src="fichCertificadoRegstoCriminal"
-			:page="j"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichDeclaracaoRobustezFisica"
+			            @num-pages="pageCount113 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="nn in pageCount113"
+			            :key="nn"
+			            :src="fichIBAN"
+			            :page="nn"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroRegistoCriminal">
+                    <pdf
+			            :src="fichCertificadoRegistoCriminal"
                 
-			@num-pages="pageCount11 = $event"
-			@page-loaded="currentPage11 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="l in pageCount11"
-			:key="l"
-			:src="fichDeclaracaoRobustezFisica"
-			:page="l"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichBoletimVacinas"
+			            @num-pages="pageCount114 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="oo in pageCount114"
+			            :key="oo"
+			            :src="fichCertificadoRegistoCriminal"
+			            :page="oo"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroDeclaracaoRobustezFisica">
+                    <pdf
+                        :src="fichDeclaracaoRobustezFisica"
                 
-			@num-pages="pageCount12 = $event"
-			@page-loaded="currentPage12 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="m in pageCount12"
-			:key="m"
-			:src="fichBoletimVacinas"
-			:page="m"
-			style="display: inline-block; width: 100%"
-		></pdf>
-        <pdf
-			:src="fichFichaIdentificacao"
+                        @num-pages="pageCount115 = $event"
+                        @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+                    ></pdf>
+                    <pdf
+                        v-for="pp in pageCount115"
+                        :key="pp"
+                        :src="fichRobustezFisica"
+                        :page="pp"
+                        style="display: inline-block; width: 100%"
+                    ></pdf>
+                </div><div v-if="ficheiroBoletimVacinas">
+                    <pdf
+			            :src="fichBoletimVacinas"
                 
-			@num-pages="pageCount13 = $event"
-			@page-loaded="currentPage13 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="n in pageCount13"
-			:key="n"
-			:src="fichFichaIdentificacao"
-			:page="n"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichDeclaracaoRenuncia"
+			            @num-pages="pageCount116 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="qq in pageCount116"
+			            :key="qq"
+			            :src="fichBoletinVacinas"
+			            :page="qq"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroIDentificacao">
+                    <pdf
+			            :src="fichFichaIdentificacao"
                 
-			@num-pages="pageCount14 = $event"
-			@page-loaded="currentPage14 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="o in pageCount14"
-			:key="o"
-			:src="fichDeclaracaoRenuncia"
-			:page="o"
-			style="display: inline-block; width: 100%"
-		></pdf>
-		<pdf
-			:src="fichDeclaracaoArtigo99"
+			            @num-pages="pageCount117 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="rr in pageCount117"
+			            :key="rr"
+			            :src="fichFichaIdentifcacao"
+			            :page="rr"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroDeclaracaRenuncia">
+                    <pdf
+			            :src="fichDeclaracaoRenuncia"
                 
-			@num-pages="pageCount15 = $event"
-			@page-loaded="currentPage15 = $event"
-            style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="p in pageCount15"
-			:key="p"
-			:src="fichDeclaracaoArtigo99"
-			:page="p"
-			style="display: inline-block; width: 100%"
-		></pdf>
-        <pdf
-			:src="fichConsultaOutrasEscolas"
+			            @num-pages="pageCount118 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="ss in pageCount118"
+			            :key="ss"
+			            :src="fichDeclaracaoRenuncia"
+			            :page="ss"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroArtigo999">
+                    <pdf
+			            :src="fichDeclaracaoArtigo99"
                 
-			@num-pages="pageCount16 = $event"
-			style="display: inline-block; width: 1%; opacity: 0"
-		></pdf>
-        <pdf
-			v-for="q in pageCount16"
-			:key="q"
-			:src="fichConsultaOutrasEscolas"
-			:page="q"
-			style="display: inline-block; width: 100%"
-		></pdf>
+			            @num-pages="pageCount119 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="tt in pageCount119"
+			            :key="tt"
+			            :src="fichDeclaracaoArtigo99"
+			            :page="tt"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroConsultaOutrasEscolas">
+                    <pdf
+			            :src="fichConsultaOutrasEscolas"
+                
+			            @num-pages="pageCount120 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="uu in pageCount120"
+			            :key="uu"
+			            :src="ficheiroConsultaOutrasEscolas"
+			            :page="uu"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroContratacaoComunicada">
+					<pdf
+			            :src="fichContracaoComunicada"
+                
+			            @num-pages="pageCount121 = $event"
+			            @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+		            ></pdf>
+                    <pdf
+			            v-for="uu in pageCount121"
+			            :key="uu"
+			            :src="fichContracaoComunicada"
+			            :page="uu"
+			            style="display: inline-block; width: 100%"
+		            ></pdf>
+                </div><div v-if="ficheiroContratoRedigido">
+                    <pdf
+                        :src="fichContratoRedigido"
+                
+                        @num-pages="pageCount122 = $event"
+                        @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+                    ></pdf>
+                    <pdf
+                        v-for="uu in pageCount122"
+                        :key="uu"
+                        :src="fichContratoRedigido"
+                        :page="uu"
+                        style="display: inline-block; width: 100%"
+                    ></pdf>
+                </div><div v-if="ficheiroCessacaoSocial">
+                    <pdf
+                        :src="fichCessacaoSocial"
+                
+                        @num-pages="pageCount123 = $event"
+                        @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+                    ></pdf>
+                    <pdf
+                        v-for="uu in pageCount123"
+                        :key="uu"
+                        :src="fichCessacaoSocial"
+                        :page="uu"
+                        style="display: inline-block; width: 100%"
+                    ></pdf>
+				</div><div v-if="ficheiroContrato">
+                    <pdf
+                        :src="fichContrato"
+                
+                        @num-pages="pageCount124 = $event"
+                        @page-loaded="currentPage2 = $event"
+                        style="display: inline-block; width: 1%; opacity: 0"
+	                ></pdf>
+                    <pdf
+	                    v-for="uu in pageCount124"
+	                    :key="uu"
+	                    :src="fichContrato"
+	                    :page="uu"
+	                    style="display: inline-block; width: 100%"
+	                ></pdf>
+                </div>
+                </div>
 		</div>
    </div>
    </div>
@@ -878,10 +1026,10 @@
                         </td></tr>
                         
                 </tr><tr v-if="ficheiroPropostaAssinadoUO">
-                    <td> Ficheiro Assinado Coordenador Diretor UO</td>
+                    <td> Ficheiro Assinado Diretor UO</td>
                     <td><b-button class="botao"
                             variant="dark"
-                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorDepartamento.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
+                            @click="downloadFicheiro(ficheiroPropostaAssinadoUO.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
                     </b-button></td><td>
                         <b-button class="botao" v-on:click="assinadoUO = !assinadoUO"
@@ -924,23 +1072,32 @@
                      </td></td>
                     <tr v-if="ata">
                         <td colspan="3" style="height: 50%">
+                            
                             <pdf
-			                    v-for="ff in numPages"
+			                    :src="fichAtaCTC"
+                
+			                    @num-pages="pageCount105 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="ff in pageCount105"
 			                    :key="ff"
 			                    :src="fichAtaCTC"
 			                    :page="ff"
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
+
                         </td></tr>
 
 
 
                         
                 </tr><tr v-if="ficheiroPropostaAssinadoCTC">
-                    <td> Ficheiro Assinado Coordenador Diretor UO</td>
+                    <td> Ficheiro Assinado CTC</td>
                     <td><b-button class="botao"
                             variant="dark"
-                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorDepartamento.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
+                            @click="downloadFicheiro(ficheiroPropostaAssinadoCTC.proposta_id, 'Proposta Assinado CTC ', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
                     </b-button></td><td>
                         <b-button class="botao" v-on:click="assinadoCTC = !assinadoCTC"
@@ -1048,7 +1205,7 @@
                             <tr v-if="nif">
                                 <td colspan="3" style="height: 50%">
                                     <pdf
-			                            :src="fichCertificadoHabilitacoes"
+			                            :src="fichNIF"
                 
 			                            @num-pages="pageCount110 = $event"
 			                            @page-loaded="currentPage2 = $event"
@@ -1401,6 +1558,160 @@
 		                            ></pdf>
                         
                                 </td></tr>
+
+
+                        </tr><tr v-if="ficheiroContratacaoComunicada">
+                            <td>Contratação Comunicada</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Contratação Comunicada', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro Contratação Comunicada
+                            </b-button></td><td>
+                                <b-button  v-on:click="contratacaoComunicada = !contratacaoComunicada"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="contratacaoComunicada">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            :src="fichContratacaoComunicada"
+                
+			                            @num-pages="pageCount121 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="uu in pageCount121"
+			                            :key="uu"
+			                            :src="fichContratacaoComunicada"
+			                            :page="uu"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                        
+                                </td></tr>
+
+
+
+                        </tr><tr v-if="ficheiroContratoRedigido">
+                            <td>Contrato Redigido</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Contrato Redigido', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro do Contrato Redigido
+                            </b-button></td><td>
+                                <b-button  v-on:click="contratoRedigido = !contratoRedigido"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="contratoRedigido">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            :src="fichContratoRedigido"
+                
+			                            @num-pages="pageCount122 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="uu in pageCount122"
+			                            :key="uu"
+			                            :src="fichContratoRedigido"
+			                            :page="uu"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                        
+                                </td></tr>
+
+
+                        </tr><tr v-if="ficheiroCessacaoSocial">
+                            <td>Cessação Social</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Cessação Social', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro Cessação Social
+                            </b-button></td><td>
+                                <b-button  v-on:click="cessacao = !cessacao"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="cessacao">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            :src="fichCessacaoSocial"
+                
+			                            @num-pages="pageCount123 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="uu in pageCount123"
+			                            :key="uu"
+			                            :src="fichCessacaoSocial"
+			                            :page="uu"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                        
+                                </td></tr>
+
+
+                        </tr><tr v-if="ficheiroContrato">
+                            <td>Contrato Anexo</td>
+                            <td><b-button
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%"
+                                    click="downloadFicheiro(ficheiroConsultaOutrasEscolas.proposta_id, 'Ficheiro Contrato', propostaSelecionada.nome_completo)">
+                                    <i class="far fa-file-pdf"></i> Download do Ficheiro do Contrato
+                            </b-button></td><td>
+                                <b-button  v-on:click="contrato = !contrato"
+                                    size="md"
+                                    variant="dark"
+                                    style="width:100%">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="contrato">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            :src="fichContrato"
+                
+			                            @num-pages="pageCount124 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="uu in pageCount124"
+			                            :key="uu"
+			                            :src="fichContrato"
+			                            :page="uu"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                        
+                                </td></tr>
+                        
+
+
+
+
+
+
+
+
                         </tr><tr>
 
                 </tr>
@@ -1550,6 +1861,10 @@ export default {
       adse: false,
       artigo: false,
       consulta: false,
+      contratacaoComunicada: false,
+      contratoRedigido: false,
+      cessacao: false,
+      contrato: false,
 
 
       isDashboardVisible: true,
@@ -1573,7 +1888,13 @@ export default {
       ficheiroAssinadoCoordenadorCurso: "",
       ficheiroAssinadoCoordenadorDepartamento: "",
       ficheiroPropostaAssinadoUO: "",
+      ficheiroPropostaAssinadoDepartamento: "",
+      ficheiroPropostaAssinadoCurso: "",
       ficheiroPropostaAssinadoCTC: "",
+      ficheiroContratacaoComunicada: "",
+      ficheiroContratoRedigido: "",
+      ficheiroCessacaoSocial:"",
+      ficheiroContrato: "",
       
       ataCTC: "",
       ficheiroNIF:"",
@@ -1794,6 +2115,7 @@ export default {
 
          this.ficheiroPropostaAssinadoCTC = this.ficheiros[this.contagemficheiro];
          this.fichPropostaAssinadoCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
 
          if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
             this.ficheiroCurriculo = this.ficheiros[this.contagemficheiro];
@@ -1837,6 +2159,20 @@ export default {
          this.ficheiroConsultaOutrasEscolas = this.ficheiros[this.contagemficheiro];
          this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
          this.contagemficheiro=this.contagemficheiro+1;
+
+         
+         this.ficheiroContratacaoComunicada = this.ficheiros[this.contagemficheiro];
+         this.fichContratacaoComunicada = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Contratacao_Comunicada.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroContratoRedigido = this.ficheiros[this.contagemficheiro];
+         this.fichContratoRedigido = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Contrato_Redigido.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCessacaoSocial = this.ficheiros[this.contagemficheiro];
+         this.fichCessacaoSocial = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Cessacao_Social.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroContrato = this.ficheiros[this.contagemficheiro];
+         this.fichContrato = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Contrato.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
           
           /*this.ficheiroRelatorioProponentes = this.ficheiros[0];
           this.fichRelatorioProponentes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Relatorio_dos_2_proponentes.pdf",
@@ -1876,10 +2212,10 @@ export default {
             console.log(response);
           })
       });
-    this.src.then(pdf => {
+   /* this.src.then(pdf => {
 		this.numPages = 1;
         console.log(this.numPages);
-    });    
+    });    */
   }
 };
 </script>

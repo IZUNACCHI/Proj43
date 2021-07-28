@@ -41,6 +41,7 @@ class PropostaProponenteController extends Controller
 			'area_cientificaOutro' => 'nullable',
 			'area_cientificaFormacao' => 'nullable',
             'verificacao_area_cientifica' => 'required',
+            'verificacao_serviço_docente_atribuido' => 'required',
         ]);
 
         $propostaProponente = new PropostaProponente();
@@ -73,11 +74,7 @@ class PropostaProponenteController extends Controller
             'area_cientificDoutoramento' => 'nullable',
 			'area_cientificaOutro' => 'nullable',
 			'area_cientificaFormacao' => 'nullable',
-            'verificacao_serviço_docente_atribuido' => 'required',
-            'remuneracao' => 'nullable',
-            'escalao' => 'nullable',
-            'indice' => 'nullable',
-            'verificacao_outras_uo' => 'required',
+            
             ]);
 
         $proposta->update($request->all());
@@ -155,14 +152,6 @@ class PropostaProponenteController extends Controller
         $propostaAAtualizar->save();
     }
 
-    public function atualizarProposta($propostaProponenteID, Request $request)
-    {
-        $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);
-        $propostaAAtualizar->remuneracao = $request->remuneracao;
-        $propostaAAtualizar->escalao = $request->escalao;
-        $propostaAAtualizar->indice = $request->indice;
-        $propostaAAtualizar->save();
-    }
     
     public function inserirPropostaAssinadaCurso($propostaProponenteID, Request $request){
       $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);

@@ -7,21 +7,28 @@
         label="Fundamentação"
         label-for="inputFundCoordDepartamento"
       >
-        <b-form-input
+        <!--<b-form-input
           id="inputFundCoordDepartamento"
           :state="$v.propostaProponente.fundamentacao_coordenador_departamento.$dirty ? 
         !$v.propostaProponente.fundamentacao_coordenador_departamento.$error : null"
           v-model="propostaProponente.fundamentacao_coordenador_departamento"
-        ></b-form-input>
+        ></b-form-input>-->
+        <b-form-textarea
+            v-model="propostaProponente.fundamentacao_coordenador_departamento"
+            rows="3"
+            :state="!$v.propostaProponente.fundamentacao_coordenador_departamento.$error && null"
+            max-rows="6"
+        ></b-form-textarea>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a fundamentação</b-form-invalid-feedback>
-      </b-form-group>
-		<b-form-group label="Fundamentações guardadas">
-		<b-form-select v-model="propostaProponente.fundamentacao_coordenador_departamento">
-		<option selected></option>
-		<option v-for="item in fundamentacoes">
-			{{item.fundamentacao}}
-		</option>
-		</b-form-select>
+          <button type="button" class="btn btn-info" @click="novaFundamentacao()">Guardar Fundamentação</button>
+        </b-form-group>
+		   <b-form-group label="Modelo de Fundamentações">
+		    <b-form-select v-model="propostaProponente.fundamentacao_coordenador_departamento">
+		        <option selected></option>
+		        <option v-for="item in fundamentacoes">
+			        {{item.fundamentacao}}
+		        </option>
+		    </b-form-select>
 		</b-form-group>
       <b-form-group label="Data de assinatura" label-for="inputData">
       <b-form-input id="inputData" type="date" v-model="propostaProponente.data_de_assinatura_coordenador_departamento">
@@ -48,6 +55,7 @@ export default {
   props: ["propostaSelecionada"],
   data() {
     return {
+      fundamentacoes: [],
 	  selectedFundamentação: null,
 	  fundamentacoes: [],
       propostaProponente: {
@@ -68,6 +76,15 @@ export default {
 		axios.get("/api/fundamentacoes/" + this.$store.state.user.id).then(response => {
 		this.fundamentacoes = response.data;
 		});
+	},
+    novaFundamentacao() {
+		let newfundamentacao = '';
+		if(this.$store.state.user.roleDB == 'proponente_departamento'){
+			newfundamentacao = this.propostaProponente.fundamentacao_coordenador_departamento;
+		}
+		axios.post('/api/fundamentacoes/create/' + this.$store.state.user.id + '/'+ newfundamentacao).then(response => {
+		this.$swal("Success", "Fundamentação guardada!", "success");});
+		this.$nextTick(() => {this.getFundamentacoes();});
 	},
     inserirFundamentacao(propostaProponente){
         this.$v.propostaProponente.$touch();
@@ -96,6 +113,10 @@ export default {
 	mounted(){
 		this.getFundamentacoes();
 	}
+  },
+  mounted(){
+	this.getFundamentacoes();
+
   }
 };
 </script>

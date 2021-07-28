@@ -4,15 +4,32 @@
       <h2>Fundamentação Coordenador Curso</h2>
       
       <b-form-group label="Fundamentação" label-for="inputFundCoordCurso">
-        <b-form-input
+        <!--<b-form-input
           id="inputFundCoordCurso"
           :state="$v.propostaProponente.fundamentacao_coordenador_curso.$dirty ? 
             !$v.propostaProponente.fundamentacao_coordenador_curso.$error : null"
           v-model="propostaProponente.fundamentacao_coordenador_curso"
-        ></b-form-input>
+        ></b-form-input>-->
+        <b-form-textarea
+            id="inputFundCoordCurso"
+            v-model="propostaProponente.fundamentacao_coordenador_curso"
+            rows="3"
+            :state="!$v.propostaProponente.fundamentacao_coordenador_curso.$error && null"
+            max-rows="6"
+          ></b-form-textarea>
         <b-form-invalid-feedback id="input-1-live-feedback">Insira a fundamentação</b-form-invalid-feedback>
       </b-form-group>
+      <button type="button" class="btn btn-info" @click="novaFundamentacao()">Guardar Fundamentação</button>
 
+     <b-form-group label="Modelos de Fundamentações">
+		<b-form-select v-model="propostaProponente.fundamentacao_coordenador_curso">
+		    <option selected></option>
+		        <option v-for="item in fundamentacoes">
+			        {{item.fundamentacao}}
+		        </option>
+		    </b-form-select>
+		</b-form-group>
+        
       <b-form-group label="Data de assinatura" label-for="inputData">
         <b-form-input
           id="inputData"
@@ -39,6 +56,7 @@ export default {
   props: ["propostaSelecionada"],
   data() {
     return {
+      fundamentacoes: [],
 	  selectedFundamentação: null,
       propostaProponente: {
         fundamentacao_coordenador_curso: "",
@@ -68,6 +86,21 @@ export default {
     onFileSelected(event) {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
+    novaFundamentacao() {
+		let newfundamentacao = '';
+		if(this.$store.state.user.roleDB == 'proponente_curso'){
+			newfundamentacao = this.propostaProponente.fundamentacao_coordenador_curso;
+		}
+		axios.post('/api/fundamentacoes/create/' + this.$store.state.user.id + '/'+ newfundamentacao).then(response => {
+		this.$swal("Success", "Fundamentação guardada!", "success");});
+		this.$nextTick(() => {this.getFundamentacoes();});
+	},
+	getFundamentacoes(){
+		axios.get("/api/fundamentacoes/" + this.$store.state.user.id).then(response => {
+		this.fundamentacoes = response.data;
+		});
+		 
+	},
     inserirFundamentacao(propostaProponente){
       /*this.ficheiro.proposta = new FormData();
       this.ficheiro.proposta.append("file", this.ficheiros["PropostaAssinada"]);
@@ -107,6 +140,10 @@ export default {
         }
       
     }
+  },
+  mounted(){
+	this.getFundamentacoes();
+
   }
 };
 </script>

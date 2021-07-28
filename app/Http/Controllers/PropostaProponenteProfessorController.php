@@ -17,6 +17,11 @@ class PropostaProponenteProfessorController extends Controller
             'periodo' => 'required',
             'avaliacao_periodo_anterior' => 'nullable',
             'proposta_proponente_id' => 'required',
+
+            'remuneracao' => 'nullable',
+            'escalao' => 'nullable',
+            'indice' => 'nullable',
+            'verificacao_outras_uo' => 'required',
         ]);
         $propostaProponenteProfessor = new PropostaProponenteProfessor();
         $propostaProponenteProfessor->fill($request->all());
@@ -38,6 +43,12 @@ class PropostaProponenteProfessorController extends Controller
             'periodo' => 'required',
             'avaliacao_periodo_anterior' => 'nullable',
             'proposta_proponente_id' => 'required',
+
+            
+            'remuneracao' => 'nullable',
+            'escalao' => 'nullable',
+            'indice' => 'nullable',
+            'verificacao_outras_uo' => 'required',
         ]);
 
         $proposta->fill($request->all());
@@ -49,5 +60,14 @@ class PropostaProponenteProfessorController extends Controller
     public function getProposta($idPropostaProponente)
     {
         return PropostaProponenteProfessor::where('proposta_proponente_id', $idPropostaProponente)->first();
+    }
+
+    public function atualizarProposta($propostaProponenteID, Request $request)
+    {
+        $propostaAAtualizar = PropostaProponenteProfessor::findOrFail($propostaProponenteID);
+        $propostaAAtualizar->remuneracao = $request->remuneracao;
+        $propostaAAtualizar->escalao = $request->escalao;
+        $propostaAAtualizar->indice = $request->indice;
+        $propostaAAtualizar->save();
     }
 }

@@ -256,12 +256,26 @@
                     <td><b>Periodo: </b></td><td>{{propostaProponenteMonitor.periodo}}</td></tr>
           </table><br>
 
-          <table width="100%" border="1px">
+          <table v-if="proposta.role == 'monitor'" width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
                 <tr>
-                    <td><b>Remuneração: </b>{{proposta.remuneracao}}€</td>
-                    <td><b>Escalão: </b>{{proposta.escalao}}</td>
-                    <td><b>Índice: </b>{{proposta.indice}}</td></tr>
+                    <td><b>Remuneração: </b>{{propostaProponenteMonitor.remuneracao}}€</td>
+                    <td><b>Escalão: </b>{{propostaProponenteMonitor.escalao}}</td>
+                    <td><b>Índice: </b>{{propostaProponenteMonitor.indice}}</td></tr>
+          </table>
+          <table v-if="proposta.role == 'assistente'" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
+                <tr>
+                    <td><b>Remuneração: </b>{{propostaProponenteAssistente.remuneracao}}€</td>
+                    <td><b>Escalão: </b>{{propostaProponenteAssistente.escalao}}</td>
+                    <td><b>Índice: </b>{{propostaProponenteAssistente.indice}}</td></tr>
+          </table>
+          <table v-if="proposta.role == 'professor'" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
+                <tr>
+                    <td><b>Remuneração: </b>{{propostaProponenteProfessor.remuneracao}}€</td>
+                    <td><b>Escalão: </b>{{propostaProponenteProfessor.escalao}}</td>
+                    <td><b>Índice: </b>{{propostaProponenteProfessor.indice}}</td></tr>
           </table><br>
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
@@ -441,8 +455,10 @@ export default {
     pdf
   },
   props: [
+    "estado",
     "proposta",
     "unidadesCurriculares",
+    "progresso",
     "propostaProponenteProfessor",
     "propostaProponenteAssistente",
     "propostaProponenteMonitor",
@@ -505,7 +521,7 @@ export default {
       this.mostrarResumoProposta = false;
       this.$emit('voltar');
       this.$emit("voltar", this.proposta);
-      
+
     },
     submeterPropostaProfessor(propostaProponenteProfessor) {
       if (this.unidadesCurriculares.length > 0) {
@@ -583,8 +599,9 @@ export default {
                          "success"
                       );
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
-                    })
+                     })
                   });
               }else {
                 this.isLoading = true;
@@ -630,6 +647,7 @@ export default {
                              "success"
                          );
                          this.isLoading = false;
+                         //this.$emit("incrementarBarraProgresso");
                          this.voltar();
                       });
                   });
@@ -697,6 +715,7 @@ export default {
                          "success"
                       );
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
                     })
                   });
@@ -739,7 +758,8 @@ export default {
                      "success"
                   );
                   this.isLoading = false;
-                  this.voltar();      
+                  //this.$emit("incrementarBarraProgresso");
+                  this.voltar();
               }
             }
           });
@@ -822,6 +842,7 @@ export default {
                            "Proposta editada com sucesso!!",
                            "success");
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
                     })
                 });
@@ -870,7 +891,8 @@ export default {
                     "Proposta editada com sucesso!!",
                     "success");
                 this.isLoading = false;
-                this.voltar();    
+                //this.$emit("incrementarBarraProgresso");
+                this.voltar();
               }
             }
           });
@@ -939,6 +961,7 @@ export default {
                          "success"
                        );
                        this.isLoading = false;
+                       //this.$emit("incrementarBarraProgresso");
                        this.voltar();
                     });
               }else {
@@ -984,6 +1007,7 @@ export default {
                           "Proposta editada com sucesso!!",
                           "success");
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
                     });
                 });
@@ -1059,6 +1083,7 @@ export default {
                          "success"
                       );
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
                     })
                   });
@@ -1093,6 +1118,7 @@ export default {
                          "success"
                       );
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
                     });
                  });
@@ -1154,6 +1180,7 @@ export default {
                          "success"
                       );
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
                     })
                   });
@@ -1182,6 +1209,7 @@ export default {
                          "success"
                       );
                       this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
                       this.voltar();
                     });
                 });

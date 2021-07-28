@@ -4,7 +4,7 @@
 
      <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Monitor</b-button>
+          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Assistente</b-button>
         </b-card-header>
         <b-collapse visible id="accordion-1" accordion="accordion" role="tabpanel">
           <b-card-body>
@@ -60,7 +60,7 @@
         >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
       
       </b-form-group>
-      {{propostaProponenteAssistente.fundamentacao}}
+      <!--{{propostaProponenteAssistente.fundamentacao}}-->
       <b-form-group class="mt-5">
         <b-form-checkbox
           v-if="propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
@@ -72,19 +72,17 @@
           value="1"
           unchecked-value="0"
           :state="null"
-        ><b>Fundamentação</b></b-form-checkbox>
+        ><b>Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
         
-
-
-
-      <b-form-group
-        description="(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos"
-        v-if="propostaProponenteAssistente.fundamentacao == '1'"
-      >
+  {{ propostaProponenteAssistente.regime_prestacao_servicos}}
 
         <b-form-group>
         <b-form-file
+          v-if="propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva' &&
+                propostaProponenteAssistente.fundamentacao == '1'"
           v-model="ficheiroFundamentacaoAssistenteModel"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
@@ -103,10 +101,16 @@
           v-if="ficheiroFundamentacao"
           @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
         >
-        <i class="far fa-file-pdf"></i> Atual Fundamentação Assistente
+        <i class="far fa-file-pdf"></i> Atual Fundamentação do Assistente
         </b-button>
       </b-form-group>
       </b-form-group>
+
+
+
+
+
+
       <!--
         <b-form-textarea
           v-model="propostaProponenteAssistente.fundamentacao"
@@ -140,6 +144,7 @@
         <b-form-select
           id="inputAvaliacao"
           v-model="propostaProponenteAssistente.avaliacao_periodo_anterior"
+          :state="null"
           :options="avaliacao_periodo_anterior_array"
         ></b-form-select>
       </b-form-group>
@@ -151,10 +156,68 @@
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-3 variant="dark">Vencimento aplicável</b-button>
         </b-card-header>
+
+
+
         <b-collapse id="accordion-3" accordion="accordion" role="tabpanel">
           <b-card-body>
             <b-card-text>
-              <b-form-group label="Remuneração" label-for="inputRemuneracao">
+
+            
+            
+        
+		<b-form-group label="Categoria" description="Campo Opcional">
+		<b-form-select
+            id="inputCategoria"
+            readonly="true"
+            v-model="propostaExistente"
+            @change="associarProposta()"
+            :state="!propostaExistente.$error && null"
+            :options="listaVencimentos"
+            >
+            <template slot="first">
+            <option
+              :value="null"
+              disabled
+            >-- Por favor selecione --</option>
+          </template>
+        </b-form-select>
+    </b-form-group>
+    <!--
+                <b-form-group label="Categoria" label-for="inputEscalao">
+                <b-form-input
+                  id="inputEscalao"
+                  :state="null"
+                  v-model="propostaProponenteAssistente.descricao"
+                  disabled
+                ></b-form-input>
+                <b-form-invalid-feedback id="input-1-live-feedback">Insira um escalão</b-form-invalid-feedback>
+              </b-form-group>-->
+
+              <b-form-group label="Vencimentos" label-for="inputTabelaVencimentos">
+              <div class="table-responsive">
+                <table class="table mt-3" width="100%">
+                  <thead>
+                    <tr>
+                      <td><b>Descricao</b></td>
+                      <td colspan="2">{{propostaProponenteAssistente.descricao}}</td>      
+                    </tr>
+                    <th>Remuneração</th>
+                    <th>Indice</th>
+                    <th>Escalão</th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{propostaProponenteAssistente.remuneracao}}</td>
+                      <td>{{propostaProponenteAssistente.indice}}</td>      
+                      <td>{{propostaProponenteAssistente.escalao}}</td>
+                      
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              </b-form-group>
+        <!--      <b-form-group label="Remuneração" label-for="inputRemuneracao">
                 <b-form-input
                   id="inputRemuneracao"
                   :state="null"
@@ -179,7 +242,7 @@
                   v-model="proposta.indice"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">Insira um índice</b-form-invalid-feedback>
-              </b-form-group>
+              </b-form-group>-->
             </b-card-text>
           </b-card-body>
         </b-collapse>
@@ -195,12 +258,12 @@
               <h2 class="pb-4"></h2>
               <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
                 <b-form-radio-group
-                  v-model="proposta.verificacao_outras_uo"
+                  v-model="propostaProponenteAssistente.verificacao_outras_uo"
                   :options="verificacao_outras_uo_array"
                   stacked
                 ></b-form-radio-group>
               </b-form-group>
-              <b-form-group v-if="proposta.verificacao_outras_uo == 'sim'">
+              <b-form-group v-if="propostaProponenteAssistente.verificacao_outras_uo == 'sim'">
                 <b-form-group
                     label="Indique o nome da Unidade Orgânica"
                     label-for="inputTempoParcial"
@@ -208,7 +271,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteAssistente.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESECS"
                 ></b-form-select>
@@ -223,7 +286,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteAssistente.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESTG"
                 ></b-form-select>
@@ -238,7 +301,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteAssistente.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaSAD.CR"
                 ></b-form-select>
@@ -253,7 +316,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteAssistente.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESSLei"
                 ></b-form-select>
@@ -268,7 +331,7 @@
                 >
                 <b-form-select
                     id="inputTempoParcial"
-                    v-model="proposta.nome_uo"
+                    v-model="propostaProponenteAssistente.nome_uo"
                     :state="null"
                     :options="UnidadeOrganicaESTM"
                 ></b-form-select>
@@ -279,7 +342,7 @@
             
             <b-form-group label="O docente esta a tempo Parcial?">
                 <b-form-radio-group
-                  v-model="proposta.verificacao_tempo_parcial"
+                  v-model="propostaProponenteAssistente.verificacao_tempo_parcial"
                   :options="verificacao_tempo_parcial"
                   stacked
                 ></b-form-radio-group>
@@ -288,10 +351,10 @@
               <b-form-group
                 label="Indique o tempo parcial"
                 label-for="inputTempoParcial"
-                v-if="proposta.verificacao_tempo_parcial == 'sim'">
+                v-if="propostaProponenteAssistente.verificacao_tempo_parcial == 'sim'">
                   <b-form-select
                   id="inputTempoParcial"
-                  v-model="proposta.tempo_parcial_uo"
+                  v-model="propostaProponenteAssistente.tempo_parcial_uo"
                   :state="null"
                   :options="percentagensArray"
               ></b-form-select>
@@ -302,7 +365,7 @@
                 <b-form-group label="Indique o período" label-for="inputPeriodo"  description="Ex: 01/01/2022 a 31/12/2022">
                   <b-form-input
                     id="inputPeriodo"
-                    v-model="proposta.periodo_uo"
+                    v-model="propostaProponenteAssistente.periodo_uo"
                   ></b-form-input>
                 </b-form-group>
               </b-form-group>
@@ -338,7 +401,7 @@ export default {
   props: ["proposta", "unidadesCurriculares", "ficheiro"],
   data() {
     return {
-    
+      listaVencimentos:[],
       verificacao_outras_uo_array: [
         { text: "Sim", value: "sim" },
         { text: "Não", value: "nao" }
@@ -436,9 +499,12 @@ export default {
         nome_uo:"",
         tempo_parcial_uo:"",
         periodo_uo:"",
+        verificacao_tempo_parcial:"",
         primeiro_proponente: this.$store.state.user.name,
         proposta_proponente_id: ""
       },
+      
+      propostaExistente: {},
       ficheiroProponenteAssistente: {
         fileRelatorio: {},
         fileFundamentacao: {}
@@ -454,34 +520,29 @@ export default {
   },
   //? Validations Vuelidate
   validations() {
-    // if(this.proposta.tipo_contrato == 'renovacao' || this.proposta.tipo_contrato == 'alteracao'){
-    //   return{
-    //     propostaProponenteAssistente: {
-    //       avaliacao_periodo_anterior: { required },
-    //     }
-    //   };
-    // }
+     /*if(this.proposta.tipo_contrato == 'renovacao' || this.proposta.tipo_contrato == 'alteracao'){
+       return{
+         propostaProponenteAssistente: {
+           avaliacao_periodo_anterior: { required },
+         }
+       };
+     }*/
     if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
        this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
       return {
         propostaProponenteAssistente: {
           regime_prestacao_servicos: { required },
-          //fundamentacao: { required },
           duracao: { required },
           periodo: { required },
-          remuneracao: { required, numeric },
-          escalao: { required },
-          indice: { required },
           verificacao_outras_uo: { required },
-         /* if(this.proposta.verificacao_outras_uo == "sim" ) {
+          /*if(this.propostaProponenteAssistente.verificacao_outras_uo == "sim" ) {
             nome_uo: { required },
             tempo_parcial_uo: { required },
             periodo_uo: { required },
           }*/
         }
       };
-    } else {
-      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60") {
+    } if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60") {
         return {
           propostaProponenteAssistente: {
             regime_prestacao_servicos: { required },
@@ -489,9 +550,6 @@ export default {
             percentagem_prestacao_servicos: { required },
             duracao: { required },
             periodo: { required },
-            remuneracao: { required, numeric },
-            escalao: { required },
-            indice: { required },
             verificacao_outras_uo: { required },
             /*if(this.proposta.verificacao_outras_uo == "sim" ) {
                 nome_uo: { required },
@@ -507,9 +565,6 @@ export default {
             percentagem_prestacao_servicos: { required },
             duracao: { required },
             periodo: { required },
-            remuneracao: { required, numeric },
-            escalao: { required },
-            indice: { required },
             verificacao_outras_uo: { required },
             /*if(this.proposta.verificacao_outras_uo == "sim" ) {
                 nome_uo: { required },
@@ -518,11 +573,22 @@ export default {
             }*/
           }
         };
-      }
+      
     }
   },
   methods: {
-  validateState(ref) {
+    getVencimentos(){
+		axios.get("/api/vencimentos").then(response => {
+		    response.data.forEach(proposta => {
+              this.listaVencimentos.push({
+                text: proposta.descricao,
+                value: proposta,
+                
+              });
+		    });
+		});
+    },
+    validateState(ref) {
       return this.veeErrors.has(ref) ? false : null;
     },
     onFileSelected(event) {
@@ -547,9 +613,9 @@ export default {
       if (!this.$v.$invalid) {
         if (
           this.propostaProponenteAssistente.regime_prestacao_servicos ==
-            "Tempo Integral" ||
+            "tempo_integral" ||
           this.propostaProponenteAssistente.regime_prestacao_servicos ==
-            "Dedicacao Exclusiva"
+            "dedicacao_exclusiva"
         ) {
           this.propostaProponenteAssistente.percentagem_prestacao_servicos =
             "100";
@@ -605,6 +671,12 @@ export default {
       this.isShowAssistente = true;
       this.avancar = false;
       this.$emit("decrementarBarraProgresso");
+    },
+    associarProposta() {
+      //* Limpar Objectos
+      Object.assign(this.propostaExistente, {});
+      //* Associar vencimento à proposta
+      Object.assign(this.propostaProponenteAssistente, this.propostaExistente);
     }
   },
   mounted() {
@@ -628,7 +700,7 @@ export default {
           });
         });
      
-    }
+    }this.getVencimentos();
   }
 };
 </script>
