@@ -391,9 +391,9 @@
                 </tr><tr>
                     <td>
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
-                        Fundamentação
-                        <b>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</b><br>
-						<br><br><br><br><br><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <br><br><br><br><br><br>
                         <b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
@@ -406,8 +406,8 @@
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
                     <td>
                     <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
-                        Fundamentação
-                        <b>{{propostaSelecionada.fundamentacao_coordenador_curso}}</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
@@ -432,7 +432,7 @@
                     <td v-else><b>Reconheço interesse e a necessidade da contratação/renovação</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                     </td>
-                    <td rowspan="2" width="60%"><br> <b><br><br><br>Assinatura: </b>____________________<br><b>Data: </b>{{propostaSelecionada.data_assinatura_uo}}</td>
+                    <td rowspan="2" width="60%"><br><br><br><br><br><b>Assinatura: </b>____________________<br><b>Data: </b>{{propostaSelecionada.data_assinatura_uo}}</td>
                 </tr><tr>
                     
                     <td v-if="propostaSelecionada.parecer=='Favoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
@@ -458,7 +458,7 @@
                 <tr>
                     <td><b>Votos a Favor: </b>{{propostaSelecionada.votos_a_favor}}</td>
                     <td><b>Votos Contra: </b>{{propostaSelecionada.votos_contra}}</td>
-                    <td rowspan="3"><br><b><br><br><br>Assinatura:</b>____________________<br><b>Data: </b>{{propostaSelecionada.data_assinatura_ctc}} </td>
+                    <td rowspan="3"><br><br><br><br><br><b>Assinatura:</b>____________________<br><b>Data: </b>{{propostaSelecionada.data_assinatura_ctc}} </td>
                 </tr><tr>
                     <td><b>Votos em branco: </b>{{propostaSelecionada.votos_brancos}}</td>
                     <td><b>Votos Nulos: </b>{{propostaSelecionada.votos_nulos}}</td>
