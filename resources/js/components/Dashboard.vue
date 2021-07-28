@@ -12,10 +12,10 @@
           <b-nav-item-dropdown right>
             <template slot="button-content">{{ user.name }}</template>
             <b-dropdown-item v-on:click.prevent="mostrarServicoDocenteAtribuido">
-              <i class="fas fa-sign-out-alt"></i> Serviço Docente Atribuido
+              <i class="fas fa-book"></i> Serviço Docente Atribuido
             </b-dropdown-item>
 			<b-dropdown-item v-on:click.prevent="mostrarFundamentacoes">
-              <i class="fas fa-sign-out-alt"></i> Fundamentações
+              <i class="fas fa-book"></i> Fundamentações
             </b-dropdown-item>
             <b-dropdown-item v-on:click.prevent="logout">
               <i class="fas fa-sign-out-alt"></i> Logout

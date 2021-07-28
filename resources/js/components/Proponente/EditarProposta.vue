@@ -245,7 +245,7 @@
         </b-collapse>
       </b-card>
 
-     <b-card no-body class="mb-1">
+      <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block href="#" v-b-toggle.accordion-2 variant="dark">Habilitações Literárias</b-button>
         </b-card-header>
@@ -254,7 +254,7 @@
             <b-card-text>
               <h3 class="pb-4">Habilitações Literárias</h3>
 
-               <b-form-group>
+              <b-form-group>
                 <b-form-checkbox
                   v-model="grauTestDoutoramento"
                   value="doutoramento"
@@ -432,7 +432,22 @@ export default {
   data() {
     return {
 	  grauTest: [], 
+      grauTestDoutoramento: '',
+	  grauTestFormacao: '',
+	  grauTestOutro: '',
       //? Array de Objetos para Radio Buttons
+      UnidadeOrganica: [
+        { text: "ESECS", value: "ESECS" },
+        { text: "ESTG", value: "ESTG" },
+        { text: "SAD.CR", value: "ESAD.CR" },
+        { text: "ESSLei", value: "ESSLei" },
+        { text: "ESTM", value: "ESTM"}
+      ],
+      grausArray: [
+        { text: "Doutoramento", value: "doutoramento" },
+        { text: "Outro", value: "outro" },
+        { text: "Em Formação", value: "em_formacao" }
+      ],
       tipoContratosArray: [
         { text: "Contratação Inicial", value: "contratacao_inicial" },
         { text: "Renovação", value: "renovacao" },

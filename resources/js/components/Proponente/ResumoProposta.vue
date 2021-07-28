@@ -277,23 +277,75 @@
                     <td><b>Escalão: </b>{{propostaProponenteProfessor.escalao}}</td>
                     <td><b>Índice: </b>{{propostaProponenteProfessor.indice}}</td></tr>
           </table><br>
-          <table width="100%" border="1px">
+          <table v-if="proposta.role == 'assistente'" width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
                 <tr>
                     <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
-                    <td rowspan="2" v-if="proposta.verificacao_outras_uo=='sim'">
+                    <td rowspan="2" v-if="propostaProponenteAssistente.verificacao_outras_uo=='sim'">
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                         <b>Sim</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                         <b>Não</b>
-                        <p v-if="proposta.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{proposta.nome_uo}}</b> Tempo parcial <b>
+                        <p v-if="propostaProponenteAssistente.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{propostaProponenteProfessor.nome_uo}}</b> Tempo parcial <b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                        {{proposta.tempo_parcial_uo}}%</b><br>
-                        Periodo <b>{{proposta.periodo_uo}}</b></p>
-                        <p v-else>Sim, UO <b>{{proposta.nome_uo}}</b> Tempo parcial
+                        {{propostaProponenteAssistente.tempo_parcial_uo}}%</b><br>
+                        Periodo <b>{{propostaProponenteAssistente.periodo_uo}}</b></p>
+                        <p v-else>Sim, UO <b>{{propostaProponenteAssistente.nome_uo}}</b> Tempo parcial
                         <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
-                        Periodo <b>{{proposta.periodo_uo}}</b></p></td>
-                    <td rowspan="2" v-if="proposta.verificacao_outras_uo=='nao'">
+                        Periodo <b>{{propostaProponenteAssistente.periodo_uo}}</b></p></td>
+                    <td rowspan="2" v-if="propostaProponenteAssistente.verificacao_outras_uo=='nao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Não</b>
+                        <p>Se sim, indique:, UO ___________________ Tempo parcial ____________________%<br>
+                        Periodo ________________________________</p></td>
+                </tr><tr>
+                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
+          </table>
+          <table v-if="proposta.role == 'professor'" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
+                <tr>
+                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
+                    <td rowspan="2" v-if="propostaProponenteProfessor.verificacao_outras_uo=='sim'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p v-if="proposta.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{propostaProponenteProfessor.nome_uo}}</b> Tempo parcial <b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        {{propostaProponenteProfessor.tempo_parcial_uo}}%</b><br>
+                        Periodo <b>{{propostaProponenteProfessor.periodo_uo}}</b></p>
+                        <p v-else>Sim, UO <b>{{propostaProponenteProfessor.nome_uo}}</b> Tempo parcial
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
+                        Periodo <b>{{propostaProponenteProfessor.periodo_uo}}</b></p></td>
+                    <td rowspan="2" v-if="propostaProponenteProfessor.verificacao_outras_uo=='nao'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Não</b>
+                        <p>Se sim, indique:, UO ___________________ Tempo parcial ____________________%<br>
+                        Periodo ________________________________</p></td>
+                </tr><tr>
+                    <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
+          </table>
+          <table v-if="proposta.role == 'monitor'" width="100%" border="1px">
+                <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
+                <tr>
+                    <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
+                    <td rowspan="2" v-if="propostaProponenteMonitor.verificacao_outras_uo=='sim'">
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        <b>Sim</b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                        <b>Não</b>
+                        <p v-if="proposta.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{propostaProponenteMonitor.nome_uo}}</b> Tempo parcial <b>
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                        {{propostaProponenteMonitor.tempo_parcial_uo}}%</b><br>
+                        Periodo <b>{{propostaProponenteMonitor.periodo_uo}}</b></p>
+                        <p v-else>Sim, UO <b>{{propostaProponenteMonitor.nome_uo}}</b> Tempo parcial
+                        <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
+                        Periodo <b>{{propostaProponenteMonitor.periodo_uo}}</b></p></td>
+                    <td rowspan="2" v-if="propostaProponenteMonitor.verificacao_outras_uo=='nao'">
                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                         <b>Sim</b>
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
