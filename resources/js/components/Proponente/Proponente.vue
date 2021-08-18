@@ -266,7 +266,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               </b-form-group>
 			  
 			  
-			  <b-form-group label="Curso" label-for="inputCursoHabilitacoesLiterariasDoutoramento"
+			  <b-form-group label="Curso do Doutoramento" label-for="inputCursoHabilitacoesLiterariasDoutoramento"
                 v-if="grauTestDoutoramento">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasDoutoramento"
@@ -277,7 +277,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               </b-form-group>
 			  
 			  <b-form-group
-                label="Área Científica"
+                label="Área Científica Doutoramento"
                 label-for="inputAreaCientificaHabilitacoesLiterariasDoutoramento"
 				v-if="grauTestDoutoramento"
               >
@@ -297,7 +297,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
 			  
-              <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterariasOutro"
+              <b-form-group label="Grau Outro" label-for="inputCursoHabilitacoesLiterariasOutro"
                 v-if="grauTestOutro">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasOutro"
@@ -307,7 +307,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               </b-form-group>
 			  
 			  <b-form-group
-                label="Área Científica"
+                label="Área Científica Outro"
                 label-for="inputAreaCientificaHabilitacoesLiterariasOutro"
 				v-if="grauTestOutro"
               >
@@ -327,7 +327,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
 			  
-			  <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterariasFormacao"
+			  <b-form-group label="Grau Formação" label-for="inputCursoHabilitacoesLiterariasFormacao"
                 v-if="grauTestFormacao">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasFormacao"
@@ -337,7 +337,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
               </b-form-group>
               
               <b-form-group
-                label="Área Científica"
+                label="Área Científica Formação"
                 label-for="inputAreaCientificaHabilitacoesLiterariasFormacao"
 				v-if="grauTestFormacao"
               >
