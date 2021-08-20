@@ -2,7 +2,6 @@
   <div>
     <div class="jumbotron">
       <h2>Fundamentação Coordenador Departamento</h2>
-
       <b-form-group
         label="Fundamentação"
         label-for="inputFundCoordDepartamento"
@@ -61,6 +60,7 @@ export default {
       propostaProponente: {
         fundamentacao_coordenador_departamento: "",
         data_de_assinatura_coordenador_departamento:"",
+        primeiro_proponente: this.propostaSelecionada.primeiro_proponente,
         segundo_proponente: this.$store.state.user.name,
       }
     };
@@ -69,7 +69,7 @@ export default {
     propostaProponente: {
       fundamentacao_coordenador_departamento: { required },
       data_de_assinatura_coordenador_departamento: { required },
-    }
+    },
   },
   methods: {
 	getFundamentacoes(){
@@ -88,6 +88,12 @@ export default {
 	},
     inserirFundamentacao(propostaProponente){
         this.$v.propostaProponente.$touch();
+        if(this.propostaSelecionada.primeiro_proponente == 'Secretariado da Direção'){
+            this.propostaProponente.primeiro_proponente= this.$store.state.user.name;
+            this.propostaProponente.segundo_proponente= "";
+        }if(this.propostaSelecionada.primeiro_proponente != 'Secretariado da Direção'){
+            propostaProponente.segundo_proponente= this.$store.state.user.name;
+        }
         if (!this.$v.propostaProponente.$invalid) {
           this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
                         text: 'Não poderá realizar mais nenhuma alteração',

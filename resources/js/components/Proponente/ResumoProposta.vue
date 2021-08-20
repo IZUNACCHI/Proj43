@@ -356,6 +356,273 @@
                     <td>O docente já foi convidado para exercer funções noutro UO do IPL?</td></tr>
           </table>
           <br>
+          <table width="100%" border="1px" align=center v-if="proposta.role == 'assistente' &&  $store.state.editarProposta && (alterar.fundamentacao==1 || alterar.unidadesCurriculares ==1)">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Alterados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim' && alterar.unidadesCurriculares == '1'">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td><b-button class="botao" v-on:click="uc = !uc"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichUnidadesCurriculares"
+        	                    @num-pages="pageCount101 = $event"
+			                    @page-loaded="currentPage1 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="aa in pageCount101"
+			                    :key="aa"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="aa"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+                </tr><tr v-if="(propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva' ||
+                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral' ||
+                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial_60') &&
+                               alterar.fundamentacao == '1'">
+                    <td> Ficheiro da Fundamentação</td>
+                    <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="fundamentacao">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichFundamentacao"
+                
+			                    @num-pages="pageCount102 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="bb in pageCount102"
+			                    :key="bb"
+			                    :src="fichFundamentacao"
+			                    :page="bb"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+                        
+            </table>
+            <table width="100%" border="1px" align=center v-if="proposta.role == 'professor' &&  $store.state.editarProposta && (alterar.fundamentacao==1 || alterar.unidadesCurriculares ==1)">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Alterados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim' && alterar.unidadesCurriculares == '1'">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td><b-button class="botao" v-on:click="uc = !uc"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichUnidadesCurriculares"
+        	                    @num-pages="pageCount101 = $event"
+			                    @page-loaded="currentPage1 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="aa in pageCount101"
+			                    :key="aa"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="aa"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+          
+                        <tr v-if="(propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva' ||
+                                  propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral') &&
+                                  alterar.fundamentacao == '1'">
+                            <td> Ficheiro da Fundamentação</td>
+                            <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
+                                    variant="dark">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="fundamentacao">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            :src="fichFundamentacao"
+                
+			                            @num-pages="pageCount103 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="bb in pageCount103"
+			                            :key="bb"
+			                            :src="fichFundamentacao"
+			                            :page="bb"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+           </table>
+          <table width="100%" border="1px" align=center v-if="proposta.role == 'monitor' &&  $store.state.editarProposta && (alterar.fundamentacao==1 || alterar.unidadesCurriculares ==1)">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Alterados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim' && alterar.unidadesCurriculares == '1'">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td><b-button class="botao" v-on:click="uc = !uc"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichUnidadesCurriculares"
+        	                    @num-pages="pageCount101 = $event"
+			                    @page-loaded="currentPage1 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="aa in pageCount101"
+			                    :key="aa"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="aa"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+           </table>
+          
+          <table width="100%" border="1px" align=center v-if="proposta.role == 'assistente' &&  !$store.state.editarProposta">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Introduzidos</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td><b-button class="botao" v-on:click="uc = !uc"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichUnidadesCurriculares"
+        	                    @num-pages="pageCount101 = $event"
+			                    @page-loaded="currentPage1 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="aa in pageCount101"
+			                    :key="aa"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="aa"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+                </tr><tr v-if="(propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva' ||
+                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral' ||
+                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial_60')">
+                    <td> Ficheiro da Fundamentação</td>
+                    <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="fundamentacao">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichFundamentacao"
+                
+			                    @num-pages="pageCount102 = $event"
+			                    @page-loaded="currentPage2 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="bb in pageCount102"
+			                    :key="bb"
+			                    :src="fichFundamentacao"
+			                    :page="bb"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+
+
+            </table>
+            <table width="100%" border="1px" align=center v-if="proposta.role == 'professor' &&  !$store.state.editarProposta">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td><b-button class="botao" v-on:click="uc = !uc"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichUnidadesCurriculares"
+        	                    @num-pages="pageCount101 = $event"
+			                    @page-loaded="currentPage1 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="aa in pageCount101"
+			                    :key="aa"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="aa"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+          
+                        <tr v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva' ||
+                                  propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'">
+                            <td> Ficheiro da Fundamentação</td>
+                            <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
+                                    variant="dark">
+                                    Visualizar
+                                </b-button>
+                             </td>
+                            <tr v-if="fundamentacao">
+                                <td colspan="3" style="height: 50%">
+                                    <pdf
+			                            :src="fichFundamentacao"
+                
+			                            @num-pages="pageCount103 = $event"
+			                            @page-loaded="currentPage2 = $event"
+                                        style="display: inline-block; width: 1%; opacity: 0"
+		                            ></pdf>
+                                    <pdf
+			                            v-for="bb in pageCount103"
+			                            :key="bb"
+			                            :src="fichFundamentacao"
+			                            :page="bb"
+			                            style="display: inline-block; width: 100%"
+		                            ></pdf>
+                                </td></tr>
+           </table>
+           <table width="100%" border="1px" align=center v-if="proposta.role == 'monitor' &&  !$store.state.editarProposta">
+                <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td><b-button class="botao" v-on:click="uc = !uc"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc">
+                        <td colspan="3" style="height: 50%">
+                            <pdf
+			                    :src="fichUnidadesCurriculares"
+        	                    @num-pages="pageCount101 = $event"
+			                    @page-loaded="currentPage1 = $event"
+                                style="display: inline-block; width: 1%; opacity: 0"
+		                    ></pdf>
+                            <pdf
+			                    v-for="aa in pageCount101"
+			                    :key="aa"
+			                    :src="fichUnidadesCurriculares"
+			                    :page="aa"
+			                    style="display: inline-block; width: 100%"
+		                    ></pdf>
+                        </td></tr>
+           </table>
+          <br>
           <table border="1px" v-if="proposta.verificacao_serviço_docente_atribuido=='nao'">
               <thead><tr><th colspan="9" bgcolor=#be5b59> <font color=#ffffff>Unidades Curriculares</font></th></tr>
                 <th>Codigo UC</th>
@@ -460,7 +727,6 @@
     <button class="btn btn-info" v-on:click.prevent="anterior">
       <i class="fas fa-arrow-left"></i> Anterior
     </button>
-
     <button
       type="button"
       class="btn btn-success"
@@ -506,11 +772,17 @@ export default {
     VuePdfApp,
     pdf
   },
+  contagemficheiro: 0,
+  ficheiroUnidadesCurriculares: "",
+  fichUnidadesCurriculares: "",
+  ficheiroFundamentacao: "",
+  fichFundamentacao: "",
   props: [
     "estado",
     "proposta",
     "unidadesCurriculares",
     "progresso",
+    "alterar",
     "propostaProponenteProfessor",
     "propostaProponenteAssistente",
     "propostaProponenteMonitor",
@@ -520,6 +792,11 @@ export default {
   ],
   data() {
     return {
+      pageCount101: 0,
+      pageCount102: 0,
+      pageCount103: 0,
+      uc: false,
+      fundamentacao: false,
 	  fundamentacoes: [],
       idParaUcsPropostaProponente: "",
       fundamentacaoCheck: false,
@@ -576,7 +853,99 @@ export default {
 
     },
     submeterPropostaProfessor(propostaProponenteProfessor) {
-      if (this.unidadesCurriculares.length > 0) {
+     if(this.$store.state.user.roleDB == 'secretariado_direcao'){
+        if (this.unidadesCurriculares.length > 0) {
+            this.isLoading = true;
+                axios.post("/api/propostaProponente", this.proposta)
+                  .then(response => {
+                    this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
+                    this.unidadesCurriculares.forEach(unidadeCurricular => {
+                      unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
+                    });
+                    this.unidadesCurriculares.forEach(unidadeCurricular => {
+                      axios.post("/api/ucsPropostaProponente", unidadeCurricular)
+                        .then(response => {});
+                      this.propostaProponenteProfessor.proposta_proponente_id = this.idParaUcsPropostaProponente;
+                    });
+                    axios.post("/api/propostaProponenteProfessor",this.propostaProponenteProfessor)
+                      .then(response => {});
+                    axios.post("/api/proposta/" + this.idParaUcsPropostaProponente)
+                      .then(response => {
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                            this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data);
+                        }
+                        if(propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                           propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                           if(propostaProponenteProfessor.fundamentacao == '1'){
+                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data);
+                           }
+                        }
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                          axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                            .then(response => {});
+                        }
+                        if(propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                           propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                           if(propostaProponenteProfessor.fundamentacao == '1'){
+                            axios
+                              .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
+                              .then(response => {});
+                           }
+                         }
+                         this.$swal(
+                            "Sucesso",
+                            "Proposta criada com sucesso!!",
+                             "success"
+                         );
+                         this.isLoading = false;
+                         //this.$emit("incrementarBarraProgresso");
+                         this.voltar();
+                      });
+                  });
+        }else{
+            this.isLoading = true;
+                axios
+                  .post("/api/propostaProponente", this.proposta)
+                  .then(response => {
+                    this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
+                    this.propostaProponenteProfessor.proposta_proponente_id = response.data.id_proposta_proponente;
+                    axios.post("/api/propostaProponenteProfessor", this.propostaProponenteProfessor)
+                      .then(response => {});
+                    axios.post("/api/proposta/" + this.idParaUcsPropostaProponente)
+                      .then(response => {
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                            this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data);
+                        }
+                        if(propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                           propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                           if(propostaProponenteProfessor.fundamentacao == '1'){
+                            this.ficheiro.fileFundamentacao.append("proposta_id",response.data);
+                           }
+                        }
+                        if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                            axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                               .then(response => {});
+                        }
+                        if(propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
+                           propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                           if(propostaProponenteProfessor.fundamentacao == '1'){
+                            axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao)
+                              .then(response => {})
+                           }
+                        }
+                      });
+                  });
+                  this.$swal(
+                     "Sucesso",
+                     "Proposta editada com sucesso!!",
+                     "success"
+                  );
+                  this.isLoading = false;
+                  //this.$emit("incrementarBarraProgresso");
+                  this.voltar();     
+        }
+     } 
+     if (this.unidadesCurriculares.length > 0) {
          this.$v.$touch();
         if (!this.$v.$invalid) {
         this.$swal.fire({
@@ -635,15 +1004,16 @@ export default {
                           }
                       }
                       axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
-
+                      if(this.alterar.unidadesCurriculares==1){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }
+                      }}
                       if(propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                         if(this.alterar.fundamentacao==1){
                          if(propostaProponenteProfessor.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
-                         }
+                         }}
                       }
                       this.$swal(
                          "Sucesso",
@@ -741,6 +1111,7 @@ export default {
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
+                     
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
@@ -750,17 +1121,20 @@ export default {
                             this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
                           }
                       }
-                      axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
                       
+                      axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
+                      if(this.alterar.unidadesCurriculares == 1){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }
+                      }}
                       if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
                           propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
+                          if(this.alterar.fundamentacao == 1){
                           if(propostaProponenteProfessor.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
-                          }
+                          }}
                       }
+                      
                       this.$swal(
                          "Sucesso",
                          "Proposta criada com sucesso!!",
@@ -819,6 +1193,94 @@ export default {
       }
     },
     submeterPropostaAssistente(propostaProponenteAssistente) {
+      if(this.$store.state.user.roleDB == 'secretariado_direcao'){
+       if(this.unidadesCurriculares.length > 0) {
+         axios.post("/api/propostaProponente", this.proposta)
+                .then(response => {
+                  this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
+                  this.unidadesCurriculares.forEach(unidadeCurricular => {
+                    unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
+                  });
+                  this.unidadesCurriculares.forEach(unidadeCurricular => {
+                    axios.post("/api/ucsPropostaProponente", unidadeCurricular)
+                      .then(response => {});
+                    this.propostaProponenteAssistente.proposta_proponente_id = this.idParaUcsPropostaProponente;
+                  });
+                  axios.post("/api/propostaProponenteAssistente", propostaProponenteAssistente)
+                    .then(response => {});
+                  axios.post("/api/proposta/" + this.idParaUcsPropostaProponente)
+                    .then(response => {
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data);
+                      }
+                      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(propostaProponenteAssistente.fundamentacao == '1'){
+                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data);
+                         }
+                      }
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                            .then(response => {});
+                      }
+                      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(propostaProponenteAssistente.fundamentacao == '1'){
+                            axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao)
+                                .then(response => {});
+                         }
+                      }
+                    });
+                });
+                this.$swal(
+                    "Sucesso",
+                    "Proposta editada com sucesso!!",
+                    "success");
+                this.isLoading = false;
+                //this.$emit("incrementarBarraProgresso");
+                this.voltar();
+       }else{
+                axios.post("/api/propostaProponente", this.proposta)
+                .then(response => {
+                  this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
+                  this.propostaProponenteAssistente.proposta_proponente_id = response.data.id_proposta_proponente;
+                  axios.post("/api/propostaProponenteAssistente",propostaProponenteAssistente)
+                    .then(response => {});
+                  axios.post("/api/proposta/" + this.idParaUcsPropostaProponente)
+                    .then(response => {
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data);
+                      }
+                      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(propostaProponenteAssistente.fundamentacao == '1'){
+                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data);
+                         }
+                      }
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
+                      }
+                      if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(propostaProponenteAssistente.fundamentacao == '1'){
+                            axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
+                         }
+                      }
+                      this.$swal(
+                          "Sucesso",
+                          "Proposta editada com sucesso!!",
+                          "success");
+                      this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
+                      this.voltar();
+                    });
+                });       
+       }
+      }
       if(this.unidadesCurriculares.length > 0) {
         this.$v.$touch();
         if (!this.$v.$invalid) {
@@ -879,15 +1341,17 @@ export default {
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
+                      if(this.alterar.unidadesCurriculares == 1){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }
+                      }}
                       if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(this.alterar.fundamentacao == 1){
                          if(propostaProponenteAssistente.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
-                         }
+                         }}
                       }
                       this.$swal(
                            "Sucesso",
@@ -970,7 +1434,7 @@ export default {
                 axios.put("/api/updatePropostaProponente/" + this.proposta.id_proposta_proponente, this.proposta)
                   .then(response => {
                     this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
-                    })
+                    
                     this.propostaProponenteAssistente.proposta_proponente_id = response.data.id_proposta_proponente;
                     
                     //? Apagar Propostas Proponente de todas as roles
@@ -986,7 +1450,7 @@ export default {
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
-                      this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
+                      //this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
                       if(propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
                          propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
                          propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
@@ -997,15 +1461,17 @@ export default {
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
+                      if(this.alterar.unidadesCurriculares == 1){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }
+                      }}
                       if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(this.alterar.fundamentacao == 1){
                          if(propostaProponenteAssistente.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
-                         }
+                         }}
                       }
                       this.$swal(
                          "Sucesso",
@@ -1015,6 +1481,7 @@ export default {
                        this.isLoading = false;
                        //this.$emit("incrementarBarraProgresso");
                        this.voltar();
+                       })
                     });
               }else {
                axios.post("/api/propostaProponente", this.proposta)
@@ -1070,7 +1537,74 @@ export default {
       }
     },
     submeterPropostaMonitor(propostaProponenteMonitor) {
-      if (this.unidadesCurriculares.length > 0) {
+     if(this.$store.state.user.roleDB == 'secretariado_direcao'){
+       if (this.unidadesCurriculares.length > 0) {
+                this.isLoading = true;
+                axios.post("/api/propostaProponente", this.proposta)
+                 .then(response => {
+                  this.idParaUcsPropostaProponente =
+                    response.data.id_proposta_proponente;
+                  this.unidadesCurriculares.forEach(unidadeCurricular => {
+                    unidadeCurricular.proposta_proponente_id = this.idParaUcsPropostaProponente;
+                  });
+                  this.unidadesCurriculares.forEach(unidadeCurricular => {
+                    axios.post("/api/ucsPropostaProponente", unidadeCurricular)
+                      .then(response => {});
+                    this.propostaProponenteMonitor.proposta_proponente_id = this.idParaUcsPropostaProponente;
+                  });
+                  axios.post("/api/propostaProponenteMonitor",propostaProponenteMonitor)
+                    .then(response => {});
+                  axios.post("/api/proposta/" + this.idParaUcsPropostaProponente)
+                    .then(response => {
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data);
+                      }
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                        .then(response => {});
+                      }
+                      this.$swal(
+                         "Sucesso",
+                         "Proposta criada com sucesso!!",
+                         "success"
+                      );
+                      this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
+                      this.voltar();
+                    });
+                 });
+       }else {
+                this.isLoading = true;
+                axios.post("/api/propostaProponente", this.proposta)
+                 .then(response => {
+                  this.idParaUcsPropostaProponente =
+                    response.data.id_proposta_proponente;
+                    this.propostaProponenteMonitor.proposta_proponente_id = response.data.id_proposta_proponente;
+                  axios.post("/api/propostaProponenteMonitor",propostaProponenteMonitor)
+                    .then(response => {});
+                  axios.post("/api/proposta/" + this.idParaUcsPropostaProponente)
+                    .then(response => {
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data);
+                      }
+                      
+                      if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
+                        axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
+                            .then(response => {});
+                      }
+                      this.$swal(
+                         "Sucesso",
+                         "Proposta criada com sucesso!!",
+                         "success"
+                      );
+                      this.isLoading = false;
+                      //this.$emit("incrementarBarraProgresso");
+                      this.voltar();
+                    });
+                });       
+       }
+     }
+     if (this.unidadesCurriculares.length > 0) {
         this.$v.$touch();
         if (!this.$v.$invalid) {
         this.$swal
@@ -1125,9 +1659,10 @@ export default {
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
                       //----------
+                      if(this.alterar.fundamentacao == 1){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }
+                      }}
                       /**/
                       this.$swal(
                          "Sucesso",
@@ -1222,9 +1757,10 @@ export default {
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
                       //----------
+                      if(this.alterar.fundamentacao == 1){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }
+                      }}
                       /**/
                       this.$swal(
                          "Sucesso",
@@ -1291,8 +1827,27 @@ export default {
     }
   },
   mounted(){
+    if(this.proposta.verificacao_serviço_docente_atribuido == "sim"){
+            this.fichUnidadesCurriculares = "storage/ficheiros/temporario/UnidadesCurriculares.pdf";
+	        this.contagemficheiro=this.contagemficheiro+1;
+    }
+    if(this.proposta.role=="assistente"){
+        if(this.propostaProponenteAssistente.regime_prestacao_servicos=="dedicacao_exclusiva" ||
+           this.propostaProponenteAssistente.regime_prestacao_servicos=="tempo_integral" ||
+           this.propostaProponenteAssistente.regime_prestacao_servicos=="tempo_parcial_60"){
+                this.fichFundamentacao = "storage/ficheiros/temporario/Fundamentacao.pdf",
+	            this.contagemficheiro=this.contagemficheiro+1;
+        }
+    }if(this.proposta.role=="professor"){
+        if(this.propostaProponenteProfessor.regime_prestacao_servicos=="dedicacao_exclusiva" ||
+           this.propostaProponenteProfessor.regime_prestacao_servicos=="tempo_integral"){
+                this.fichFundamentacao = "storage/ficheiros/temporario/Fundamentacao.pdf",
+	            this.contagemficheiro=this.contagemficheiro+1;
+     }
+    }
 	this.getFundamentacoes();
 
   }
+
 };
 </script>

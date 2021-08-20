@@ -55,10 +55,49 @@
             :options="percentagensArray"
           ></b-form-select>
       </b-form-group>
+      <div>
+              
+                 <b-form-group label="Serviço Docente Atribuído (PDF)">
+                    <b-form-checkbox
+                      v-if="$store.state.editarProposta"
+                      id="checkBoxFundamentacao"
+                      v-model="alterar.fundamentacao"
+                      name="checkBoxAlterar.fundamentacao"
+                      value="1"
+                      unchecked-value="0"
+                      :state="null"
+                    ><b>Alterar Ficheiro Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
+        
+                    <b-form-file
+                        v-if="alterar.fundamentacao==1"
+                        v-model="ficheiroFundamentacaoProfessorModel"
+                        placeholder="Escolha um ficheiro"
+                        drop-placeholder="Arraste para aqui um ficheiro"
+                        accept=".pdf"
+                        browse-text="Procurar"
+                        name="ficheiroFundamentacaoProfessor"
+                        :state="validateState('ficheiroFundamentacaoProfessor')"
+                        @change="onFileSelected"
+                    ></b-form-file>
+                    <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group>
+                    <b-button
+                        size="md"
+                        variant="dark"
+                        v-if="ficheiroFundamentacao"
+                        @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Serviço do Docente Atribuído')"
+                    >
+                    <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
+                    </b-button>
+                </b-form-group>
+              </div>
+      <div v-if= !$store.state.editarProposta>
       <b-form-group class="mt-5">
         <b-form-checkbox
-          v-if="propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
-                propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva' "
+          v-if="(propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva') &&
+                !$store.state.editarProposta"
           id="checkBoxFundamentacao"
           v-model="propostaProponenteProfessor.fundamentacao"
           name="checkBoxFundamentacao"
@@ -79,6 +118,7 @@
           v-model="ficheiroFundamentacaoProfessorModel"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
+          accept=".pdf"
           browse-text="Procurar"
           name="ficheiroFundamentacaoProfessor"
           v-validate="{ required: true }"
@@ -98,8 +138,8 @@
                     </b-button>
                 </b-form-group>
 
-      </b-form-group>
-
+      </b-form-group></b-form-group>
+      </div>
       <!--
         <b-form-textarea
           v-model="propostaProponenteProfessor.fundamentacao"
@@ -382,6 +422,7 @@
       :proposta="proposta"
       :unidadesCurriculares="unidadesCurriculares"
       :propostaProponenteProfessor="propostaProponenteProfessor"
+      :alterar="alterar"
       :ficheiro="ficheiro"
       v-on:mostrarComponente="mostrarComponente"
       v-on:mostrarPropostaProponente_professor="mostrarComponenteProfessor"
@@ -392,7 +433,7 @@
 import { required } from "vuelidate/lib/validators";
 
 export default {
-  props: ["proposta", "estado", "unidadesCurriculares", "ficheiro"],
+  props: ["proposta", "estado", "unidadesCurriculares", "ficheiro", "alterar"],
   data() {
     return {
     
@@ -501,9 +542,14 @@ export default {
         periodo_uo:"",
         primeiro_proponente: this.$store.state.user.name,
       },
+      alterarFundamentacao: 0,
       ficheiroProponenteProfessor: {
         fileRelatorio: {},
         fileFundamentacao: {}
+      },
+      ficheiroProponenteProfessorTemporario: {
+        fileRelatorio: {},
+        fileFundamentacaoTemporario: {}
       },
       propostaExistente: {},
       ficheirosProfessor: [],
@@ -596,6 +642,25 @@ export default {
           this.propostaProponenteProfessor.percentagem_prestacao_servicos =
             "100";
         }
+
+        if (this.propostaProponenteProfessor.regime_prestacao_servicos == "tempo_integral" ||
+            this.propostaProponenteProfessor.regime_prestacao_servicos == "dedicacao_exclusiva") {
+          this.propostaProponenteProfessor.percentagem_prestacao_servicos == null;
+          this.propostaProponenteProfessor.percentagem_prestacao_servicos_2 == null;
+        }
+        if(this.propostaProponenteProfessor.regime_prestacao_servicos == "tempo_parcial"){
+          this.propostaProponenteProfessor.fundamentacao == '0';
+        }
+        if (this.propostaProponenteProfessor.verificacao_tempo_parcial == "nao") {
+          this.propostaProponenteProfessor.tempo_parcial_uo == null;
+        }
+        if (this.propostaProponenteProfessor.verificacao_outras_uo == "nao") {
+          this.propostaProponenteProfessor.nome_uo == null;
+          this.propostaProponenteProfessor.verificacao_tempo_parcial == null;
+          this.propostaProponenteProfessor.tempo_parcial_uo == null;
+          this.propostaProponenteProfessor.periodo_uo == null;
+        }
+
             //if(this.propostaProponenteProfessor.fundamentacao=='1'){
             //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
             this.ficheiroProponenteProfessor.fileFundamentacao = new FormData();
@@ -619,8 +684,23 @@ export default {
             );
 
         //}
-
-
+         //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+         this.ficheiroProponenteProfessor.fileFundamentacaoTemporario = new FormData();
+         this.ficheiroProponenteProfessor.fileFundamentacaoTemporario.append(
+            "file",
+            this.ficheirosProfessor["ficheiroFundamentacaoProfessor"]
+         );
+         this.ficheiroProponenteProfessor.fileFundamentacaoTemporario.append(
+            "descricao",
+            "Fundamentacao"
+         );
+        
+        if(this.alterar.fundamentacao==1){
+        this.propostaProponenteProfessor.fundamentacao = '1';
+            if(this.propostaProponenteProfessor.fundamentacao == '1'){
+                axios.post("/api/ficheiroTemporario", this.ficheiroProponenteProfessor.fileFundamentacaoTemporario).then(response => {});
+            }
+        }
         this.avancar = true;
         this.isShowProfessor = false;
         this.$emit("incrementarBarraProgresso");
@@ -680,7 +760,8 @@ export default {
             }
           });
         });
-      this.propostaExistente=this.proposta.descricao.toString();
+
+      //this.propostaExistente=this.proposta.descricao.toString();
     }
 	this.getVencimentos();
 	

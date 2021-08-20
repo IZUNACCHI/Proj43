@@ -61,11 +61,59 @@
       
       </b-form-group>
       <!--{{propostaProponenteAssistente.fundamentacao}}-->
-      <b-form-group class="mt-5">
+        <div>
+              
+                 <b-form-group label="Serviço Docente Atribuído (PDF)">
+                    <b-form-checkbox
+                      v-if="$store.state.editarProposta"
+                      id="checkBoxFundamentacao"
+                      v-model="alterar.fundamentacao"
+                      name="checkBoxAlterar.fundamentacao"
+                      value="1"
+                      unchecked-value="0"
+                      :state="null"
+                    ><b>Alterar Ficheiro Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
+        
+                    <b-form-file
+                        v-if="alterar.fundamentacao==1"
+                        v-model="ficheiroFundamentacaoAssistenteModel"
+                        placeholder="Escolha um ficheiro"
+                        drop-placeholder="Arraste para aqui um ficheiro"
+                        accept=".pdf"
+                        browse-text="Procurar"
+                        name="ficheiroFundamentacaoAssistente"
+                        :state="validateState('ficheiroFundamentacaoAssistente')"
+                        @change="onFileSelected"
+                    ></b-form-file>
+                    <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group>
+                    <b-button
+                        size="md"
+                        variant="dark"
+                        v-if="ficheiroFundamentacaoAssistente"
+                        @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Serviço do Docente Atribuído')"
+                    >
+                    <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
+                    </b-button>
+                </b-form-group>
+                <b-form-group>
+                   <b-button
+                     size="md"
+                     variant="dark"
+                     v-if="ficheiroFundamentacao"
+                     @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
+                   >
+                   <i class="far fa-file-pdf"></i> Atual Fundamentação do Assistente
+                   </b-button>
+                 </b-form-group>
+              </div>
+       <div v-if= !$store.state.editarProposta>
+       <b-form-group class="mt-5">
         <b-form-checkbox
-          v-if="propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+          v-if="(propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
                 propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
-                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva'"
+                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva') "
           id="checkBoxFundamentacao"
           v-model="propostaProponenteAssistente.fundamentacao"
           name="checkBoxFundamentacao"
@@ -75,17 +123,16 @@
         ><b>Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
         
-  {{ propostaProponenteAssistente.regime_prestacao_servicos}}
-
         <b-form-group>
         <b-form-file
-          v-if="propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+          v-if="(propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
                 propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
-                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva' &&
+                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva') &&
                 propostaProponenteAssistente.fundamentacao == '1'"
           v-model="ficheiroFundamentacaoAssistenteModel"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
+          accept=".pdf"
           browse-text="Procurar"
           name="ficheiroFundamentacaoAssistente"
           v-validate="{ required: true }"
@@ -94,6 +141,7 @@
         ></b-form-file>
         <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
+      
       <b-form-group>
         <b-button
           size="md"
@@ -105,7 +153,7 @@
         </b-button>
       </b-form-group>
       </b-form-group>
-
+      </div>
 
 
 
@@ -388,6 +436,7 @@
       :proposta="proposta"
       :unidadesCurriculares="unidadesCurriculares"
       :propostaProponenteAssistente="propostaProponenteAssistente"
+      :alterar="alterar"
       :ficheiro="ficheiro"
       v-on:mostrarComponente="mostrarComponente"
       v-on:mostrarPropostaProponente_assistente="mostrarComponenteAssistente"
@@ -398,7 +447,7 @@
 import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
-  props: ["proposta", "unidadesCurriculares", "ficheiro"],
+  props: ["proposta", "unidadesCurriculares", "ficheiro", "alterar"],
   data() {
     return {
       listaVencimentos:[],
@@ -508,6 +557,10 @@ export default {
       ficheiroProponenteAssistente: {
         fileRelatorio: {},
         fileFundamentacao: {}
+      },
+      ficheiroProponenteAssistenteTemporario: {
+        fileRelatorioTemporario: {},
+        fileFundamentacaoTemporario: {}
       },
       ficheirosAssistente: [],
       ficheiroFundamentacao: "",
@@ -620,17 +673,27 @@ export default {
           this.propostaProponenteAssistente.percentagem_prestacao_servicos =
             "100";
         }
+        
+        if (this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
+            this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
+            this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
+          this.propostaProponenteAssistente.percentagem_prestacao_servicos == null;
+          this.propostaProponenteAssistente.percentagem_prestacao_servicos_2 == null;
+        }
+        if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial"){
+          this.propostaProponenteAssistente.fundamentacao == '0';
+        }
+        if (this.propostaProponenteAssistente.verificacao_tempo_parcial == "nao") {
+          this.propostaProponenteAssistente.tempo_parcial_uo == null;
+        }
+        if (this.propostaProponenteAssistente.verificacao_outras_uo == "nao") {
+          this.propostaProponenteAssistente.nome_uo == null;
+          this.propostaProponenteAssistente.verificacao_tempo_parcial == null;
+          this.propostaProponenteAssistente.tempo_parcial_uo == null;
+          this.propostaProponenteAssistente.periodo_uo == null;
+        }
 
-            //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
-            this.ficheiroProponenteAssistente.fileFundamentacao = new FormData();
-            this.ficheiroProponenteAssistente.fileFundamentacao.append(
-                "file",
-                this.ficheirosAssistente["ficheiroFundamentacaoAssistente"]
-            );
-            this.ficheiroProponenteAssistente.fileFundamentacao.append(
-                "descricao",
-                "Fundamentacao da Proposta Proponente"
-            );
+            
 
             this.ficheiro.fileFundamentacao = new FormData();
             this.ficheiro.fileFundamentacao.append(
@@ -644,6 +707,21 @@ export default {
 
         //}
 
+        if(this.alterar.fundamentacao==1){
+        //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+            this.ficheiroProponenteAssistente.fileFundamentacao = new FormData();
+            this.ficheiroProponenteAssistente.fileFundamentacao.append(
+                "file",
+                this.ficheirosAssistente["ficheiroFundamentacaoAssistente"]
+            );
+            this.ficheiroProponenteAssistente.fileFundamentacao.append(
+                "descricao",
+                "Fundamentacao"
+            );
+
+        axios.post("/api/ficheiroTemporario", this.ficheiroProponenteAssistente.fileFundamentacao).then(response => {});
+        
+        }
 
         this.avancar = true;
         this.isShowAssistente = false;

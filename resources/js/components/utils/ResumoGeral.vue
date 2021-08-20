@@ -389,7 +389,7 @@
                     <td><font color=#ffffff>Coordenador de Departamento/Unidade Funcional</font></td>
                     <td><font color=#ffffff>Coordenador de Curso</font></td>
                 </tr><tr>
-                    <td>
+                    <td v-if="propostaSelecionada.primeiro_proponente=='Coordenador de Departamento'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
                         <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
@@ -397,27 +397,41 @@
                         <b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
-                    <td v-if="propostaSelecionada.segundo_proponente=='proponente_departamento'">
+                    <td v-if="propostaSelecionada.segundo_proponente=='Coordenador de Departamento'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
                         <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
-                    <td>
+                    <td v-if="propostaSelecionada.fundamentacao_coordenador_departamento == null">
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> _________________
+                        <b>Data:</b> _________________</td>
+                    <td v-if="propostaSelecionada.segundo_proponente=='Coordenador de Curso'">
                     <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
                         <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
-                    <td v-if="propostaSelecionada.primeiro_proponente=='proponente_curso'">
+                    <td v-if="propostaSelecionada.primeiro_proponente=='Coordenador de Curso'">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
                         <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{propostaSelecionada.fundamentacao_coordenador_curso}}</textarea><br>
                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
+                    <td v-if="propostaSelecionada.fundamentacao_coordenador_curso == null">
+                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                        Fundamentação<br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
+                        <b>Nome:</b> _________________
+                        <b>Data:</b> _________________</td>
                 </tr>
           </table>
           <br></div>
@@ -937,6 +951,50 @@
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
+                <tr v-if="propostaSelecionada.verificacao_serviço_docente_atribuido=='nao'">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td><b-button class="botao"
+                            variant="dark"
+                            @click="gerarPdfServiçoDocenteAtribuído()">
+                            <i class="far fa-file-pdf"></i> Ficheiro das Unidades Curriculares
+                    </b-button></td><td>
+                        <b-button class="botao" v-on:click="uc1 = !uc1"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="uc1">
+                        <div id="ServiçoDocenteAtribuído">
+                        <p>Serviço Docente Atribuído</p>
+                        <td colspan="3" style="height: 50%">
+                            <table width="100%" border="1px" v-if="propostaSelecionada.verificacao_serviço_docente_atribuido=='nao'">
+                              <thead><tr><th colspan="9" bgcolor=#be5b59> <font color=#ffffff>Unidades Curriculares</font></th></tr>
+                                <th>Codigo UC</th>
+                                <th>Nome UC</th>
+                                <th>Regime</th>
+                                <th>Turno</th>
+                                <th>Código Curso</th>
+                                <th>Nome Curso</th>
+                                <th>Horas</th>
+                                <th>Horas Semestrais</th>
+                                <th>Tipo</th>        
+                              </thead>
+                              <tbody>
+                                <tr v-for="uc in ucsDaPropostaSelecionada" :key="uc.ID">
+                                  <td>{{ uc.codigo_uc }}</td>
+                                  <td>{{ uc.nome_uc }}</td>
+                                  <td>{{ uc.regime }}</td>
+                                  <td>{{ uc.turno }}</td>
+                                  <td>{{ uc.codigo_curso }}</td>
+                                  <td>{{ uc.nome_curso }}</td>
+                                  <td>{{ uc.horas }}</td>
+                                  <td>{{ uc.horas_semestrais }}</td>
+                                  <td>{{ uc.tipo }}</td>
+                                </tr>
+                              </tbody>
+                          </table>
+                        </td></div></tr>
+                
                 </tr><tr v-if="ficheiroFundamentacao">
                     <td> Ficheiro da Fundamentação</td>
                     <td><b-button class="botao"
@@ -1844,6 +1902,7 @@ export default {
       habilitacoes: false,
       relatorio: false,
       uc: false,
+      uc1: false,
       fundamentacao: false,
       assinadoCurso: false,
       assinadoDepartamento: false,
@@ -1982,7 +2041,28 @@ export default {
       doc.fromHTML($("#proposta").get(0), 20, 20);
       doc.save("Proposta Contratação " + this.propostaSelecionada.nome_completo+".pdf");
     },
-    
+
+    gerarPdfServiçoDocenteAtribuído(){
+        var doc = new jsPDF('p', 'pt', 'a4');
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(ServiçoDocenteAtribuído, { 
+                html2canvas: {
+                    scale: 0.395,
+                    scrollY: 0
+                },
+                x: 5,
+                y: 0, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });
+        
+    },
+
+
     gerarPdfPropostaProponente(){
         var doc = new jsPDF('p', 'pt', 'a4');
         //Introduz um elemento html para o pdf
@@ -2017,6 +2097,7 @@ export default {
                     scrollY: 0
                 },
                 x: 15,
+                y: 0, 
                 y: 0, 
                 callback: function (doc) {
                 doc.save("Proposta Contratação.pdf");

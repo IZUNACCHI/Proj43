@@ -425,6 +425,7 @@
                           v-model="ficheirosAInserir.fileAssinado"
                           placeholder="Escolha um ficheiro"
                           drop-placeholder="Arraste para aqui um ficheiro"
+                          accept=".pdf"
                           browse-text="Procurar"
                           name="ficheiroAssinado"
                           v-validate="{ required: true }"

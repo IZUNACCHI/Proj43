@@ -1,4 +1,4 @@
-<template>
+F<template>
   <div>
     <div class="jumbotron">
       <h3>Finalização da Proposta (Recursos Humanos)</h3>
@@ -105,6 +105,7 @@
           v-model="contratacaoComunicada"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
+          accept=".pdf"
           name="contratacaoComunicada"
           v-validate="{ required: true }"
           :state="validateState('contratacaoComunicada')"
@@ -127,6 +128,7 @@
           v-model="incricaoSSocial"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
+          accept=".pdf"
           name="incricaoSSocial"
           v-validate="{ required: true }"
           :state="validateState('incricaoSSocial')"
@@ -195,6 +197,7 @@
           v-model="contratoRedigido"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
+          accept=".pdf"
           name="contratoRedigido"
           v-validate="{ required: true }"
           :state="validateState('contratoRedigido')"
@@ -216,6 +219,7 @@
           v-model="contratoAnexo"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
+          accept=".pdf"
           name="contratoAnexo"
           v-validate="{ required: true }"
           :state="validateState('contratoAnexo')"
@@ -237,6 +241,7 @@
           v-model="cessacaoSocial"
           placeholder="Escolha um ficheiro"
           drop-placeholder="Arraste para aqui um ficheiro"
+          accept=".pdf"
           name="cessacaoSocial"
           v-validate="{ required: true }"
           :state="validateState('cessacaoSocial')"

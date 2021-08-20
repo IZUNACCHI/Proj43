@@ -139,6 +139,7 @@ class PropostaProponenteController extends Controller
         $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);
         $propostaAAtualizar->fundamentacao_coordenador_departamento = $request->fundamentacao_coordenador_departamento;
         $propostaAAtualizar->data_de_assinatura_coordenador_departamento = $request->data_de_assinatura_coordenador_departamento;
+        $propostaAAtualizar->primeiro_proponente = $request->primeiro_proponente;
         $propostaAAtualizar->segundo_proponente = $request->segundo_proponente;
         $propostaAAtualizar->save();
     }
@@ -148,6 +149,7 @@ class PropostaProponenteController extends Controller
         $propostaAAtualizar = PropostaProponente::findOrFail($propostaProponenteID);
         $propostaAAtualizar->fundamentacao_coordenador_curso = $request->fundamentacao_coordenador_curso;
         $propostaAAtualizar->data_de_assinatura_coordenador_de_curso = $request->data_de_assinatura_coordenador_de_curso;
+        $propostaAAtualizar->primeiro_proponente = $request->primeiro_proponente;
         $propostaAAtualizar->segundo_proponente = $request->segundo_proponente;
         $propostaAAtualizar->save();
     }

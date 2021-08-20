@@ -8,13 +8,20 @@
                <b-tabs content-class="mt-3" align="left" v-model="tabIndex" small card>
                   <b-tab title="Introdução" v-bind:disabled="tabDisabled.introducao" active >
                     <p>A assinatura externa permite ao titular de certificado e por vontade própria, através de ferramentas externas à aplicação, assinar documentos PDF.</p>
-                    
+                    <p v-if="propostaSelecionada.contrato_assinado_departamento==1 || propostaSelecionada.contrato_assinado_curso==1">
+                        Processo de assinatura externa já iniciado pelo o outro proponente</p>
                     <div style="background-color: black; text-align: right">                        
                         <button class="btn" style="color: white" @click="avancar">Avançar <i class="fas fa-arrow-right"></i></button>
                         <button class="btn" style="color: white" @click="voltar">Cancelar <i class="fas fa-times"></i></button>
                     </div>
                   </b-tab>
                   <b-tab title="Descarregar Documento" v-bind:disabled="tabDisabled.descarregar">
+                    <button class="btn btn-danger" v-if="propostaSelecionada.contrato_assinado_departamento==1 && propostaSelecionada.contrato_assinado_curso==1"
+                            v-on:click.prevent="downloadFicheiro(ficheiroPropostaAssinado1Proponente.proposta_id, 'Proposta Assinada')">Dowload</button>
+                    <button class="btn btn-danger" v-if="propostaSelecionada.contrato_assinado_departamento==1 || propostaSelecionada.contrato_assinado_curso==1"
+                            v-on:click.prevent="downloadFicheiro(ficheiroPropostaAssinado1Proponente.proposta_id, 'Proposta Assinada Um Proponente')">Dowload</button>
+                    <button class="btn btn-danger" v-if="propostaSelecionada.contrato_assinado_departamento==0 && propostaSelecionada.contrato_assinado_curso==0"
+                            v-on:click.prevent="gerarPdf()">Gerar</button>
                     <div id="downloadPdf" class="total1" width="93%">
                       <div>
                         <div class="tabelaCabecalho"><table>
@@ -327,27 +334,27 @@
                           <table width="100%" border="1px">
                                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
                                 <tr>
-                                    <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
-                                    <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
-                                    <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
+                                    <td><b>Remuneração: </b>{{tipoPropostaRole.remuneracao}}€</td>
+                                    <td><b>Escalão: </b>{{tipoPropostaRole.escalao}}</td>
+                                    <td><b>Índice: </b>{{tipoPropostaRole.indice}}</td></tr>
                           </table><br>
                           <table width="100%" border="1px">
                                 <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
                                 <tr>
                                     <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
-                                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                                    <td rowspan="2" v-if="tipoPropostaRole.verificacao_outras_uo=='sim'">
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                                         <b>Sim</b>
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                                         <b>Não</b>
-                                        <p v-if="propostaSelecionada.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{propostaSelecionada.nome_uo}}</b> Tempo parcial <b>
+                                        <p v-if="tipoPropostaRole.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{tipoPropostaRole.nome_uo}}</b> Tempo parcial <b>
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                                        {{propostaSelecionada.tempo_parcial_uo}}%</b><br>
-                                        Periodio <b>{{propostaSelecionada.periodo_uo}}</b></p>
-                                        <p v-else>Sim, UO <b>{{propostaSelecionada.nome_uo}}</b> Tempo parcial
+                                        {{tipoPropostaRole.tempo_parcial_uo}}%</b><br>
+                                        Periodio <b>{{tipoPropostaRole.periodo_uo}}</b></p>
+                                        <p v-else>Sim, UO <b>{{tipoPropostaRole.nome_uo}}</b> Tempo parcial
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
-                                        Periodio <b>{{propostaSelecionada.periodo_uo}}</b></p></td>
-                                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='nao'">
+                                        Periodio <b>{{tipoPropostaRole.periodo_uo}}</b></p></td>
+                                    <td rowspan="2" v-if="tipoPropostaRole.verificacao_outras_uo=='nao'">
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                                         <b>Sim</b>
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
@@ -480,6 +487,11 @@
 </template>
 <script>
 import { required, email, minLength } from "vuelidate/lib/validators";
+import VuePdfApp from "vue-pdf-app"
+// import this to use default icons for buttons
+import "vue-pdf-app/dist/icons/main.css"
+import pdf from 'vue-pdf'
+import jsPDF from 'jspdf'
 export default {
 
   props: ["propostaSelecionada"],
@@ -502,6 +514,13 @@ export default {
       propostaProponente: {
         contrato_assinado_curso: ""
       },
+      ficheiroUnidadesCurriculares:"",
+      fichUnidadesCurriculares:"",
+      ficheiroFundamentacao:"",
+      fichFundamentacao:"",
+	  contagemficheiro: 0,
+      ficheiroPropostaAssinado1Proponente:"",
+      fichPropostaAssinado1Proponente:"",
       ficheirosAInserir:{
         fileAssinado:{},
       },
@@ -577,6 +596,38 @@ export default {
         this.$emit("voltar", this.proposta);
       }
     },
+    downloadFicheiro(proposta_id, descricao) {
+      axios
+        .get("/api/downloadFicheiro/" + proposta_id + "/" + descricao, {
+          responseType: "arraybuffer"
+        })
+        .then(response => {
+          let blob = new Blob([response.data]);
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = descricao + " .pdf";
+          link.click();
+        });
+    },
+    gerarPdf(){
+        var doc = new jsPDF('p', 'pt', 'a4');
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(downloadPdf, { 
+                html2canvas: {
+                    scale: 0.65,
+                    scrollY: 0
+                },
+                x: 5,
+                y: 0, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });
+        
+    },
     submeter(ficheirosAInserir){
     if(this.propostaProponente.contrato_assinado_curso=="1"){
       this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
@@ -588,6 +639,7 @@ export default {
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
+            if(protostaSelecionada.contrato_assinado_curso==1){
               this.ficheirosAInserir.fileAssinado = new FormData();
               this.ficheirosAInserir.fileAssinado.append(
                 "file",
@@ -595,13 +647,41 @@ export default {
               );
               this.ficheirosAInserir.fileAssinado.append(
                 "descricao",
-                "Proposta Assinado Coordenador Curso "
+                "Proposta Assinada"
               );
               this.ficheirosAInserir.fileAssinado.append(
                 "proposta_id",
                 this.propostaSelecionada.id_proposta_proponente
               );
-
+            }if(protostaSelecionada.contrato_assinado_departamento==1){
+              this.ficheirosAInserir.fileAssinado = new FormData();
+              this.ficheirosAInserir.fileAssinado.append(
+                "file",
+                this.ficheiros["ficheiroAssinado"]
+              );
+              this.ficheirosAInserir.fileAssinado.append(
+                "descricao",
+                "Proposta Assinada"
+              );
+              this.ficheirosAInserir.fileAssinado.append(
+                "proposta_id",
+                this.propostaSelecionada.id_proposta_proponente
+              );
+            }if(protostaSelecionada.contrato_assinado_departamento==0 && protostaSelecionada.contrato_assinado_curso==0){
+              this.ficheirosAInserir.fileAssinado = new FormData();
+              this.ficheirosAInserir.fileAssinado.append(
+                "file",
+                this.ficheiros["ficheiroAssinado"]
+              );
+              this.ficheirosAInserir.fileAssinado.append(
+                "descricao",
+                "Proposta Assinada Um Proponente"
+              );
+              this.ficheirosAInserir.fileAssinado.append(
+                "proposta_id",
+                this.propostaSelecionada.id_proposta_proponente
+              );
+              }
               axios.post('/api/ficheiro', this.ficheirosAInserir.fileAssinado).then(response => {
                 axios.put('/api/propostaProponente/propostaAssinadaCurso/'+
                     this.propostaSelecionada.id_proposta_proponente, this.propostaProponente).then(response => {
@@ -626,9 +706,62 @@ export default {
       });}
     }
   },
-  /*mounted() {
-    this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente todos os ficheiros necessários', 'info')
-    }*/
+  mounted() {
+    //this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente todos os ficheiros necessários', 'info')
+    axios
+      .get(
+        "/api/propostaDePropostaProponente/" +
+          this.propostaSelecionada.id_proposta_proponente
+      )
+      .then(response => {
+        this.propostaID = response.data.id;
+        console.log(this.propostaID)
+        axios.get("/api/ficheiros/" + this.propostaID).then(response => {
+
+         this.ficheiros = response.data;
+    
+         if(this.propostaSelecionada.verificacao_serviço_docente_atribuido == "sim"){
+            this.ficheiroUnidadesCurriculares = this.ficheiros[this.contagemficheiro];
+            this.fichUnidadesCurriculares = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Unidades_Curriculares_do_docente_a_ser_contratado.pdf";
+	        this.contagemficheiro=this.contagemficheiro+1;
+         }
+         if(this.tipoPropostaRole.regime_prestacao_servicos=="dedicacao_exclusiva" ||
+            this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
+            this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
+            this.ficheiroFundamentacao = this.ficheiros[this.contagemficheiro];
+            this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
+	        this.contagemficheiro=this.contagemficheiro+1;
+         }
+         this.ficheiroPropostaAssinado1Proponente = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinado1Proponente= "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Um_Proponente.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+
+         });});
+     axios
+      .get(
+        "/api/diretorUO/getPropostaProponente/" +
+          this.propostaSelecionada.role +
+          "/" +
+          this.propostaSelecionada.id_proposta_proponente
+      )
+      .then(response => {
+        this.tipoPropostaRole = response.data[0];
+      });
+
+    axios
+      .get(
+        "api/diretorUO/getUCSPropostaSelecionada/" +
+          this.propostaSelecionada.id_proposta_proponente
+      )
+      .then(response => {
+        this.ucsDaPropostaSelecionada = response.data;
+      });
+      this.ucsDaPropostaSelecionada.forEach(uc => {
+          axios.get('/api/unidadeCurricularNome/'+uc.codigo_uc).then(response => {
+            console.log(response);
+          })
+      });
+    }
 };
 
 </script>

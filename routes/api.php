@@ -131,6 +131,12 @@ Route::get('/ficheiros/{proposta_id}', 'FicheiroController@getFicheiros');
 Route::delete('/deleteFicheiros/{proposta_id}', 'FicheiroController@deleteFicheiros');
 Route::get('/downloadFicheiro/{proposta_id}/{descricao}', 'FicheiroController@downloadFicheiro');
 
+//-------------------------Ficheiros Temporarios-----------------------------------------------
+Route::post('/ficheiroTemporario', 'FicheiroTemporarioController@store');
+Route::get('/ficheirosTemporarios/{proposta_id}', 'FicheiroTemporarioController@getFicheiros');
+Route::delete('/deleteFicheirosTemporarios', 'FicheiroTemporarioController@deleteFicheirosTemporarios');
+Route::get('/downloadFicheiroTemporario/{proposta_id}/{descricao}', 'FicheiroTemporarioController@downloadFicheiro');
+
 //-------------------------Secretariado Direcao---------------------------------------------------
 Route::get('/secretariadoDirecao/getPropostasPendentesSecretariadoDirecao', 'SecretariadoDirecaoController@getPropostasPendentes');
 Route::get('/secretariadoDirecao/getHistoricoPropostasSecretariadoDirecao', 'SecretariadoDirecaoController@getHistoricoPropostas');

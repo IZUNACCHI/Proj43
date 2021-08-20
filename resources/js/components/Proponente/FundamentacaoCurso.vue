@@ -58,17 +58,15 @@ export default {
     return {
       fundamentacoes: [],
 	  selectedFundamentação: null,
+      
       propostaProponente: {
         fundamentacao_coordenador_curso: "",
         data_de_assinatura_coordenador_de_curso:"",
+        primeiro_proponente: this.propostaSelecionada.primeiro_proponente,
         segundo_proponente: this.$store.state.user.name,
       },
       mostrarFundamentacaoCurso:true,
-      ficheiro: {
-        proposta: {},
-      },
-      ficheiros:[],
-      propostaAssinada:"",
+      
       
     };
   },
@@ -102,10 +100,13 @@ export default {
 		 
 	},
     inserirFundamentacao(propostaProponente){
-      /*this.ficheiro.proposta = new FormData();
-      this.ficheiro.proposta.append("file", this.ficheiros["PropostaAssinada"]);
-      this.ficheiro.proposta.append("descricao", "Proposta Assinada");*/
-      this.$v.propostaProponente.$touch();
+        this.$v.propostaProponente.$touch();
+        if(this.propostaSelecionada.primeiro_proponente == 'Secretariado da Direção'){
+            this.propostaProponente.primeiro_proponente= this.$store.state.user.name;
+            this.propostaProponente.segundo_proponente= "";
+        }if(this.propostaSelecionada.primeiro_proponente != 'Secretariado da Direção'){
+            propostaProponente.segundo_proponente= this.$store.state.user.name;
+        }
         if (!this.$v.propostaProponente.$invalid) {
           this.$swal.fire({title:'Tem a certeza que pretende submeter estes dados?',
                         text: 'Não poderá realizar mais nenhuma alteração',

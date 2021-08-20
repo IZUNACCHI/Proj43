@@ -225,6 +225,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                         placeholder="Escolha um ficheiro"
                         drop-placeholder="Arraste para aqui um ficheiro"
                         browse-text="Procurar"
+                        accept=".pdf"
                         name="ficheiroUnidadesCurriculares"
                         v-validate="{ required: true }"
                         :state="validateState('ficheiroUnidadesCurriculares')"
@@ -256,18 +257,34 @@ abrigo do art. 8.º do ECPDESP, do IPL"
             <b-card-text>
               <h3 class="pb-4">Habilitações Literárias</h3>
 
-              <b-form-group>
-                <b-form-checkbox
-                  v-model="grauTestDoutoramento"
-                  value="doutoramento"
-				  unchecked-value=""
-                >Doutoramento</b-form-checkbox>
-                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
-              </b-form-group>
-			  
-			  
+                <table border="0px">
+                    <tr>
+                         <button
+                            class="btn btn-success mt-3 font-weight-bold"
+                            v-on:click="grauTestDoutoramento = !grauTestDoutoramento">Selecionar
+                          </button>
+                    </td>
+                    <td v-if="grauTestDoutoramento">
+                      <br>
+			          <b-form-group>
+                        <b-form-checkbox 
+                        >Doutoramento</b-form-checkbox>
+                        <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+                      </b-form-group>
+                    </td>
+                    <td v-if="!grauTestDoutoramento">
+                      <b-form-group>
+                        <br>
+                        <b-form-checkbox
+                          v-model="grauTestDoutoramento"
+                          value="false"
+                        >Doutoramento</b-form-checkbox>
+                        <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+                      </b-form-group>
+                    </td></tr>
+                </table>
 			  <b-form-group label="Curso" label-for="inputCursoHabilitacoesLiterariasDoutoramento"
-                v-if="grauTestDoutoramento">
+                v-if="!grauTestDoutoramento">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasDoutoramento"
                  
@@ -279,7 +296,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
 			  <b-form-group
                 label="Área Científica"
                 label-for="inputAreaCientificaHabilitacoesLiterariasDoutoramento"
-				v-if="grauTestDoutoramento"
+				v-if="!grauTestDoutoramento"
               >
                 <b-form-input
                   id="inputAreaCientificaHabilitacoesLiterariasDoutoramento"
@@ -288,17 +305,34 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                 <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
 			  </b-form-group>
 			  
-			  <b-form-group>
-                <b-form-checkbox
-                  v-model="grauTestOutro"
-                  value="outro"
-				  unchecked-value=""
-                >Outro</b-form-checkbox>
-                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
-              </b-form-group>
-			  
+              <table border="0px">
+                    <tr>
+                         <button
+                            class="btn btn-success mt-3 font-weight-bold"
+                            v-on:click="grauTestOutro = !grauTestOutro">Selecionar
+                          </button>
+                    </td>
+                    <td v-if="grauTestOutro">
+                      <br>
+			          <b-form-group>
+                        <b-form-checkbox 
+                        >Outro</b-form-checkbox>
+                        <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+                      </b-form-group>
+                    </td>
+                    <td v-if="!grauTestOutro">
+                      <b-form-group>
+                        <br>
+                        <b-form-checkbox
+                          v-model="grauTestOutro"
+                          value="false"
+                        >Outro</b-form-checkbox>
+                        <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+                      </b-form-group>
+                    </td></tr>
+                </table>
               <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterariasOutro"
-                v-if="grauTestOutro">
+                v-if="!grauTestOutro">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasOutro"
                   v-model="proposta.curso_Outro"
@@ -309,7 +343,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
 			  <b-form-group
                 label="Área Científica"
                 label-for="inputAreaCientificaHabilitacoesLiterariasOutro"
-				v-if="grauTestOutro"
+				v-if="!grauTestOutro"
               >
                 <b-form-input
                   id="inputAreaCientificaHabilitacoesLiterariasOutro"
@@ -317,29 +351,44 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                   ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">A Área Científica é obrigatória!</b-form-invalid-feedback>
 			  </b-form-group>
-			  
-			  <b-form-group>
-                <b-form-checkbox
-                  v-model="grauTestFormacao"
-                  value="em_formacao"
-				  unchecked-value=""
-                >Formação</b-form-checkbox>
-                <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
-              </b-form-group>
-			  
+			  <table border="0px">
+                    <tr>
+                         <button
+                            class="btn btn-success mt-3 font-weight-bold"
+                            v-on:click="grauTestFormacao = !grauTestFormacao">Selecionar
+                          </button>
+                    </td>
+                    <td v-if="grauTestFormacao">
+                      <br>
+			          <b-form-group>
+                        <b-form-checkbox 
+                        >Formação</b-form-checkbox>
+                        <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+                      </b-form-group>
+                    </td>
+                    <td v-if="!grauTestFormacao">
+                      <b-form-group>
+                        <br>
+                        <b-form-checkbox
+                          v-model="grauTestFormacao"
+                          value="false"
+                        >Formação</b-form-checkbox>
+                        <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
+                      </b-form-group>
+                    </td></tr>
+                </table>
 			  <b-form-group label="Grau" label-for="inputCursoHabilitacoesLiterariasFormacao"
-                v-if="grauTestFormacao">
+                v-if="!grauTestFormacao">
                 <b-form-input
                   id="inputCursoHabilitacoesLiterariasFormacao"
                   v-model="proposta.curso_Formacao"
                 ></b-form-input>
                 <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
               </b-form-group>
-              
               <b-form-group
                 label="Área Científica"
                 label-for="inputAreaCientificaHabilitacoesLiterariasFormacao"
-				v-if="grauTestFormacao"
+				v-if="!grauTestFormacao"
               >
                 <b-form-input
                   id="inputAreaCientificaHabilitacoesLiterariasFormacao"
@@ -391,10 +440,10 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         <i class="fas fa-arrow-right"></i>
       </button>
     </div>
-
     <proposta-proponente-professor
       :proposta="proposta"
       :unidadesCurriculares="unidadesCurriculares"
+      :alterar="alterar"
       :ficheiro="ficheiro"
       v-on:mostrarProponente="showComponent"
       v-on:incrementarBarraProgresso="progresso.valor++"
@@ -405,6 +454,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
     <proposta-proponente-assistente
       :proposta="proposta"
       :unidadesCurriculares="unidadesCurriculares"
+      :alterar="alterar"
       v-on:mostrarProponente="showComponent"
       :ficheiro="ficheiro"
       v-on:incrementarBarraProgresso="progresso.valor++"
@@ -415,6 +465,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
     <proposta-proponente-monitor
       :proposta="proposta"
       :unidadesCurriculares="unidadesCurriculares"
+      :alterar="alterar"
       v-on:mostrarProponente="showComponent"
       v-on:incrementarBarraProgresso="progresso.valor++"
       v-on:decrementarBarraProgresso="progresso.valor--"
@@ -425,6 +476,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
     <resumo-proposta
       :proposta="proposta"
       :unidadesCurriculares="unidadesCurriculares"
+      :alterar="alterar"
       :ficheiro="ficheiro"
       v-on:mostrarComponente="mostrarComponente"
       v-on:mostrarPropostaProponente_assistente="mostrarComponenteAssistente"
@@ -438,7 +490,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
     </b-progress>
     <br />
      Os dados recolhidos no âmbito deste processo têm como finalidade a celebração de contrato de trabalho em funções públicas e serão objeto de
-tratamento nos termos da legislação de proteção de dados em vigor OLA OLA. 
+tratamento nos termos da legislação de proteção de dados em vigor. 
     <!-----------------------------FIM CONTRATAÇÃO INICIAL-------------------------------------->
   </div>
 </template>
@@ -448,9 +500,9 @@ export default {
   data() {
     return {
 	  grauTest: [],
-      grauTestDoutoramento: '',
-		grauTestFormacao: '',
-		grauTestOutro: '',
+      grauTestDoutoramento: 'true',
+		grauTestFormacao: 'true',
+		grauTestOutro: 'true',
       //? Array de Objetos para Radio Buttons
       tipoContratosArray: [
         { text: "Contratação Inicial", value: "contratacao_inicial" },
@@ -600,8 +652,18 @@ export default {
         fileUnidadesCurriculares: {},
         fileFundamentacao: {}
       },
+      ficheiroTemporario: {
+        fileRelatorioTemporario: {},
+        fileUnidadesCurricularesTemporario: {},
+        fileFundamentacaoTemporario: {}
+      },
       ficheiros: [],
       ficheiroUnidadesCurriculares: "",
+      alterar:{
+        unidadesCurriculares: 0,
+        fundamentacao: 0,
+      },
+      ficheiroUnidadesCurricularesTemporario: "",
       ficheiroHabilitacoes: "",
       ficheiroRelatorio: "",
       ficheiroUnidadesCurricularesModel: "",
@@ -627,7 +689,7 @@ export default {
           role: { required },
 		  curso_Doutoramento: { required },
 		  area_cientificaDoutoramento: { required },
-      
+          
           remuneracao: { required, numeric },
           escalao: { required },
           indice: { required },
@@ -658,7 +720,6 @@ export default {
           numero_telefone: { required, minLength: minLength(9) },
           grau: { required },
           role: { required },
-
           curso_Outro: { required },
 		  area_cientificaOutro: { required },
           remuneracao: { required, numeric },
@@ -694,7 +755,7 @@ export default {
 		  curso_Formacao: { required },
 		  area_cientificaFormacao: { required },
           verificacao_serviço_docente_atribuido: {required},
-      
+
           remuneracao: { required, numeric },
           escalao: { required },
           indice: { required },
@@ -729,7 +790,7 @@ export default {
           role: { required },
 		  curso_Doutoramento: { required },
 		  area_cientificaDoutoramento: { required },
-      
+
           remuneracao: { required, numeric },
           escalao: { required },
           indice: { required },
@@ -761,7 +822,7 @@ export default {
           grau: { required },
           role: { required },
           verificacao_serviço_docente_atribuido: {required},
-
+          
           curso_Outro: { required },
 		  area_cientificaOutro: { required },
           remuneracao: { required, numeric },
@@ -796,7 +857,6 @@ export default {
           role: { required },
 		  curso_Formacao: { required },
 		  area_cientificaFormacao: { required },
-      
           remuneracao: { required, numeric },
           escalao: { required },
           indice: { required },
@@ -846,11 +906,66 @@ export default {
     },
     avancar: function(proposta, unidadesCurriculares) {
       //proposta.grau= this.grauTest[0] + this.grauTest[1] + this.grauTest[2];
-		proposta.grau= this.grauTestDoutoramento + this.grauTestOutro + this.grauTestFormacao;
+		//proposta.grau= this.grauTestDoutoramento + this.grauTestOutro + this.grauTestFormacao;
+        
+       if(!this.grauTestDoutoramento && !this.grauTestOutro && !this.grauTestFormacao){
+                proposta.grau="doutoramentooutroem_formacao";
+       }if(!this.grauTestDoutoramento && !this.grauTestOutro && this.grauTestFormacao){
+                proposta.grau="doutoramentooutro";
+                this.proposta.curso_Formacao = null;
+                this.proposta.area_cientificaFormacao = null;
+       }if(!this.grauTestDoutoramento && this.grauTestOutro && !this.grauTestFormacao){
+                proposta.grau="doutoramentoem_formacao";
+                this.proposta.curso_Outro = null;
+                this.proposta.area_cientificaOutro = null;
+       }if(!this.grauTestDoutoramento && this.grauTestOutro && this.grauTestFormacao){
+                proposta.grau="doutoramento";
+                this.proposta.curso_Formacao = null;
+                this.proposta.area_cientificaFormacao = null;
+                this.proposta.curso_Outro = null;
+                this.proposta.area_cientificaOutro = null;
+          
+       }if(this.grauTestDoutoramento && !this.grauTestOutro && !this.grauTestFormacao){
+                proposta.grau="outroem_formacao";
+                this.proposta.curso_Doutoramento = null;
+                this.proposta.area_cientificaDoutoramento = null;
+       }if(this.grauTestDoutoramento && !this.grauTestOutro && this.grauTestFormacao){
+                proposta.grau="outro";
+                this.proposta.curso_Doutoramento = null;
+                this.proposta.area_cientificaDoutoramento = null;
+                this.proposta.curso_Formacao = null;
+                this.proposta.area_cientificaFormacao = null;
+       }if(this.grauTestDoutoramento && this.grauTestOutro && !this.grauTestFormacao){
+                proposta.grau="em_formacao";
+                this.proposta.curso_Doutoramento = null;
+                this.proposta.area_cientificaDoutoramento = null;
+                this.proposta.curso_Outro = null;
+                this.proposta.area_cientificaOutro = null;
+        }if(this.grauTestDoutoramento && this.grauTestOutro && this.grauTestFormacao){
+                proposta.grau= null;
+                this.proposta.curso_Doutoramento = null;
+                this.proposta.area_cientificaDoutoramento = null;
+                this.proposta.curso_Outro = null;
+                this.proposta.area_cientificaOutro = null;
+                this.proposta.curso_Formacao = null;
+                this.proposta.area_cientificaFormacao = null;
+
+
+        }
+        
+        if(proposta.verificacao_serviço_docente_atribuido == "sim"){
+            this.unidadesCurriculares == null;
+            
+        }
+
+
+
       
+      axios.delete("/api/deleteFicheirosTemporarios").then(response => {});
       axios.get('/api/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/' + proposta.email)
         .then(response => {
         if(!response.data){
+
          //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
          this.ficheiro.fileUnidadesCurriculares = new FormData();
          this.ficheiro.fileUnidadesCurriculares.append(
@@ -861,6 +976,19 @@ export default {
             "descricao",
             "Ficheiro Unidades Curriculares do docente a ser contratado"
          );
+
+         //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
+         this.ficheiroTemporario.fileUnidadesCurricularesTemporario = new FormData();
+         this.ficheiroTemporario.fileUnidadesCurricularesTemporario.append(
+            "file",
+            this.ficheiros["ficheiroUnidadesCurriculares"]
+         );
+         this.ficheiroTemporario.fileUnidadesCurricularesTemporario.append(
+            "descricao",
+            "UnidadesCurriculares"
+         );
+
+        axios.post("/api/ficheiroTemporario", this.ficheiroTemporario.fileUnidadesCurricularesTemporario).then(response => {});
         this.roleSelecionado = proposta.role;
         this.$v.proposta.$touch();
         this.$validator.validateAll().then(result => {
@@ -935,6 +1063,7 @@ export default {
       Object.assign(this.propostaExistente, {});
       //* Associar proposta atual à proposta existente selecionada
       Object.assign(this.proposta, this.propostaExistente);
+      this.proposta.primeiro_proponente = this.$store.state.user.name;
       this.proposta.data_de_assinatura_coordenador_de_curso = null;
       this.proposta.data_de_assinatura_coordenador_departamento = null;
       this.proposta.fundamentacao_coordenador_curso = null;
@@ -959,6 +1088,21 @@ export default {
             this.unidadesCurriculares.push(uc);
           });
         });
+        if(this.proposta.grau=="doutoramento" || this.proposta.grau=="doutoramentooutro" || this.proposta.grau=="doutoramentoem_formacao" || this.proposta.grau=="doutoramentooutroem_formacao"){
+            if(this.grauTestDoutoramento == "true"){
+                this.grauTestDoutoramento = !this.grauTestDoutoramento;
+            }
+        }
+        if(this.proposta.grau=="outro" || this.proposta.grau=="doutoramentooutro" || this.proposta.grau=="outroem_formacao" || this.proposta.grau=="doutoramentooutroem_formacao"){
+            if(this.grauTestOutro == "true"){
+                this.grauTestOutro = !this.grauTestOutro;
+            }
+        }
+        if(this.proposta.grau=="em_formacao" || this.proposta.grau=="doutoramentoem_formacao" || this.proposta.grau=="outroem_formacao" || this.proposta.grau=="doutoramentooutroem_formacao"){
+            if(this.grauTestFormacao == "true"){
+                this.grauTestFormacao = !this.grauTestFormacao;
+            }
+        }
         this.$store.commit('setPropostaExistente');
     }
   },

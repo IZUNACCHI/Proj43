@@ -291,6 +291,7 @@
       v-if="avancar"
       :proposta="proposta"
       :unidadesCurriculares="unidadesCurriculares"
+      :alterar="alterar"
       :propostaProponenteMonitor="propostaProponenteMonitor"
       :ficheiro="ficheiro"
       v-on:mostrarComponente="mostrarComponente"
@@ -302,7 +303,7 @@
 import { required, between } from "vuelidate/lib/validators";
 
 export default {
-  props: ["proposta", "unidadesCurriculares", "ficheiro"],
+  props: ["proposta", "unidadesCurriculares", "ficheiro", "alterar"],
   data() {
     return {
       listaVencimentos:[],
@@ -425,6 +426,16 @@ export default {
     seguinte() {
       //* Mudar para o componente Resumo Proposta
       this.$v.$touch();
+        if (this.propostaProponenteMonitor.verificacao_tempo_parcial == "nao") {
+          this.propostaProponenteMonitor.tempo_parcial_uo == null;
+        }
+        if (this.propostaProponenteMonitor.verificacao_outras_uo == "nao") {
+          this.propostaProponenteMonitor.nome_uo == null;
+          this.propostaProponenteMonitor.verificacao_tempo_parcial == null;
+          this.propostaProponenteMonitor.tempo_parcial_uo == null;
+          this.propostaProponenteMonitor.periodo_uo == null;
+        }
+
       if (!this.$v.$invalid) {
         this.avancar = true;
         this.isShowMonitor = false;

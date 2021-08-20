@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="this.$store.state.user.roleDB == 'secretariado_direcao' && mostrarSecretariadoComponent"
+      v-if="this.$store.state.user.roleDB == 'secretariado_direcao' && mostrarSecretariadoComponent && !isNovaPropostaVisible"
     >
       <div class="separator">
         <b-tabs content-class="mt-3" align="left">
@@ -80,6 +80,7 @@ export default {
       historicoPropostasSecretariadoDirecao: [],
       mostrarSecretariadoComponent: true,
       isResumoChecked:false,
+      isNovaPropostaVisible: false,
       propostaSelecionada:{},
     };
   },
