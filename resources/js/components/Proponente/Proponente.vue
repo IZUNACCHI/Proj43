@@ -267,7 +267,8 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     <td v-if="grauTestDoutoramento">
                       <br>
 			          <b-form-group>
-                        <b-form-checkbox 
+                        <b-form-checkbox
+                          :disabled=true
                         >Doutoramento</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -278,6 +279,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                         <b-form-checkbox
                           v-model="grauTestDoutoramento"
                           value="false"
+                          :disabled=true
                         >Doutoramento</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -315,7 +317,8 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     <td v-if="grauTestOutro">
                       <br>
 			          <b-form-group>
-                        <b-form-checkbox 
+                        <b-form-checkbox
+                          :disabled=true
                         >Outro</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -326,6 +329,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                         <b-form-checkbox
                           v-model="grauTestOutro"
                           value="false"
+                          :disabled=true
                         >Outro</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -361,7 +365,8 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                     <td v-if="grauTestFormacao">
                       <br>
 			          <b-form-group>
-                        <b-form-checkbox 
+                        <b-form-checkbox
+                          :disabled=true
                         >Formação</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -372,6 +377,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
                         <b-form-checkbox
                           v-model="grauTestFormacao"
                           value="false"
+                          :disabled=true
                         >Formação</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="btn btn-danger" @click="voltar">Voltar</button>
+    <!--<button class="btn btn-danger" @click="voltar">Voltar</button>-->
     <br><br>
     <!--
       <b-form-group label="Propostas existentes" description="Campo opcional">
@@ -301,7 +301,8 @@
                     <td v-if="grauTestDoutoramento">
                       <br>
 			          <b-form-group>
-                        <b-form-checkbox 
+                        <b-form-checkbox
+                          :disabled=true
                         >Doutoramento</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -312,6 +313,7 @@
                         <b-form-checkbox
                           v-model="grauTestDoutoramento"
                           value="false"
+                          :disabled=true
                         >Doutoramento</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -349,7 +351,8 @@
                     <td v-if="grauTestOutro">
                       <br>
 			          <b-form-group>
-                        <b-form-checkbox 
+                        <b-form-checkbox
+                          :disabled=true
                         >Outro</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -360,6 +363,7 @@
                         <b-form-checkbox
                           v-model="grauTestOutro"
                           value="false"
+                          :disabled=true
                         >Outro</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -395,7 +399,8 @@
                     <td v-if="grauTestFormacao">
                       <br>
 			          <b-form-group>
-                        <b-form-checkbox 
+                        <b-form-checkbox
+                          :disabled=true
                         >Formação</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -406,6 +411,7 @@
                         <b-form-checkbox
                           v-model="grauTestFormacao"
                           value="false"
+                          :disabled=true
                         >Formação</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">O Grau é obrigatório!</b-form-invalid-feedback>
                       </b-form-group>
@@ -459,6 +465,9 @@
           ></b-form-radio-group>
           <b-form-invalid-feedback id="input-1-live-feedback">O Tipo da Proposta é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
+
+      <button class="btn btn-danger mt-3 font-weight-bold" v-on:click.prevent="voltar"> Cancelar
+      </button>
 
       <button
         class="btn btn-success mt-3 font-weight-bold"

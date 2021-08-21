@@ -4,14 +4,13 @@
     "\\app",
     "\\app\\Http",
     "\\app\\Http\\Controllers",
-    "\\database",
-    "\\database\\migrations",
     "\\resources",
     "\\resources\\js",
     "\\resources\\js\\components",
+    "\\resources\\js\\components\\Proponente",
     "\\resources\\js\\components\\utils",
     "\\routes"
   ],
-  "SelectedNode": "\\resources\\js\\components\\Proponente\\PropostaProponenteProfessor.vue",
+  "SelectedNode": "\\resources\\js\\components\\Proponente\\ResumoProposta.vue",
   "PreviewInSolutionExplorer": false
 }
