@@ -56,7 +56,8 @@
           ></b-form-select>
       </b-form-group>
       <div>
-              
+      <div v-if="( propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva')">              
                  <b-form-group label="Serviço Docente Atribuído (PDF)">
                     <b-form-checkbox
                       v-if="$store.state.editarProposta"
@@ -80,18 +81,20 @@
                         @change="onFileSelected"
                     ></b-form-file>
                     <b-form-invalid-feedback id="input-1-live-feedback">O Ficheiro é obrigatório!</b-form-invalid-feedback>
+                
                 </b-form-group>
                 <b-form-group>
                     <b-button
                         size="md"
                         variant="dark"
-                        v-if="ficheiroFundamentacao"
+                        v-if="$store.state.editarProposta"
                         @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Serviço do Docente Atribuído')"
                     >
-                    <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
+                    <i class="far fa-file-pdf"></i> Atual Ficheiro de Fundamentação
                     </b-button>
                 </b-form-group>
               </div>
+              </diV>
       <div v-if= !$store.state.editarProposta>
       <b-form-group class="mt-5">
         <b-form-checkbox
@@ -108,7 +111,6 @@
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
         
         
-      
       <b-form-group
         v-if="propostaProponenteProfessor.fundamentacao == '1'"
       >
@@ -286,7 +288,7 @@
           <b-card-body>
             <b-card-text>
               <h2 class="pb-4"></h2>
-              <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
+              <b-form-group label="O docente proposto já se encontra/já foi convidado a exercer funções numa outra UO do IPL?">
                 <b-form-radio-group
                   v-model="propostaProponenteProfessor.verificacao_outras_uo"
                   :options="verificacao_outras_uo_array"
@@ -701,6 +703,11 @@ export default {
                 axios.post("/api/ficheiroTemporario", this.ficheiroProponenteProfessor.fileFundamentacaoTemporario).then(response => {});
             }
         }
+        if(!this.$store.state.editarProposta){
+            if(this.propostaProponenteProfessor.fundamentacao == '1'){
+                axios.post("/api/ficheiroTemporario", this.ficheiroProponenteProfessor.fileFundamentacaoTemporario).then(response => {});
+            }
+        }
         this.avancar = true;
         this.isShowProfessor = false;
         this.$emit("incrementarBarraProgresso");
@@ -755,7 +762,9 @@ export default {
         .get("/api/ficheiros/" + this.proposta.id_proposta_proponente)
         .then(response => {
           response.data.forEach(ficheiro => {
-            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente" /*&&
+               (propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva')*/){
               this.ficheiroFundamentacao = ficheiro;
             }
           });

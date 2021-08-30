@@ -61,6 +61,8 @@
       
       </b-form-group>
       <!--{{propostaProponenteAssistente.fundamentacao}}-->
+      
+       <div v-if= $store.state.editarProposta>
         <div>
               
                  <b-form-group label="Serviço Docente Atribuído (PDF)">
@@ -91,7 +93,7 @@
                     <b-button
                         size="md"
                         variant="dark"
-                        v-if="ficheiroFundamentacaoAssistente"
+                        v-if="ficheiroFundamentacaoAssistente && alterar.fundamentacao==1""
                         @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Serviço do Docente Atribuído')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
@@ -107,9 +109,13 @@
                    <i class="far fa-file-pdf"></i> Atual Fundamentação do Assistente
                    </b-button>
                  </b-form-group>
-              </div>
+              </div></div>
        <div v-if= !$store.state.editarProposta>
+       <div v-if="( propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva')">
        <b-form-group class="mt-5">
+        <h2>Serviço Docente Atribuído (PDF)</h2>
         <b-form-checkbox
           v-if="(propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
                 propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
@@ -120,7 +126,8 @@
           value="1"
           unchecked-value="0"
           :state="null"
-        ><b>Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
+        >
+        <b>Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
         
         <b-form-group>
@@ -146,7 +153,10 @@
         <b-button
           size="md"
           variant="dark"
-          v-if="ficheiroFundamentacao"
+          v-if="(propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva') &&
+                propostaProponenteAssistente.fundamentacao == '1' && ficheiroFundamentacao"
           @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
         >
         <i class="far fa-file-pdf"></i> Atual Fundamentação do Assistente
@@ -154,7 +164,7 @@
       </b-form-group>
       </b-form-group>
       </div>
-
+      </div>
 
 
 
@@ -304,7 +314,7 @@
           <b-card-body>
             <b-card-text>
               <h2 class="pb-4"></h2>
-              <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
+              <b-form-group label="O docente proposto já se encontra/já foi convidado a exercer funções numa outra UO do IPL?">
                 <b-form-radio-group
                   v-model="propostaProponenteAssistente.verificacao_outras_uo"
                   :options="verificacao_outras_uo_array"
@@ -707,7 +717,7 @@ export default {
 
         //}
 
-        if(this.alterar.fundamentacao==1){
+        if(this.alterar.fundamentacao==1 || !this.$store.state.editarProposta){
         //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
             this.ficheiroProponenteAssistente.fileFundamentacao = new FormData();
             this.ficheiroProponenteAssistente.fileFundamentacao.append(
@@ -772,7 +782,9 @@ export default {
         .get("/api/ficheiros/" + this.proposta.id_proposta_proponente)
         .then(response => {
           response.data.forEach(ficheiro => {
-            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+            if (ficheiro.descricao == "Fundamentacao da Proposta Proponente" /*&& (propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva')*/){
               this.ficheiroFundamentacao = ficheiro;
             }
           });

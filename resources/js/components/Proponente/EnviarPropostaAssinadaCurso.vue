@@ -639,7 +639,7 @@ export default {
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
-            if(protostaSelecionada.contrato_assinado_curso==1){
+            if(this.propostaSelecionada.contrato_assinado_curso==1){
               this.ficheirosAInserir.fileAssinado = new FormData();
               this.ficheirosAInserir.fileAssinado.append(
                 "file",
@@ -653,7 +653,7 @@ export default {
                 "proposta_id",
                 this.propostaSelecionada.id_proposta_proponente
               );
-            }if(protostaSelecionada.contrato_assinado_departamento==1){
+            }if(this.propostaSelecionada.contrato_assinado_departamento==1){
               this.ficheirosAInserir.fileAssinado = new FormData();
               this.ficheirosAInserir.fileAssinado.append(
                 "file",
@@ -667,7 +667,7 @@ export default {
                 "proposta_id",
                 this.propostaSelecionada.id_proposta_proponente
               );
-            }if(protostaSelecionada.contrato_assinado_departamento==0 && protostaSelecionada.contrato_assinado_curso==0){
+            }if(this.propostaSelecionada.contrato_assinado_departamento==0 && this.propostaSelecionada.contrato_assinado_curso==0){
               this.ficheirosAInserir.fileAssinado = new FormData();
               this.ficheirosAInserir.fileAssinado.append(
                 "file",

@@ -377,7 +377,8 @@
                                     <td>
                                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                                         Fundamentação
-                                        <b>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</b><br>
+                                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                                        <br><br><br><br><br><br>
 						                <br><br><br><br><br><br>
                                         <b>Ass.:</b> _______________________________<br>
                                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
@@ -390,9 +391,10 @@
                                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
                                     <td>
-                                    <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
+                                        <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                                         Fundamentação
-                                        <b>{{propostaSelecionada.fundamentacao_coordenador_curso}}</b><br>
+                                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_curso }}</textarea><br>
+                                        <br><br><br><br><br><br>
                                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
@@ -462,7 +464,7 @@
                         >Tomei Conhecimento que a proposta fica Definitiva</b-form-checkbox>
                         <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
                     </b-form-group>
-                    {{propostaProponente.contrato_assinado_departamento}}
+                    <!--{{propostaProponente.contrato_assinado_departamento}}-->
                     <div style="background-color: black; text-align: right">                        
                         <button class="btn" style="color: white" @click="recuar"><i class="fas fa-arrow-left"></i> Anterior</button>
                         <button class="btn" style="color: white" @click="submeter(ficheirosAInserir)">Avançar <i class="fas fa-arrow-right"></i></button>
@@ -643,7 +645,7 @@ export default {
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'}).then((result) => {
           if(result.value){
-            if(protostaSelecionada.contrato_assinado_curso==1){
+            if(this.propostaSelecionada.contrato_assinado_curso==1){
               this.ficheirosAInserir.fileAssinado = new FormData();
               this.ficheirosAInserir.fileAssinado.append(
                 "file",
@@ -657,7 +659,7 @@ export default {
                 "proposta_id",
                 this.propostaSelecionada.id_proposta_proponente
               );
-            }if(protostaSelecionada.contrato_assinado_departamento==1){
+            }if(this.propostaSelecionada.contrato_assinado_departamento==1){
               this.ficheirosAInserir.fileAssinado = new FormData();
               this.ficheirosAInserir.fileAssinado.append(
                 "file",
@@ -671,7 +673,7 @@ export default {
                 "proposta_id",
                 this.propostaSelecionada.id_proposta_proponente
               );
-            }if(protostaSelecionada.contrato_assinado_departamento==0 && protostaSelecionada.contrato_assinado_curso==0){
+            }if(this.propostaSelecionada.contrato_assinado_departamento==0 && this.propostaSelecionada.contrato_assinado_curso==0){
               this.ficheirosAInserir.fileAssinado = new FormData();
               this.ficheirosAInserir.fileAssinado.append(
                 "file",

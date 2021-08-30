@@ -13,7 +13,7 @@
           value="1"
           unchecked-value="0"
           :state="$v.propostaDiretor.reconhecimento.$dirty ? !$v.propostaDiretor.reconhecimento.$error : null"
-        >Reconheço o interesse e a necessidade da contratação/renovação</b-form-checkbox>
+        >Reconheço o interesse e a necessidade desta contratação/renovação/alteração</b-form-checkbox>
         <b-form-invalid-feedback id="input-1-live-feedback">Tem de reconhecer a proposta</b-form-invalid-feedback>
       </b-form-group>
 

@@ -98,6 +98,7 @@ export default {
     },
   methods: {
         voltar(){
+            window.location.reload();
             console.log("olad");
             this.$emit('voltar');
             this.$emit("voltar", this.proposta);

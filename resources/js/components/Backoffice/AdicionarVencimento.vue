@@ -1,7 +1,7 @@
 <template>
     <div>
 
-   <<!-- <b-form-group label="Descrição" label-for="inputCurso">
+   <!-- <b-form-group label="Descrição" label-for="inputCurso">
         <b-form-select
             id="inputCurso"
             :options="categoriaDescricao"

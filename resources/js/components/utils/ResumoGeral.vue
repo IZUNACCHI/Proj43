@@ -573,7 +573,7 @@
 			            :page="bb"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                    <div v-if="ficheiroPropostaAssinadoCurso">
+                    <div v-if="ficheiroPropostaAssinadoUmProponente">
                     <pdf
 			            :src="fichPropostaAssinadoCurso"
                         @num-pages="pageCount103 = $event"
@@ -587,7 +587,7 @@
 			            :page="cc"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroPropostaAssinadoDepartamento">
+                </div><div v-if="ficheiroPropostaAssinado">
                     <pdf
 			            :src="fichPropostaAssinadoDepartamento"
                 
@@ -953,11 +953,17 @@
                         </td></tr>
                 <tr v-if="propostaSelecionada.verificacao_serviço_docente_atribuido=='nao'">
                     <td> Ficheiro das Unidades Curriculares</td>
-                    <td><b-button class="botao"
+                    <td v-if="uc1"><b-button class="botao"
                             variant="dark"
                             @click="gerarPdfServiçoDocenteAtribuído()">
                             <i class="far fa-file-pdf"></i> Ficheiro das Unidades Curriculares
-                    </b-button></td><td>
+                    </b-button></td><td v-if="!uc1">
+                        <b-button class="botao"
+                                variant="dark"
+                                @click="gerarPdfServiçoDocenteAtribuído()"
+                                disabled>
+                                <i class="far fa-file-pdf"></i> Ficheiro das Unidades Curriculares
+                        </b-button></td><td>
                         <b-button class="botao" v-on:click="uc1 = !uc1"
                             variant="dark">
                             Visualizar
@@ -999,7 +1005,7 @@
                     <td> Ficheiro da Fundamentação</td>
                     <td><b-button class="botao"
                             variant="dark"
-                            @click="downloadFicheiro(ficheiroRelatorioProponentes.proposta_id, 'Fundamentacao da Proposta Proponente', propostaSelecionada.nome_completo)">
+                            @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro da Fundamentação
                     </b-button></td><td>
                         <b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
@@ -1024,11 +1030,11 @@
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
-                    <tr v-if="ficheiroPropostaAssinadoCurso">
-                    <td> Ficheiro Assinado Coordenador de Curso</td>
+                    <tr v-if="ficheiroPropostaAssinadoUmProponente">
+                    <td> Ficheiro Assinado Por Um Proponente</td>
                     <td><b-button class="botao"
                             variant="dark"
-                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorCurso.proposta_id, 'Proposta Assinado Coordenador Curso', propostaSelecionada.nome_completo)">
+                            @click="downloadFicheiro(ficheiroPropostaAssinadoUmProponente.proposta_id, 'Proposta Assinada Um Proponente', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
                     </b-button></td><td>
                         <b-button class="botao" v-on:click="assinadoCurso = !assinadoCurso"
@@ -1053,11 +1059,11 @@
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
-                </tr><tr v-if="ficheiroPropostaAssinadoDepartamento">
-                    <td> Ficheiro Assinado Coordenador Departamento</td>
+                </tr><tr v-if="ficheiroPropostaAssinado">
+                    <td> Ficheiro Assinado</td>
                     <td><b-button class="botao"
                             variant="dark"
-                            @click="downloadFicheiro(ficheiroAssinadoCoordenadorDepartamento.proposta_id, 'Proposta Assinado Coordenador Departamento', propostaSelecionada.nome_completo)">
+                            @click="downloadFicheiro(ficheiroPropostaAssinado.proposta_id, 'Proposta Assinada', propostaSelecionada.nome_completo)">
                             <i class="far fa-file-pdf"></i> Donwload do Ficheiro Assinado
                     </b-button></td><td>
                         <b-button class="botao" v-on:click="assinadoDepartamento = !assinadoDepartamento"
@@ -1947,8 +1953,8 @@ export default {
       ficheiroAssinadoCoordenadorCurso: "",
       ficheiroAssinadoCoordenadorDepartamento: "",
       ficheiroPropostaAssinadoUO: "",
-      ficheiroPropostaAssinadoDepartamento: "",
-      ficheiroPropostaAssinadoCurso: "",
+      ficheiroPropostaAssinadoUmProponente: "",
+      ficheiroPropostaAssinado: "",
       ficheiroPropostaAssinadoCTC: "",
       ficheiroContratacaoComunicada: "",
       ficheiroContratoRedigido: "",
@@ -2043,23 +2049,24 @@ export default {
     },
 
     gerarPdfServiçoDocenteAtribuído(){
-        var doc = new jsPDF('p', 'pt', 'a4');
-        //Introduz um elemento html para o pdf
-        doc.setFont('PTSans');
-        doc.setFontSize(10);
-        doc.setFont("Roboto-Regular");
-        doc.html(ServiçoDocenteAtribuído, { 
-                html2canvas: {
-                    scale: 0.395,
-                    scrollY: 0
-                },
-                x: 5,
-                y: 0, 
-                callback: function (doc) {
-                doc.save("Proposta Contratação.pdf");
-                }
-            });
-        
+        if(this.uc1){
+            var doc = new jsPDF('p', 'pt', 'a4');
+            //Introduz um elemento html para o pdf
+            doc.setFont('PTSans');
+            doc.setFontSize(10);
+            doc.setFont("Roboto-Regular");
+            doc.html(ServiçoDocenteAtribuído, { 
+                    html2canvas: {
+                        scale: 0.7,
+                        scrollY: 0
+                    },
+                    x: 5,
+                    y: 0, 
+                    callback: function (doc) {
+                    doc.save("Proposta Contratação.pdf");
+                    }
+                });
+        }
     },
 
 
@@ -2071,10 +2078,10 @@ export default {
         doc.setFont("Roboto-Regular");
         doc.html(downloadPdf, { 
                 html2canvas: {
-                    scale: 0.395,
+                    scale: 0.5,
                     scrollY: 0
                 },
-                x: 5,
+                x: 10,
                 y: 0, 
                 callback: function (doc) {
                 doc.save("Proposta Contratação.pdf");
@@ -2179,12 +2186,12 @@ export default {
             this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
 	        this.contagemficheiro=this.contagemficheiro+1;
          }
-         this.ficheiroPropostaAssinadoDepartamento = this.ficheiros[this.contagemficheiro];
-         this.fichPropostaAssinadoDepartamento = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Departamento.pdf";
+         this.ficheiroPropostaAssinadoUmProponente = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoDepartamento = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinada_Um_Proponente.pdf";
          this.contagemficheiro=this.contagemficheiro+1;
 
-         this.ficheiroPropostaAssinadoCurso = this.ficheiros[this.contagemficheiro];
-         this.fichPropostaAssinadoCurso = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Curso.pdf";
+         this.ficheiroPropostaAssinado = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoCurso = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinada.pdf";
          this.contagemficheiro=this.contagemficheiro+1;
          this.ficheiroPropostaAssinadoUO = this.ficheiros[this.contagemficheiro];
          this.fichPropostaAssinadoUO = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Diretor_UO.pdf";

@@ -216,7 +216,7 @@
                 </table>
               </div>
               <br /></b-form-group>
-              <div v-if="$store.state.editarProposta">
+              <div v-if="$store.state.editarProposta && propostaSelecionada.verificacao_serviço_docente_atribuido == 'sim'">
               
                  <b-form-group label="Serviço Docente Atribuído (PDF)">
                     <b-form-checkbox

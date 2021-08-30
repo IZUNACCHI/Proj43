@@ -11,10 +11,10 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right>
             <template slot="button-content">{{ user.name }}</template>
-            <b-dropdown-item v-on:click.prevent="mostrarServicoDocenteAtribuido">
+            <b-dropdown-item v-on:click.prevent="mostrarServicoDocenteAtribuido" v-if="user.roleDB == 'proponente_departamento' || user.roleDB == 'proponente_curso'" >
               <i class="fas fa-book"></i> Serviço Docente Atribuido
             </b-dropdown-item>
-			<b-dropdown-item v-on:click.prevent="mostrarFundamentacoes">
+			<b-dropdown-item v-on:click.prevent="mostrarFundamentacoes" v-if="user.roleDB == 'proponente_departamento' || user.roleDB == 'proponente_curso'">
               <i class="fas fa-book"></i> Fundamentações
             </b-dropdown-item>
             <b-dropdown-item v-on:click.prevent="logout">
@@ -103,6 +103,7 @@
                       <thead>
                         <th>Nome docente a ser contratado</th>
                         <th>Tipo contrato</th>
+                        <th>Role</th>
                         <th>Unidade Organica</th>
                         <th>Ações</th>
                       </thead>
@@ -113,6 +114,7 @@
                         >
                           <td>{{ propostaHistorico.nome_completo }}</td>
                           <td>{{ propostaHistorico.tipo_contrato }}</td>
+                          <td>{{ propostaHistorico.role }}</td>
                           <td>{{ propostaHistorico.unidade_organica }}</td>
                           <td><!--
                             <button

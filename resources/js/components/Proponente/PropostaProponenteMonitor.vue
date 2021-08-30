@@ -155,7 +155,7 @@
           <b-card-body>
             <b-card-text>
               <h2 class="pb-4"></h2>
-              <b-form-group label="O docente proposto já se encontra/ja foi convidado a exercer funções numa outra UO do IPL?">
+              <b-form-group label="O docente proposto já se encontra/já foi convidado a exercer funções numa outra UO do IPL?">
                 <b-form-radio-group
                   v-model="propostaProponenteMonitor.verificacao_outras_uo"
                   :options="verificacao_outras_uo_array"

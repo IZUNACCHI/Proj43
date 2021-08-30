@@ -15,6 +15,8 @@
                     </div>
                   </b-tab>
                   <b-tab title="Descarregar Documento" v-bind:disabled="tabDisabled.descarregar">
+                  <button class="btn btn-danger"
+                            v-on:click.prevent="gerarPdf()">Gerar</button>
                     <div id="downloadPdf" class="total1" width="93%">
                       <div>
                         <div class="tabelaCabecalho"><table>
@@ -368,8 +370,8 @@
                                     <td>
                                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                                         Fundamentação
-                                        <b>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</b><br>
-						                <br><br><br><br><br><br>
+                                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                                        <br><br><br><br><br><br>
                                         <b>Ass.:</b> _______________________________<br>
                                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
@@ -383,7 +385,7 @@
                                     <td>
                                     <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                                         Fundamentação
-                                        <b>{{propostaSelecionada.fundamentacao_coordenador_curso}}</b><br>
+                                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_curso }}</textarea><br>
                                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
@@ -395,6 +397,34 @@
                                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
                                 </tr>
+                          </table>
+                          <br><br<br>
+                          <table width="100%" border="1px">
+                                <tr><th colspan="2" bgcolor=#be5b59><font color=#ffffff>Diretor da UO</font></th></tr>
+                                <tr>
+                                    <td v-if="propostaSelecionada.reconhecimento=='1'"><b>Reconheço interesse e a necessidade da contratação/renovação</b>
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
+                                    </td>
+                                    <td v-else><b>Reconheço interesse e a necessidade da contratação/renovação</b>
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;">
+                                    </td>
+                                    <td rowspan="2" width="60%"><br><br><br><br><br><b>Assinatura: </b>____________________<br><b>Data: </b>{{propostaSelecionada.data_assinatura_uo}}</td>
+                                </tr><tr>
+                    
+                                    <td v-if="propostaSelecionada.parecer=='Favoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Favorável
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Desfavorável
+                                    </td>
+                                    <td v-else-if="propostaSelecionada.parecer=='Desfavoravel'"><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Favorável
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Desfavorável
+                                    </td>
+                                    <td v-else><b>Parecer sobre o prazo da proposta de contratação/renovação</b><br>
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Favorável
+                                        <input type="checkbox" id="scales" name="scales" onclick="return false;">Desfavorável
+                                    </td>
+                                </tr>
+          
                           </table>
                           <br></div>
                       </div>
@@ -481,6 +511,11 @@
 </template>
 <script>
 import { required, email, minLength } from "vuelidate/lib/validators";
+import VuePdfApp from "vue-pdf-app"
+// import this to use default icons for buttons
+import "vue-pdf-app/dist/icons/main.css"
+import pdf from 'vue-pdf'
+import jsPDF from 'jspdf'
 export default {
 
   props: ["propostaSelecionada"],
@@ -559,8 +594,28 @@ export default {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
     voltar(){
-      this.$emit('voltar');
-      this.$emit("voltar", this.proposta);
+      window.location.reload();
+      /*this.$emit('voltar');
+      this.$emit("voltar", this.proposta);*/
+    },
+    gerarPdf(){
+        var doc = new jsPDF('p', 'pt', 'a4');
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(downloadPdf, { 
+                html2canvas: {
+                    scale: 0.665,
+                    scrollY: 0
+                },
+                x: 5,
+                y: 0, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });
+        
     },
     submeter(ficheirosAInserir){
         //this.$v.propostaDiretor.$touch();

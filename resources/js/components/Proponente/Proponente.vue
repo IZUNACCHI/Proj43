@@ -948,7 +948,7 @@ export default {
                 this.proposta.curso_Outro = null;
                 this.proposta.area_cientificaOutro = null;
         }if(this.grauTestDoutoramento && this.grauTestOutro && this.grauTestFormacao){
-                proposta.grau= null;
+                proposta.grau= "erro";
                 this.proposta.curso_Doutoramento = null;
                 this.proposta.area_cientificaDoutoramento = null;
                 this.proposta.curso_Outro = null;
@@ -964,7 +964,7 @@ export default {
             
         }
 
-
+		if(proposta.grau != 'erro'){
 
       
       axios.delete("/api/deleteFicheirosTemporarios").then(response => {});
@@ -1020,7 +1020,10 @@ export default {
           this.$swal('Erro', 'Já existe uma proposta pendente com esse email, por favor insira um email diferente', 'error');
         }
       })
-      
+      }else{
+		this.$swal('Erro', 'Tem de seleccionar pelo menos um campo nas Habilitações Literarias', 'error');
+        
+	  }
           
     },
     getUcsDeCurso(codigo_curso) {

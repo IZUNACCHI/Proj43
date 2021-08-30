@@ -358,6 +358,9 @@
           <br>
           <table width="100%" border="1px" align=center v-if="proposta.role == 'assistente' &&  $store.state.editarProposta && (alterar.fundamentacao==1 || alterar.unidadesCurriculares ==1)">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Alterados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido != 'sim' && alterar.unidadesCurriculares != '1' &&
+                          propostaProponenteAssistente.fundamentacao !='1' && alterar.fundamentacao != '1'">
+                    <td colspan="3" style="text-align: center; color: red;"> Não Existem Ficheiros</td></tr>
                 <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim' && alterar.unidadesCurriculares == '1'">
                     <td> Ficheiro das Unidades Curriculares</td>
                     <td><b-button class="botao" v-on:click="uc = !uc"
@@ -381,9 +384,7 @@
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
-                </tr><tr v-if="(propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva' ||
-                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral' ||
-                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial_60') &&
+                </tr><tr v-if="(propostaProponenteAssistente.fundamentacao=='1') &&
                                alterar.fundamentacao == '1'">
                     <td> Ficheiro da Fundamentação</td>
                     <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
@@ -412,6 +413,9 @@
             </table>
             <table width="100%" border="1px" align=center v-if="proposta.role == 'professor' &&  $store.state.editarProposta && (alterar.fundamentacao==1 || alterar.unidadesCurriculares ==1)">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Alterados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido != 'sim' && alterar.unidadesCurriculares != '1' &&
+                          propostaProponenteProfessor.fundamentacao !='1' && alterar.fundamentacao != '1'">
+                    <td colspan="3" style="text-align: center; color: red;"> Não Existem Ficheiros</td></tr>
                 <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim' && alterar.unidadesCurriculares == '1'">
                     <td> Ficheiro das Unidades Curriculares</td>
                     <td><b-button class="botao" v-on:click="uc = !uc"
@@ -436,8 +440,7 @@
 		                    ></pdf>
                         </td></tr>
           
-                        <tr v-if="(propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva' ||
-                                  propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral') &&
+                        <tr v-if="(propostaProponenteProfessor.fundamentacao=='1') &&
                                   alterar.fundamentacao == '1'">
                             <td> Ficheiro da Fundamentação</td>
                             <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
@@ -492,6 +495,9 @@
           
           <table width="100%" border="1px" align=center v-if="proposta.role == 'assistente' &&  !$store.state.editarProposta">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Introduzidos</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido != 'sim' &&
+                          propostaProponenteAssistente.fundamentacao !='1'">
+                    <td colspan="3" style="text-align: center; color: red;"> Não Existem Ficheiros</td></tr>
                 <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'">
                     <td> Ficheiro das Unidades Curriculares</td>
                     <td><b-button class="botao" v-on:click="uc = !uc"
@@ -515,9 +521,7 @@
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
-                </tr><tr v-if="(propostaProponenteAssistente.regime_prestacao_servicos=='dedicacao_exclusiva' ||
-                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_integral' ||
-                               propostaProponenteAssistente.regime_prestacao_servicos=='tempo_parcial_60')">
+                </tr><tr v-if="(propostaProponenteAssistente.fundamentacao=='1' )">
                     <td> Ficheiro da Fundamentação</td>
                     <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
                             variant="dark">
@@ -546,6 +550,9 @@
             </table>
             <table width="100%" border="1px" align=center v-if="proposta.role == 'professor' &&  !$store.state.editarProposta">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Ficheiros Adicionados</font></th></tr>
+                <tr v-if="proposta.verificacao_serviço_docente_atribuido != 'sim' &&
+                          propostaProponenteProfessor.fundamentacao !='1'">
+                    <td colspan="3" style="text-align: center; color: red;"> Não Existem Ficheiros</td></tr>
                 <tr v-if="proposta.verificacao_serviço_docente_atribuido == 'sim'">
                     <td> Ficheiro das Unidades Curriculares</td>
                     <td><b-button class="botao" v-on:click="uc = !uc"
@@ -570,8 +577,7 @@
 		                    ></pdf>
                         </td></tr>
           
-                        <tr v-if="propostaProponenteProfessor.regime_prestacao_servicos=='dedicacao_exclusiva' ||
-                                  propostaProponenteProfessor.regime_prestacao_servicos=='tempo_integral'">
+                        <tr v-if="propostaProponenteProfessor.fundamentacao=='1'">
                             <td> Ficheiro da Fundamentação</td>
                             <td><b-button class="botao" v-on:click="fundamentacao = !fundamentacao"
                                     variant="dark">
@@ -658,7 +664,7 @@
       <b-form-group>
         <b-form-checkbox
           v-model="fundamentacaoCheck"
-        >Reconheço o interesse e a necessidade da contratação inicial/renovação</b-form-checkbox>
+        >Reconheço o interesse e a necessidade desta contratação</b-form-checkbox>
       </b-form-group>
 
       <div v-if="fundamentacaoCheck">
@@ -667,7 +673,7 @@
           :state="!$v.proposta.fundamentacao_coordenador_curso.$error && null"></b-form-textarea>
         </b-form-group>
 		  <button type="button" class="btn btn-info" @click="novaFundamentacao()">Guardar Fundamentação</button>
-		<b-form-group label="Fundamentações guardadas">
+		<b-form-group label="Modelos de Fundamentações">
 		<b-form-select v-model="proposta.fundamentacao_coordenador_curso">
 		<option selected></option>
 		<option v-for="item in fundamentacoes">
@@ -692,7 +698,7 @@
         <b-form-checkbox
           v-model="fundamentacaoCheck"
           stacked
-        >Reconheço o interesse e a necessidade da contratação inicial/renovação</b-form-checkbox>
+        >Reconheço o interesse e a necessidade desta contratação</b-form-checkbox>
       </b-form-group>
 
       <div v-if="fundamentacaoCheck">
@@ -705,7 +711,7 @@
           ></b-form-textarea>
 		  <button type="button" class="btn btn-info" @click="novaFundamentacao()">Guardar Fundamentação</button>
         </b-form-group>
-		<b-form-group label="Fundamentações guardadas">
+		<b-form-group label="Modelos de Fundamentações">
 		<b-form-select v-model="proposta.fundamentacao_coordenador_departamento">
 		<option selected></option>
 		<option v-for="item in fundamentacoes">
@@ -846,6 +852,7 @@ export default {
 		 
 	},
     voltar() {
+      window.location.reload();
       this.$emit("mostrarComponente", this.proposta);
       this.mostrarResumoProposta = false;
       this.$emit('voltar');
@@ -897,6 +904,7 @@ export default {
                             "Proposta criada com sucesso!!",
                              "success"
                          );
+                         //window.location.reload();
                          this.isLoading = false;
                          //this.$emit("incrementarBarraProgresso");
                          this.voltar();
@@ -940,6 +948,7 @@ export default {
                      "Proposta editada com sucesso!!",
                      "success"
                   );
+                  //window.location.reload();
                   this.isLoading = false;
                   //this.$emit("incrementarBarraProgresso");
                   this.voltar();     
@@ -1068,6 +1077,7 @@ export default {
                             "Proposta criada com sucesso!!",
                              "success"
                          );
+                         //window.location.reload();
                          this.isLoading = false;
                          //this.$emit("incrementarBarraProgresso");
                          this.voltar();
@@ -1183,6 +1193,7 @@ export default {
                      "Proposta editada com sucesso!!",
                      "success"
                   );
+                  //window.location.reload();
                   this.isLoading = false;
                   //this.$emit("incrementarBarraProgresso");
                   this.voltar();
@@ -1238,6 +1249,7 @@ export default {
                     "Sucesso",
                     "Proposta editada com sucesso!!",
                     "success");
+                //window.location.reload();
                 this.isLoading = false;
                 //this.$emit("incrementarBarraProgresso");
                 this.voltar();
@@ -1274,6 +1286,7 @@ export default {
                           "Sucesso",
                           "Proposta editada com sucesso!!",
                           "success");
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1406,6 +1419,7 @@ export default {
                     "Sucesso",
                     "Proposta editada com sucesso!!",
                     "success");
+                //window.location.reload();
                 this.isLoading = false;
                 //this.$emit("incrementarBarraProgresso");
                 this.voltar();
@@ -1525,6 +1539,7 @@ export default {
                           "Sucesso",
                           "Proposta editada com sucesso!!",
                           "success");
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1568,6 +1583,7 @@ export default {
                          "Proposta criada com sucesso!!",
                          "success"
                       );
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1597,6 +1613,7 @@ export default {
                          "Proposta criada com sucesso!!",
                          "success"
                       );
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1704,6 +1721,7 @@ export default {
                          "Proposta criada com sucesso!!",
                          "success"
                       );
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1796,6 +1814,7 @@ export default {
                          "Proposta criada com sucesso!!",
                          "success"
                       );
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();

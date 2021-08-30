@@ -15,6 +15,8 @@
                     </div>
                   </b-tab>
                   <b-tab title="Descarregar Documento" v-bind:disabled="tabDisabled.descarregar">
+                  <button class="btn btn-danger"
+                            v-on:click.prevent="gerarPdf()">Gerar</button>
                     <div id="downloadPdf" class="total1" width="93%">
                       <div>
                         <div class="tabelaCabecalho"><table>
@@ -368,8 +370,8 @@
                                     <td>
                                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                                         Fundamentação
-                                        <b>{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</b><br>
-						                <br><br><br><br><br><br>
+                                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                                        <br><br><br><br><br><br>
                                         <b>Ass.:</b> _______________________________<br>
                                         <b>Nome:</b> {{propostaSelecionada.primeiro_proponente}}
                                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_departamento}}</td>
@@ -383,7 +385,7 @@
                                     <td>
                                     <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                                         Fundamentação
-                                        <b>{{propostaSelecionada.fundamentacao_coordenador_curso}}</b><br>
+                                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_curso }}</textarea><br>
                                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                                         <b>Nome:</b> {{propostaSelecionada.segundo_proponente}}
                                         <b>Data:</b> {{propostaSelecionada.data_de_assinatura_coordenador_de_curso}}</td>
@@ -481,6 +483,11 @@
 </template>
 <script>
 import { required, email, minLength } from "vuelidate/lib/validators";
+import VuePdfApp from "vue-pdf-app"
+// import this to use default icons for buttons
+import "vue-pdf-app/dist/icons/main.css"
+import pdf from 'vue-pdf'
+import jsPDF from 'jspdf'
 export default {
 
   props: ["propostaSelecionada"],
@@ -559,9 +566,29 @@ export default {
       this.ficheiros[event.target.name] = event.target.files[0];
     },
     voltar(){
-      this.$emit('voltar');
-      this.$emit("voltar", this.proposta);
+    window.location.reload();
+      this.$emit("mostrarCTC");
+     // this.$emit("mostrar-ctc", this.proposta);
       
+    },
+    gerarPdf(){
+        var doc = new jsPDF('p', 'pt', 'a4');
+        //Introduz um elemento html para o pdf
+        doc.setFont('PTSans');
+        doc.setFontSize(10);
+        doc.setFont("Roboto-Regular");
+        doc.html(downloadPdf, { 
+                html2canvas: {
+                    scale: 0.65,
+                    scrollY: 0
+                },
+                x: 5,
+                y: 0, 
+                callback: function (doc) {
+                doc.save("Proposta Contratação.pdf");
+                }
+            });
+        
     },
     submeter(ficheirosAInserir){
         //this.$v.propostaDiretor.$touch();
@@ -596,9 +623,12 @@ export default {
                         "Proposta assinada com sucesso!!",
                         "success"
                     )*/
+                    this.$swal('Sucesso', 'Parecer enviado com sucesso', 'success')
+                    this.$emit("mostrarCTC");
                 });
                 /*this.$emit('voltar');
                 this.$emit("voltar", this.proposta);*/
+                
                 this.tabDisabled.carregar = true;
                 this.tabDisabled.assinado = false;
                  
