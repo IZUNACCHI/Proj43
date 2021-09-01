@@ -329,27 +329,27 @@
                           <table width="100%" border="1px">
                                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Vencimento Aplicável</font></th></tr>
                                 <tr>
-                                    <td><b>Remuneração: </b>{{propostaSelecionada.remuneracao}}€</td>
-                                    <td><b>Escalão: </b>{{propostaSelecionada.escalao}}</td>
-                                    <td><b>Índice: </b>{{propostaSelecionada.indice}}</td></tr>
+                                    <td><b>Remuneração: </b>{{tipoPropostaRole.remuneracao}}€</td>
+                                    <td><b>Escalão: </b>{{tipoPropostaRole.escalao}}</td>
+                                    <td><b>Índice: </b>{{tipoPropostaRole.indice}}</td></tr>
                           </table><br>
                           <table width="100%" border="1px">
                                 <tr><th colspan="3" bgcolor=#be5b59> <font color=#ffffff>Contratação para mais do que uma UO do IPL</font></th></tr>
                                 <tr>
                                     <td>O docente proposto já se econtra a exercer funções noutra UO do IPL?</td>
-                                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='sim'">
+                                    <td rowspan="2" v-if="tipoPropostaRole.verificacao_outras_uo=='sim'">
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                                         <b>Sim</b>
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                                         <b>Não</b>
-                                        <p v-if="propostaSelecionada.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{propostaSelecionada.nome_uo}}</b> Tempo parcial <b>
+                                        <p v-if="tipoPropostaRole.verificacao_tempo_parcial=='sim'">Sim, UO <b>{{tipoPropostaRole.nome_uo}}</b> Tempo parcial <b>
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
-                                        {{propostaSelecionada.tempo_parcial_uo}}%</b><br>
-                                        Periodio <b>{{propostaSelecionada.periodo_uo}}</b></p>
-                                        <p v-else>Sim, UO <b>{{propostaSelecionada.nome_uo}}</b> Tempo parcial
+                                        {{tipoPropostaRole.tempo_parcial_uo}}%</b><br>
+                                        Periodio <b>{{tipoPropostaRole.periodo_uo}}</b></p>
+                                        <p v-else>Sim, UO <b>{{tipoPropostaRole.nome_uo}}</b> Tempo parcial
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;"><br>
-                                        Periodio <b>{{propostaSelecionada.periodo_uo}}</b></p></td>
-                                    <td rowspan="2" v-if="propostaSelecionada.verificacao_outras_uo=='nao'">
+                                        Periodio <b>{{tipoPropostaRole.periodo_uo}}</b></p></td>
+                                    <td rowspan="2" v-if="tipoPropostaRole.verificacao_outras_uo=='nao'">
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;">
                                         <b>Sim</b>
                                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
@@ -640,9 +640,148 @@ export default {
         });
     }
   },
-  /*mounted() {
-    this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente todos os ficheiros necessários', 'info')
-  }*/
+  mounted() {
+    //this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente todos os ficheiros necessários', 'info')
+        axios
+      .get(
+        "/api/propostaDePropostaProponente/" +
+          this.propostaSelecionada.id_proposta_proponente
+      )
+      .then(response => {
+        this.propostaID = response.data.id;
+        console.log(this.propostaID)
+        axios.get("/api/ficheiros/" + this.propostaID).then(response => {
+
+         this.ficheiros = response.data;
+    
+         if(this.propostaSelecionada.verificacao_serviço_docente_atribuido == "sim"){
+            this.ficheiroUnidadesCurriculares = this.ficheiros[this.contagemficheiro];
+            this.fichUnidadesCurriculares = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Unidades_Curriculares_do_docente_a_ser_contratado.pdf";
+	        this.contagemficheiro=this.contagemficheiro+1;
+         }
+         if(this.tipoPropostaRole.regime_prestacao_servicos=="dedicacao_exclusiva" ||
+            this.tipoPropostaRole.regime_prestacao_servicos=="tempo_integral" ||
+            this.tipoPropostaRole.regime_prestacao_servicos=="tempo_parcial_60"){
+            this.ficheiroFundamentacao = this.ficheiros[this.contagemficheiro];
+            this.fichFundamentacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Fundamentacao_da_Proposta_Proponente.pdf",
+	        this.contagemficheiro=this.contagemficheiro+1;
+         }
+         this.ficheiroPropostaAssinadoUmProponente = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoDepartamento = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinada_Um_Proponente.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+
+         this.ficheiroPropostaAssinado = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoCurso = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinada.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroPropostaAssinadoUO = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoUO = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Diretor_UO.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+
+         this.ataCTC = this.ficheiros[this.contagemficheiro];
+         this.fichAtaCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+
+         this.ficheiroPropostaAssinadoCTC = this.ficheiros[this.contagemficheiro];
+         this.fichPropostaAssinadoCTC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ata_do_CTC.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+
+         if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
+            this.ficheiroCurriculo = this.ficheiros[this.contagemficheiro];
+            this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";vi
+            this.contagemficheiro=this.contagemficheiro+1;
+            this.ficheiroCertificadoHabilitacoes = this.ficheiros[this.contagemficheiro];
+            this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf";
+            this.contagemficheiro=this.contagemficheiro+1;
+         }
+
+         this.ficheiroNIF = this.ficheiros[this.contagemficheiro];
+         this.fichNIF = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_NIF.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCGA = this.ficheiros[this.contagemficheiro];
+         this.fichCGA = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_N_CGA_SS.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCC = this.ficheiros[this.contagemficheiro];
+         this.fichCC = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_CC.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroIBAN = this.ficheiros[this.contagemficheiro];
+         this.fichIBAN = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Copia_IBAN.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCertificadoRegistoCriminal = this.ficheiros[this.contagemficheiro];
+         this.fichCertificadoRegstoCriminal = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Registo_Criminal.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroDeclaracaoRobustezFisica = this.ficheiros[this.contagemficheiro];
+         this.fichDeclaracaoRobustezFisica = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Robustez_Fisica.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroBoletimVacinas = this.ficheiros[this.contagemficheiro];
+         this.fichBoletimVacinas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Boletim_Vacinas.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroFichaIdentificacao = this.ficheiros[this.contagemficheiro];
+         this.fichFichaIdentificacao = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Ficha_Identificacao.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroDeclaracaoArtigo99 = this.ficheiros[this.contagemficheiro];
+         this.fichDeclaracaoArtigo99 = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Declaracao_IRS.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroDeclaracaoRenuncia = this.ficheiros[this.contagemficheiro];
+         this.fichDeclaracaoRenuncia = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Renuncia_ADSE.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroConsultaOutrasEscolas = this.ficheiros[this.contagemficheiro];
+         this.fichConsultaOutrasEscolas = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Ficheiro_Resposta_Consulta_Outras_Escolas.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+
+         
+         this.ficheiroContratacaoComunicada = this.ficheiros[this.contagemficheiro];
+         this.fichContratacaoComunicada = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Contratacao_Comunicada.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroContratoRedigido = this.ficheiros[this.contagemficheiro];
+         this.fichContratoRedigido = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Contrato_Redigido.pdf",
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroCessacaoSocial = this.ficheiros[this.contagemficheiro];
+         this.fichCessacaoSocial = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Cessacao_Social.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+         this.ficheiroContrato = this.ficheiros[this.contagemficheiro];
+         this.fichContrato = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Contrato.pdf";
+         this.contagemficheiro=this.contagemficheiro+1;
+          
+          /*this.ficheiroRelatorioProponentes = this.ficheiros[0];
+          this.fichRelatorioProponentes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Relatorio_dos_2_proponentes.pdf",
+          */
+
+          /*this.ficheiroAssinadoCoordenadorCurso = this.ficheiros[5];
+          this.fichAssinadoCoordenadorCurso = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Curso.pdf",
+          this.ficheiroAssinadoCoordenadorDepartamento = this.ficheiros[6];
+          this.fichAssinadoCoordenadorDepartamento = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Proposta_Assinado_Coordenador_Departamento.pdf",
+          
+          */
+          //this.fichAssinado = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/Proposta Contratação.pdf";
+          
+        });
+      });
+    axios
+      .get(
+        "/api/diretorUO/getPropostaProponente/" +
+          this.propostaSelecionada.role +
+          "/" +
+          this.propostaSelecionada.id_proposta_proponente
+      )
+      .then(response => {
+        this.tipoPropostaRole = response.data[0];
+      });
+
+    axios
+      .get(
+        "api/diretorUO/getUCSPropostaSelecionada/" +
+          this.propostaSelecionada.id_proposta_proponente
+      )
+      .then(response => {
+        this.ucsDaPropostaSelecionada = response.data;
+      });
+      this.ucsDaPropostaSelecionada.forEach(uc => {
+          axios.get('/api/unidadeCurricularNome/'+uc.codigo_uc).then(response => {
+            console.log(response);
+          })
+      });
+
+  }
 };
 
 </script>

@@ -428,7 +428,7 @@
                     <td v-if="propostaSelecionada.fundamentacao_coordenador_curso == null">
                         <b>Reconheço o interesse e a necessidade da contratação inicial/renovação</b><br>
                         Fundamentação<br>
-                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_departamento }}</textarea><br>
+                        <textarea cols="50%" name="fundamentacao" readonly=“true” style="resize: none">{{ propostaSelecionada.fundamentacao_coordenador_curso }}</textarea><br>
                         <br><br><br><br><br><br><b>Ass.:</b> _______________________________<br>
                         <b>Nome:</b> _________________
                         <b>Data:</b> _________________</td>

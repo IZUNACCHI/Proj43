@@ -23,7 +23,7 @@
       Regulamento de Contratação de Pessoal Docente Especialmente Contratado ao
       abrigo do art. 8.º do ECPDESP, do IPL"
     ><h3>Proposta de contratação</h3></b-form-group>
-    <div v-if="isShow">
+    <div v-if="isShowEditar">
 
       
     <b-form-group label="Unidade Orgânica" label-for="inputTempoParcial">
@@ -457,7 +457,7 @@
         >A seleção de uma unidade orgânica é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group label="Tipo de Proposta" v-show="isShow">
+      <b-form-group label="Tipo de Proposta" v-show="isShowEditar">
           <b-form-radio-group
             v-model="propostaSelecionada.tipo_contrato"
             :options="tipoContratosArray"
@@ -617,7 +617,7 @@ export default {
       ucs: [],
       roleSelecionado: "",
       isFinalized: false,
-      isShow: true,
+      isShowEditar: true,
       propostasExistentes: [],
       progresso: {
         valor: 1,
@@ -840,7 +840,7 @@ export default {
         });
     },
     showComponent() {
-      this.isShow = true;
+      this.isShowEditar = true;
       this.isFinalized = false;
       this.progresso.valor--;
       this.voltarVar = true;
@@ -999,7 +999,7 @@ export default {
             //if (!this.$v.propostaSelecionada.$invalid && unidadesCurriculares.length > 0) {
                 this.$store.commit("setProposta", proposta);
                 this.isFinalized = true;
-                this.isShow = false;
+                this.isShowEditar = false;
                 this.progresso.valor++;
                 this.voltarVar = false;
             //}

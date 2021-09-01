@@ -1836,13 +1836,15 @@ export default {
     },
     anterior() {
       //* Mudar para o componente PropostaProponente_role*
-	  if(this.proposta.role="professor"){
+	  /*if(this.proposta.role="professor"){
 		this.$emit("mostrarPropostaProponente_professor");
 	  }else if(this.proposta.role="monitor"){
 		this.$emit("mostrarPropostaProponente_monitor");
 	  }else{
 		this.$emit("mostrarPropostaProponente_assistente");
-      }
+      }*/
+      
+      this.$emit("mostrarPropostaProponente_" + this.proposta.role);
     }
   },
   mounted(){

@@ -434,12 +434,16 @@ export default {
 
     editarProposta(propostaParaEditar, index) {
       this.isEditarPropostaVisible = true;
-      this.isDashboardVisible = true;
+      this.isDashboardVisible = false;
       this.isEnviarPropostaCursoVisible = false;
       this.isEnviarPropostaDepartamentoVisible = false;
 
 	  this.isFundamentacaoVisible = false;
-
+      
+      this.isNovaPropostaVisible = false;
+      this.isResumoPropostaVisible = false;
+      this.isActiveSD = false;
+      this.isServicoDocenteAtribuido = false;
       this.mostrarTabela = false;
       this.propostaSelecionada = Object.assign(
         {},
@@ -447,7 +451,6 @@ export default {
       );
       this.isDashboardVisible = false;
     },
-
 
 
     gerarPdfProposta(propostaID, index){
