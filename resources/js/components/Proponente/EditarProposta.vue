@@ -245,7 +245,7 @@
                         size="md"
                         variant="dark"
                         v-if="ficheiroUnidadesCurriculares"
-                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Serviço do Docente Atribuído')"
+                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Ficheiro Unidades Curriculares do docente a ser contratado')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
                     </b-button>
@@ -271,7 +271,7 @@
                         size="md"
                         variant="dark"
                         v-if="ficheiroUnidadesCurriculares"
-                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Serviço do Docente Atribuído')"
+                        @click="downloadFicheiro(ficheiroUnidadesCurriculares.proposta_id, 'Ficheiro Unidades Curriculares do docente a ser contratado')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
                     </b-button>
@@ -466,7 +466,7 @@
           <b-form-invalid-feedback id="input-1-live-feedback">O Tipo da Proposta é obrigatória!</b-form-invalid-feedback>
       </b-form-group>
 
-      <button class="btn btn-danger mt-3 font-weight-bold" v-on:click.prevent="voltar"> Cancelar
+      <button class="btn btn-danger mt-3 font-weight-bold" v-on:click="cancelar"> Cancelar
       </button>
 
       <button
@@ -805,9 +805,13 @@ export default {
   },
   methods: {
     voltar() {
+      //window.location.reload();
       if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
-        this.$emit("voltar", this.proposta);
+        this.$emit("cancelar", this.proposta);
       }
+    },
+    cancelar(){
+    window.location.reload();
     },
     validateState(ref) {
       return this.veeErrors.has(ref) ? false : null;
@@ -1067,6 +1071,7 @@ export default {
             }
           });
         });
+
         if(this.propostaSelecionada.grau=="doutoramento" || this.propostaSelecionada.grau=="doutoramentooutro" || this.propostaSelecionada.grau=="doutoramentoem_formacao" || this.propostaSelecionada.grau=="doutoramentooutroem_formacao"){
             if(this.grauTestDoutoramento == "true"){
                 this.grauTestDoutoramento = !this.grauTestDoutoramento;

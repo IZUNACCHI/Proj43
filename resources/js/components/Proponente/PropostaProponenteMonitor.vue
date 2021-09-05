@@ -4,7 +4,7 @@
 
     <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Assistente</b-button>
+          <b-button block href="#" v-b-toggle.accordion-1 variant="dark">Monitor</b-button>
         </b-card-header>
         <b-collapse visible id="accordion-1" accordion="accordion" role="tabpanel">
           <b-card-body>

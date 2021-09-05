@@ -1,13 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\app\\Http\\Controllers",
+    "\\app\\Http\\Controllers\\Auth",
     "\\resources",
     "\\resources\\js",
     "\\resources\\js\\components",
     "\\resources\\js\\components\\Proponente",
-    "\\resources\\js\\components\\utils",
     "\\routes"
   ],
-  "SelectedNode": "\\resources\\js\\components\\Proponente\\EditarProposta.vue",
+  "SelectedNode": "\\resources\\js\\components\\Proponente\\PropostaProponenteAssistente.vue",
   "PreviewInSolutionExplorer": false
 }

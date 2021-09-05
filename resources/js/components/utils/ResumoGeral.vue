@@ -13,19 +13,19 @@
 
     <div v-if="this.$store.state.user.roleDB == 'diretor_uo'">
       <button class="btn btn-danger" @click="voltarDiretor">Voltar</button>
-      <button class="btn btn-danger" v-on:click.prevent="gerarPdfUo()">Dowload</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfPropostaProponente()">Dowload</button>
       <h3>Resumo da proposta de contratação</h3>
     </div>
 
     <div v-if="this.$store.state.user.roleDB == 'ctc'">
       <button class="btn btn-danger" @click="voltarCTC">Voltar</button>
-      <button class="btn btn-danger" v-on:click.prevent="gerarPdfCtc()">Dowload</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfPropostaProponente()">Dowload</button>
       <h3>Resumo da proposta de contratação</h3>
     </div>
 
     <div v-if="this.$store.state.user.roleDB == 'secretariado_direcao'">
       <button class="btn btn-danger" @click="voltarSecretariado">Voltar</button>
-      <button class="btn btn-danger" v-on:click.prevent="downloadFicheiro(ficheiroCurriculo.proposta_id, 'Proposta Contratação', propostaSelecionada.nome_completo)">Dowload</button>
+      <button class="btn btn-danger" v-on:click.prevent="gerarPdfPropostaProponente()">Dowload</button>
       <h3>Resumo da proposta de contratação</h3>
     </div>
 
@@ -481,15 +481,20 @@
                     <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Aprovado</td>
                     <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Não Aprovado</td>
                     </tr>
-                <tr v-if="propostaSelecionada.aprovacao=='nao aprovado'">
+                <tr v-if="propostaSelecionada.aprovacao=='Nao Aprovado'">
                     <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Aprovado</td>
                     <td><input type="checkbox" id="scales" name="scales" onclick="return false;" checked>Não Aprovado</td>
+                    </tr>
+                <tr v-if="!propostaSelecionada.aprovacao">
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Aprovado</td>
+                    <td><input type="checkbox" id="scales" name="scales" onclick="return false;">Não Aprovado</td>
                     </tr>
           </table><br></div>
           
           <div class="tabelaRecursosHumanos2">
           <br>
-          <div>
+          <div v-if="propostaSelecionada.role == 'monitor'">
+            <br><br><br><br><br>
           </div>
           <table width="100%" border="1px">
                 <tr><th colspan="3" bgcolor=#be5b59><font color=#ffffff>Documentos obrigatorios a anexar à presente proposta</font></th></tr>
@@ -518,7 +523,7 @@
                         <input type="checkbox" v-if="ficheiroCC" onclick="return false;" checked>
                         <input type="checkbox" v-else onclick="return false;">Cópia do CC/BI<br>
                         <input type="checkbox" v-if="ficheiroIBAN" onclick="return false;" checked>
-                        <input type="checkbox" v-else onclick="return false;">>Cópia do IBAN/NIB<br>
+                        <input type="checkbox" v-else onclick="return false;">Cópia do IBAN/NIB<br>
                         <input type="checkbox" v-if="ficheiroCertificadoRegistoCriminal" onclick="return false;" checked>
                         <input type="checkbox" v-else onclick="return false;">Certificado de Registo Criminal<br>
                         <input type="checkbox" v-if="ficheiroDeclaracaoRobustezFisica" onclick="return false;" checked>
@@ -1186,6 +1191,34 @@
 			                    style="display: inline-block; width: 100%"
 		                    ></pdf>
                         </td></tr>
+
+
+
+                    <tr v-if="propostaSelecionada.convite!=null">
+                    <td> Ficheiro das Unidades Curriculares</td>
+                    <td v-if="conv"><b-button class="botao"
+                            variant="dark"
+                            @click="gerarPdfConvite()">
+                            <i class="far fa-file-pdf"></i> Ficheiro do Convite
+                    </b-button></td><td v-if="!conv">
+                        <b-button class="botao"
+                                variant="dark"
+                                @click="gerarPdfConvite()"
+                                disabled>
+                                <i class="far fa-file-pdf"></i> Ficheiro do Convite
+                        </b-button></td><td>
+                        <b-button class="botao" v-on:click="conv = !conv"
+                            variant="dark">
+                            Visualizar
+                        </b-button>
+                     </td>
+                    <tr v-if="conv">
+                        <div id="Convite">
+                        <p>Convite</p>
+                        <td colspan="3" style="height: 50%">
+                            {{propostaSelecionada.convite}}
+                        </td></div></tr>
+                
 
 
 
@@ -1909,6 +1942,7 @@ export default {
       relatorio: false,
       uc: false,
       uc1: false,
+      conv: false,
       fundamentacao: false,
       assinadoCurso: false,
       assinadoDepartamento: false,
@@ -2063,7 +2097,29 @@ export default {
                     x: 5,
                     y: 0, 
                     callback: function (doc) {
-                    doc.save("Proposta Contratação.pdf");
+                    doc.save("Serviço DOcente Atribuido.pdf");
+                    }
+                });
+        }
+    },
+
+    
+    gerarPdfConvite(){
+        if(this.conv){
+            var doc = new jsPDF('p', 'pt', 'a4');
+            //Introduz um elemento html para o pdf
+            doc.setFont('PTSans');
+            doc.setFontSize(10);
+            doc.setFont("Roboto-Regular");
+            doc.html(Convite, { 
+                    html2canvas: {
+                        scale: 0.7,
+                        scrollY: 0
+                    },
+                    x: 5,
+                    y: 0, 
+                    callback: function (doc) {
+                    doc.save("Convite.pdf");
                     }
                 });
         }
@@ -2140,17 +2196,19 @@ export default {
         doc.setFont("Roboto-Regular");
         doc.html(downloadPdf, { 
                 html2canvas: {
-                    scale: 0.395,
+                    scale: 0.5,
                     scrollY: 0
                 },
-                x: 15,
+                x: 10,
                 y: 0, 
                 callback: function (doc) {
                 doc.save("Proposta Contratação.pdf");
                 }
             });
         
+        
     },
+
   },
   mounted() {
     //this.$swal('Atenção', 'Tem apenas uma oportunidade de submeter corretamente o ficheiro assinado', 'info')

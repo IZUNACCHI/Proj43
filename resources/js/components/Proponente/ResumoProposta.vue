@@ -852,12 +852,13 @@ export default {
 		 
 	},
     voltar() {
-      window.location.reload();
+      //window.location.reload();
       this.$emit("mostrarComponente", this.proposta);
       this.mostrarResumoProposta = false;
-      this.$emit('voltar');
-      this.$emit("voltar", this.proposta);
-
+      /*this.$emit('voltar');
+      this.$emit("voltar", this.proposta);*/
+      
+      
     },
     submeterPropostaProfessor(propostaProponenteProfessor) {
      if(this.$store.state.user.roleDB == 'secretariado_direcao'){
@@ -904,7 +905,7 @@ export default {
                             "Proposta criada com sucesso!!",
                              "success"
                          );
-                         //window.location.reload();
+                         window.location.reload();
                          this.isLoading = false;
                          //this.$emit("incrementarBarraProgresso");
                          this.voltar();
@@ -948,7 +949,7 @@ export default {
                      "Proposta editada com sucesso!!",
                      "success"
                   );
-                  //window.location.reload();
+                  window.location.reload();
                   this.isLoading = false;
                   //this.$emit("incrementarBarraProgresso");
                   this.voltar();     
@@ -1077,7 +1078,7 @@ export default {
                             "Proposta criada com sucesso!!",
                              "success"
                          );
-                         //window.location.reload();
+                         window.location.reload();
                          this.isLoading = false;
                          //this.$emit("incrementarBarraProgresso");
                          this.voltar();
@@ -1107,7 +1108,9 @@ export default {
                 axios.put("/api/updatePropostaProponente/" + this.proposta.id_proposta_proponente, this.proposta)
                   .then(response => {
                     this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
+                    
                     this.propostaProponenteProfessor.proposta_proponente_id = response.data.id_proposta_proponente;
+                    
                     //? Apagar Propostas Proponente de todas as roles
                     axios.put('/api/apagarPropostasProponente/'+this.idParaUcsPropostaProponente, this.proposta).then(response => {});
                     //? Update Proposta Proponente Professor
@@ -1121,40 +1124,44 @@ export default {
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
-                     
+                      //this.ficheiro.fileRelatorio.append("proposta_id", response.data.id);
+                      if(propostaProponenteProfessor.regime_prestacao_servicos == "tempo_integral" ||
+                         propostaProponenteProfessor.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         propostaProponenteProfessor.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(propostaProponenteProfessor.fundamentacao == '1'){
+                      if(this.alterar.fundamentacao == '1'){
+                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
+                         }
+                      }}
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
-                      if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
-                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
-                          if(propostaProponenteProfessor.fundamentacao == '1'){
-                            this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
-                          }
-                      }
-                      
-                      axios.delete("/api/deleteFicheiros/" + response.data.id).then(response => {});
-                      if(this.alterar.unidadesCurriculares == 1){
+                      if(this.alterar.unidadesCurriculares == '1'){
+                      if(propostaProponenteProfessor.fundamentacao == '1'){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }}
-                      if (propostaProponenteProfessor.regime_prestacao_servicos =="tempo_integral" ||
-                          propostaProponenteProfessor.regime_prestacao_servicos =="dedicacao_exclusiva") {
-                          if(this.alterar.fundamentacao == 1){
-                          if(propostaProponenteProfessor.fundamentacao == '1'){
-                            axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
-                          }}
+                      }}}
+                      if(this.propostaProponenteProfessor.regime_prestacao_servicos == "tempo_integral" ||
+                         this.propostaProponenteProfessor.regime_prestacao_servicos == "tempo_parcial_60" ||
+                         this.propostaProponenteProfessor.regime_prestacao_servicos == "dedicacao_exclusiva") {
+                         if(this.alterar.fundamentacao == '1'){if(propostaProponenteProfessor.fundamentacao == '1'){
+                         if(propostaProponenteProfessor.fundamentacao == '1'){
+                            axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
+                         }}}
                       }
-                      
                       this.$swal(
                          "Sucesso",
-                         "Proposta criada com sucesso!!",
+                         "Proposta editada com sucesso!!",
                          "success"
-                      );
-                      this.isLoading = false;
-                      //this.$emit("incrementarBarraProgresso");
-                      this.voltar();
-                    })
-                  });
+                       );
+                       window.location.reload();
+                         
+                       this.isLoading = false;
+                       //this.$emit("incrementarBarraProgresso");
+                       this.voltar();
+                       })
+                    });
+
               }else {
                 this.isLoading = true;
                 axios
@@ -1193,7 +1200,7 @@ export default {
                      "Proposta editada com sucesso!!",
                      "success"
                   );
-                  //window.location.reload();
+                  window.location.reload();
                   this.isLoading = false;
                   //this.$emit("incrementarBarraProgresso");
                   this.voltar();
@@ -1249,7 +1256,7 @@ export default {
                     "Sucesso",
                     "Proposta editada com sucesso!!",
                     "success");
-                //window.location.reload();
+                window.location.reload();
                 this.isLoading = false;
                 //this.$emit("incrementarBarraProgresso");
                 this.voltar();
@@ -1286,7 +1293,7 @@ export default {
                           "Sucesso",
                           "Proposta editada com sucesso!!",
                           "success");
-                      //window.location.reload();
+                      window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1370,6 +1377,7 @@ export default {
                            "Sucesso",
                            "Proposta editada com sucesso!!",
                            "success");
+                      window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1419,7 +1427,7 @@ export default {
                     "Sucesso",
                     "Proposta editada com sucesso!!",
                     "success");
-                //window.location.reload();
+                window.location.reload();
                 this.isLoading = false;
                 //this.$emit("incrementarBarraProgresso");
                 this.voltar();
@@ -1469,29 +1477,32 @@ export default {
                          propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
                          propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
                          if(propostaProponenteAssistente.fundamentacao == '1'){
+                      if(this.alterar.fundamentacao == '1'){
                             this.ficheiro.fileFundamentacao.append("proposta_id", response.data.id);
                          }
-                      }
+                      }}
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         this.ficheiro.fileUnidadesCurriculares.append("proposta_id", response.data.id);
                       }
-                      if(this.alterar.unidadesCurriculares == 1){
+                      if(this.alterar.unidadesCurriculares == '1'){
+                      if(propostaProponenteAssistente.fundamentacao == '1'){
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
-                      }}
+                      }}}
                       if(this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_integral" ||
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "tempo_parcial_60" ||
                          this.propostaProponenteAssistente.regime_prestacao_servicos == "dedicacao_exclusiva") {
-                         if(this.alterar.fundamentacao == 1){
+                         if(this.alterar.fundamentacao == '1'){if(propostaProponenteAssistente.fundamentacao == '1'){
                          if(propostaProponenteAssistente.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
-                         }}
+                         }}}
                       }
                       this.$swal(
                          "Sucesso",
                          "Proposta editada com sucesso!!",
                          "success"
                        );
+                       window.location.reload();
                        this.isLoading = false;
                        //this.$emit("incrementarBarraProgresso");
                        this.voltar();
@@ -1539,7 +1550,7 @@ export default {
                           "Sucesso",
                           "Proposta editada com sucesso!!",
                           "success");
-                      //window.location.reload();
+                      window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1686,6 +1697,7 @@ export default {
                          "Proposta editada com sucesso!!",
                          "success"
                       );
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1752,22 +1764,19 @@ export default {
                 axios.put("/api/updatePropostaProponente/" + this.proposta.id_proposta_proponente, this.proposta)
                   .then(response => {
                     this.idParaUcsPropostaProponente = response.data.id_proposta_proponente;
-                    //-----------------------------------
                     
-                    this.unidadesCurriculares.forEach(unidadeCurricular => {
-                      this.propostaProponenteMonitor.proposta_proponente_id = response.data.id_proposta_proponente;
-                    });
+                    this.propostaProponenteMonitor.proposta_proponente_id = response.data.id_proposta_proponente;
+                    console.log(this.propostaProponenteMonitor);
                     //? Apagar Propostas Proponente de todas as roles
                     axios.put('/api/apagarPropostasProponente/'+this.idParaUcsPropostaProponente, this.proposta).then(response => {});
                     //? Update Proposta Proponente Monitor
                     axios.get("/api/propostaProponenteMonitor/" + this.idParaUcsPropostaProponente).then(response => {
                       if(response.data.id_proposta_proponente_monitor) {
-                        axios
-                          .put("/api/updatePropostaProponenteMonitor/" + response.data.id_proposta_proponente_monitor, this.propostaProponenteMonitor)
+                        axios.put("/api/updatePropostaProponenteMonitor/" + response.data.id_proposta_proponente_monitor, this.propostaProponenteMonitor)
                           .then(response => {});
                       }else {
                         axios.post("/api/propostaProponenteMonitor", this.propostaProponenteMonitor).then(response => {});
-                      }
+                      }console.log(error.response);
                     });
                     //? Update ficheiros
                     axios.get("/api/propostaDePropostaProponente/" + this.idParaUcsPropostaProponente).then(response => {
@@ -1785,6 +1794,7 @@ export default {
                          "Proposta editada com sucesso!!",
                          "success"
                       );
+                      //window.location.reload();
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();

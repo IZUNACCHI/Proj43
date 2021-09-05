@@ -60,21 +60,37 @@
         >A percentagem de tempo parcial é obrigatória!</b-form-invalid-feedback>
       
       </b-form-group>
-      <!--{{propostaProponenteAssistente.fundamentacao}}-->
-      
        <div v-if= $store.state.editarProposta>
         <div>
               
-                 <b-form-group label="Serviço Docente Atribuído (PDF)">
-                    <b-form-checkbox
-                      v-if="$store.state.editarProposta"
+                 <b-form-group label="Serviço Docente Atribuído (PDF)" 
+                      v-if="(propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                            propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                            propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva')">
+                <b-form-checkbox
+                      v-if="(propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_integral' ||
+                            propostaProponenteAssistente.regime_prestacao_servicos == 'tempo_parcial_60' ||
+                             propostaProponenteAssistente.regime_prestacao_servicos == 'dedicacao_exclusiva') &&
+                             $store.state.editarProposta"
                       id="checkBoxFundamentacao"
+                      v-model="propostaProponenteAssistente.fundamentacao"
+                      name="checkBoxFundamentacao"
+                      value="1"
+                      unchecked-value="0"
+                      :state="null"
+                      ><b>Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
+                    <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+                    <b-form-checkbox
+                      v-if="$store.state.editarProposta && propostaProponenteAssistente.fundamentacao=='1'"
+
+
+                      id="checkBoxAlterarFundamentacao"
                       v-model="alterar.fundamentacao"
                       name="checkBoxAlterar.fundamentacao"
                       value="1"
                       unchecked-value="0"
                       :state="null"
-                    ><b>Alterar Ficheiro Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
+                    ><b>Alterar Ficheiro Fundamentação</b> </b-form-checkbox>
         
                     <b-form-file
                         v-if="alterar.fundamentacao==1"
@@ -93,17 +109,17 @@
                     <b-button
                         size="md"
                         variant="dark"
-                        v-if="ficheiroFundamentacaoAssistente && alterar.fundamentacao==1""
-                        @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Serviço do Docente Atribuído')"
+                        v-if="$store.state.editarProposta  && propostaProponenteAssistente.fundamentacao=='1'"
+                        @click="downloadFicheiro(ficheiroFundamentacaoAssistente.proposta_id, 'Fundamentacao da Proposta Proponente')"
                     >
-                    <i class="far fa-file-pdf"></i> Atual Unidades Curriculares
+                    <i class="far fa-file-pdf"></i> Atual Fundamentação do Assistente
                     </b-button>
                 </b-form-group>
                 <b-form-group>
                    <b-button
                      size="md"
                      variant="dark"
-                     v-if="ficheiroFundamentacao"
+                     v-if="!$store.state.editarProposta  && ficheiroFundamentacao"
                      @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
                    >
                    <i class="far fa-file-pdf"></i> Atual Fundamentação do Assistente
@@ -718,6 +734,8 @@ export default {
         //}
 
         if(this.alterar.fundamentacao==1 || !this.$store.state.editarProposta){
+        
+        this.ficheiroProponenteAssistente.fundamentacao = '1';
         //? Necessário o FormData para passar a informção do ficheiro para o backend "Laravel"
             this.ficheiroProponenteAssistente.fileFundamentacao = new FormData();
             this.ficheiroProponenteAssistente.fileFundamentacao.append(

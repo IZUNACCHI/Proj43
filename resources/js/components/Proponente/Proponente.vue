@@ -46,7 +46,7 @@ abrigo do art. 8.º do ECPDESP, do IPL"
         ></b-form-input>
         <b-form-invalid-feedback id="input-1-live-feedback">O Nome completo é obrigatório!</b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="Departamento/Área Científica/ Curso">
+      <b-form-group label="Departamento/Área Científica/Curso">
         <b-form-input
           :state="!$v.proposta.departamento_curso.$error && null"
           v-model="proposta.departamento_curso"
@@ -963,8 +963,41 @@ export default {
             this.unidadesCurriculares == null;
             
         }
+        if(proposta.unidade_organica =='erro'){
+            this.$swal('Erro', 'Tem de introduzir uma unidade organica', 'error');
+        }
+        if(proposta.role =='erro'){
+            this.$swal('Erro', 'Tem de introduzir o papel a desempenhar pelo docente', 'error');
+        }
+        if(proposta.tipo_contrato == 'erro'){
+            this.$swal('Erro', 'Tem de introduzir um Tipo de Contrato', 'error');
+        }
+        if(this.grauTestDoutoramento != "true"){
+            if(proposta.curso_Doutoramento ==''){
+                this.$swal('Erro', 'Tem de introduzir o curso no doutoramento', 'error');
+            }if(proposta.area_cientificaDoutoramento ==''){
+            this.$swal('Erro', 'Tem de introduzir a area cientifica no doutoramento', 'error');
+            }
+        }
+        if(this.grauTestOutro != "true"){
+            if(proposta.curso_Outro ==''){
+                this.$swal('Erro', 'Tem de introduzir o grau no outro', 'error');
+            }if(proposta.area_cientificaOutro ==''){
+            this.$swal('Erro', 'Tem de introduzir a area cientifica no outro', 'error');
+            }
+        }
+        if(this.grauTestFormacao != "true"){
+            if(proposta.curso_Outro ==''){
+                this.$swal('Erro', 'Tem de introduzir o grau na formaçao', 'error');
+            }
+            if(proposta.area_cientificaFormacao ==''){
+                this.$swal('Erro', 'Tem de introduzir a area cientifica na formaçao', 'error');
+            }
+        }
 
-		if(proposta.grau != 'erro'){
+        if(proposta.grau != 'erro' && this.proposta.nome_completo !=''
+            && this.proposta.numero_telefone !='' && this.proposta.email !=''
+            && this.proposta.departamento_curso !=''){
 
       
       axios.delete("/api/deleteFicheirosTemporarios").then(response => {});
@@ -1007,12 +1040,12 @@ export default {
             this.voltarVar = false;
           //}
         } else {
-        //   this.$bvToast.toast('O formulário possui erros, por favor verifique!', {
-        //   title: 'Mensagem de Erro',
-        //   variant: 'danger',
-        //   appendToast: true,
-        //   solid: true
-        // })
+           this.$bvToast.toast('O formulário possui erros, por favor verifique!', {
+           title: 'Mensagem de Erro',
+           variant: 'danger',
+           appendToast: true,
+           solid: true
+         })
         }
       });
         }
@@ -1021,7 +1054,7 @@ export default {
         }
       })
       }else{
-		this.$swal('Erro', 'Tem de seleccionar pelo menos um campo nas Habilitações Literarias', 'error');
+		this.$swal('Erro', 'Tem de todos os campos', 'error');
         
 	  }
           
@@ -1116,32 +1149,102 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('resetPropostaExistente');
-    this.$store.commit('resetEditarProposta');
+      //if(this.isEditarProposta){
+        this.$store.commit('resetPropostaExistente');
+        this.$store.commit('resetEditarProposta');
     
-    axios.get("/api/cursosDisponiveis").then(response => {
-      response.data.forEach(curso => {
-        this.cursos.push({
-          value: curso.codigo,
-          text: curso.nome_curso
+        axios.get("/api/cursosDisponiveis").then(response => {
+          response.data.forEach(curso => {
+            this.cursos.push({
+              value: curso.codigo,
+              text: curso.nome_curso
+            });
+          });
         });
-      });
-    });
-    axios.get("/api/allPropostasProponente").then(response => {
-      response.data.forEach(proposta => {
-        this.propostasExistentes.push({
-          value: proposta,
-          text:
-            proposta.unidade_organica +
-            " - " +
-            proposta.nome_completo +
-            " - " +
-            proposta.role +
-            " - " +
-            proposta.tipo_contrato
+        axios.get("/api/allPropostasProponente").then(response => {
+          response.data.forEach(proposta => {
+            this.propostasExistentes.push({
+              value: proposta,
+              text:
+                proposta.unidade_organica +
+                " - " +
+                proposta.nome_completo +
+                " - " +
+                proposta.role +
+                " - " +
+                proposta.tipo_contrato
+            });
+          });
+        });/*
+      }if(!this.isEditarProposta){
+       this.$store.commit('setEditarProposta');
+
+        axios.get("/api/cursosDisponiveis").then(response => {
+          response.data.forEach(curso => {
+            this.cursos.push({
+              value: curso.codigo,
+              text: curso.nome_curso
+            });
+          });
         });
-      });
-    });
+        
+        axios.get("/api/allPropostasProponente").then(response => {
+          response.data.forEach(proposta => {
+            this.propostasExistentes.push({
+              value: proposta,
+              text:
+                proposta.unidade_organica +
+                " - " +
+                proposta.nome_completo +
+                " - " +
+                proposta.role +
+                " - " +
+                proposta.tipo_contrato
+            });
+          });
+        });
+
+        axios
+            .get("/api/getUcsPropostaProponente/" + this.propostaSelecionada.id_proposta_proponente)
+            .then(response => {
+              response.data.forEach(uc => {
+                this.unidadesCurriculares.push(uc);
+              });
+            });
+
+        axios
+            .get("/api/ficheiros/" + this.propostaSelecionada.id_proposta_proponente)
+            .then(response => {
+              response.data.forEach(ficheiro => {
+                if (this.propostaSelecionada.verificacao_serviço_docente_atribuido == "sim"){
+                    if (ficheiro.descricao == "Ficheiro Unidades Curriculares do docente a ser contratado"){
+                      this.ficheiroUnidadesCurriculares = ficheiro;
+                    }   
+                }
+                if (this.propostaSelecionada.regime_prestacao_servicos == "tempo_integral" ||
+                    this.propostaSelecionada.regime_prestacao_servicos == "dedicacao_exclusiva"){
+                    if(ficheiro.descricao == "Fundamentacao da Proposta Proponente"){
+                        this.ficheiroFundamentacao = ficheiro;
+                    }
+                }
+              });
+            });
+            if(this.propostaSelecionada.grau=="doutoramento" || this.propostaSelecionada.grau=="doutoramentooutro" || this.propostaSelecionada.grau=="doutoramentoem_formacao" || this.propostaSelecionada.grau=="doutoramentooutroem_formacao"){
+                if(this.grauTestDoutoramento == "true"){
+                    this.grauTestDoutoramento = !this.grauTestDoutoramento;
+                }
+            }
+            if(this.propostaSelecionada.grau=="outro" || this.propostaSelecionada.grau=="doutoramentooutro" || this.propostaSelecionada.grau=="outroem_formacao" || this.propostaSelecionada.grau=="doutoramentooutroem_formacao"){
+                if(this.grauTestOutro == "true"){
+                    this.grauTestOutro = !this.grauTestOutro;
+                }
+            }
+            if(this.propostaSelecionada.grau=="em_formacao" || this.propostaSelecionada.grau=="doutoramentoem_formacao" || this.propostaSelecionada.grau=="outroem_formacao" || this.propostaSelecionada.grau=="doutoramentooutroem_formacao"){
+                if(this.grauTestFormacao == "true"){
+                    this.grauTestFormacao = !this.grauTestFormacao;
+                }
+    }
+        }*/
   }
 };
 </script>

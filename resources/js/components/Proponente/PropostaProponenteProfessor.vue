@@ -59,18 +59,29 @@
       <div v-if="( propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
                 propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva')">              
                  <b-form-group label="Serviço Docente Atribuído (PDF)">
-                    <b-form-checkbox
-                      v-if="$store.state.editarProposta"
+                     <b-form-checkbox
+                      v-if="(propostaProponenteProfessor.regime_prestacao_servicos == 'tempo_integral' ||
+                             propostaProponenteProfessor.regime_prestacao_servicos == 'dedicacao_exclusiva') &&
+                             $store.state.editarProposta"
                       id="checkBoxFundamentacao"
+                      v-model="propostaProponenteProfessor.fundamentacao"
+                      name="checkBoxFundamentacao"
+                      value="1"
+                      unchecked-value="0"
+                      :state="null"
+                      ><b>Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
+                    <b-form-invalid-feedback id="input-1-live-feedback">Tem de selecionar este campo</b-form-invalid-feedback>
+                    <b-form-checkbox
+                      v-if="$store.state.editarProposta && propostaProponenteProfessor.fundamentacao=='1'"
+                      id="checkBoxAlterarFundamentacao"
                       v-model="alterar.fundamentacao"
                       name="checkBoxAlterar.fundamentacao"
                       value="1"
                       unchecked-value="0"
                       :state="null"
-                    ><b>Alterar Ficheiro Fundamentação</b> <i>(cfr. acta do CTC - art. 5º, nº3) N.B Contrato e renovações não podem ter duração superior a 4 anos</i> </b-form-checkbox>
-        
+                    ><b>Alterar Ficheiro Fundamentação</b></b-form-checkbox>
                     <b-form-file
-                        v-if="alterar.fundamentacao==1"
+                        v-if="alterar.fundamentacao==1 && propostaProponenteProfessor.fundamentacao=='1'"
                         v-model="ficheiroFundamentacaoProfessorModel"
                         placeholder="Escolha um ficheiro"
                         drop-placeholder="Arraste para aqui um ficheiro"
@@ -87,8 +98,8 @@
                     <b-button
                         size="md"
                         variant="dark"
-                        v-if="$store.state.editarProposta"
-                        @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Serviço do Docente Atribuído')"
+                        v-if="$store.state.editarProposta  && propostaProponenteProfessor.fundamentacao=='1'"
+                        @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
                     >
                     <i class="far fa-file-pdf"></i> Atual Ficheiro de Fundamentação
                     </b-button>
@@ -112,7 +123,7 @@
         
         
       <b-form-group
-        v-if="propostaProponenteProfessor.fundamentacao == '1'"
+        v-if="propostaProponenteProfessor.fundamentacao == '1' && propostaProponenteProfessor.regime_prestacao_servicos != 'tempo_parcial'"
       >
 
         <b-form-group>
@@ -133,7 +144,7 @@
         <b-button
          size="md"
          variant="dark"
-         v-if="ficheiroFundamentacao"
+         v-if="ficheiroFundamentacao && propostaProponenteProfessor.regime_prestacao_servicos != 'tempo_parcial'"
          @click="downloadFicheiro(ficheiroFundamentacao.proposta_id, 'Fundamentacao da Proposta Proponente')"
         >
           <i class="far fa-file-pdf"></i> Atual Ficheiro de Fundamentação
@@ -716,17 +727,21 @@ export default {
     },
     anterior() {
       //* Mudar para o componente Proponente
-      /*
-      if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
-        this.$emit("mostrarProponente", this.proposta);
-      }else{
-	  this.$emit("mostrarProponente");
-	  }*/
-       //Mudar para o componente Proponente
-      this.$emit("mostrarEditar");
-      if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
-        this.$emit("mostrarProponente", this.proposta);
+      
+      if(!this.$store.state.editarProposta){
+          if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
+            this.$emit("mostrarProponente", this.proposta);
+          }else{
+	        this.$emit("mostrarProponente");
+	      }
       }
+      if(this.$store.state.editarProposta){
+       //Mudar para o componente Proponente
+          this.$emit("editarProposta");
+          if(this.proposta.fundamentacao_coordenador_departamento != null || this.proposta.fundamentacao_coordenador_curso != null){
+            this.$emit("mostrarProponente", this.proposta);
+          }
+       }
     },
     mostrarComponente() {
       this.isShowProfessor = true;

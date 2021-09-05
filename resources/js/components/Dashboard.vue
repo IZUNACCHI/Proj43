@@ -55,7 +55,7 @@
             v-on:mostrarProponentes="mostrarProponentes"></resumo-geral>
 
           <editarProposta v-if="isEditarPropostaVisible" :propostaSelecionada="propostaSelecionada"
-            v-on:voltar="mostrarProponentes"></editarProposta>
+            v-on:voltar="editarProposta(propostaSelecionada)"></editarProposta>
           <assinarPropostaCurso v-if="isEnviarPropostaCursoVisible" :propostaSelecionada="propostaSelecionada"
             v-on:voltar="mostrarProponentes"></assinarPropostaCurso>
           <assinarPropostaDepartamento v-if="isEnviarPropostaDepartamentoVisible" :propostaSelecionada="propostaSelecionada"
@@ -274,11 +274,11 @@
           </div></div>
 
           <estatisticaProponente v-if="(user.roleDB == 'proponente_departamento' || user.roleDB == 'proponente_curso') && isDashboardVisible"></estatisticaProponente>
-          <estatisticaDiretorUO v-if="user.roleDB == 'diretor_uo' && isDashboardVisible && isResumoPropostaVisible != false"></estatisticaDiretorUO>
-          <estatisticaCTC v-if="user.roleDB == 'ctc' && isDashboardVisible && isResumoPropostaVisible != false"></estatisticaCTC>
+          <!--<estatisticaDiretorUO v-if="user.roleDB == 'diretor_uo' && isDashboardVisible && !isResumoPropostaVisible"></estatisticaDiretorUO>
+          <estatisticaCTC v-if="user.roleDB == 'ctc' && isDashboardVisible && !isResumoPropostaVisible"></estatisticaCTC>
           <estatisticaSecretariadoDirecao v-if="user.roleDB == 'secretariado_direcao' && isDashboardVisible"></estatisticaSecretariadoDirecao>
           <estatisticaRecursosHumanos v-if="user.roleDB == 'recursos_humanos' && isDashboardVisible"></estatisticaRecursosHumanos>
-
+          -->
    
 
 
@@ -314,6 +314,8 @@ export default {
       isActiveSD: false,
       isActiveRH: false,
       isEditarPropostaVisible: false,
+      
+      isEditarProposta: false,
       isEnviarPropostaCursoVisible: false,
       isEnviarPropostaDepartamentoVisible: false,
       isEnviarPropostaCTCVisible: false,
@@ -439,7 +441,7 @@ export default {
       this.isEnviarPropostaDepartamentoVisible = false;
 
 	  this.isFundamentacaoVisible = false;
-      
+      this.isEditarProposta = true;
       this.isNovaPropostaVisible = false;
       this.isResumoPropostaVisible = false;
       this.isActiveSD = false;
@@ -450,6 +452,7 @@ export default {
         propostaParaEditar
       );
       this.isDashboardVisible = false;
+
     },
 
 
