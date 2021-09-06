@@ -47,6 +47,7 @@
         placeholder="Escolha um ficheiro"
         drop-placeholder="Arraste para aqui um ficheiro"
         name="ataCTC"
+        accept=".pdf"
         v-validate="{ required: true }"
         :state="validateState('ataCTC')"
         @change="onFileSelected"

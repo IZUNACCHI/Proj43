@@ -433,6 +433,7 @@
                           placeholder="Escolha um ficheiro"
                           drop-placeholder="Arraste para aqui um ficheiro"
                           browse-text="Procurar"
+                          accept=".pdf"
                           name="ficheiroAssinado"
                           v-validate="{ required: true }"
                           :state="validateState('ficheiroAssinado')"

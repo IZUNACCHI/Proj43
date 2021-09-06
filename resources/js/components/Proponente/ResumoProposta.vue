@@ -853,7 +853,7 @@ export default {
 	},
     voltar() {
       //window.location.reload();
-      this.$emit("mostrarComponente", this.proposta);
+      this.$emit("mostrarComponente");
       this.mostrarResumoProposta = false;
       /*this.$emit('voltar');
       this.$emit("voltar", this.proposta);*/
@@ -899,13 +899,24 @@ export default {
                               .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
                               .then(response => {});
                            }
-                         }
+                         }/*
                          this.$swal(
                             "Sucesso",
                             "Proposta criada com sucesso!!",
                              "success"
-                         );
-                         window.location.reload();
+                         );*/
+                         this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                          this.isLoading = false;
                          //this.$emit("incrementarBarraProgresso");
                          this.voltar();
@@ -943,13 +954,24 @@ export default {
                            }
                         }
                       });
-                  });
+                  });/*
                   this.$swal(
                      "Sucesso",
                      "Proposta editada com sucesso!!",
                      "success"
-                  );
-                  window.location.reload();
+                  );*/
+                  this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                   this.isLoading = false;
                   //this.$emit("incrementarBarraProgresso");
                   this.voltar();     
@@ -1024,12 +1046,23 @@ export default {
                          if(propostaProponenteProfessor.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
                          }}
-                      }
+                      }/*
                       this.$swal(
                          "Sucesso",
                          "Proposta editada com sucesso!!",
                          "success"
-                      );
+                      );*/this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1072,13 +1105,24 @@ export default {
                               .post("/api/ficheiro", this.ficheiro.fileFundamentacao)
                               .then(response => {});
                            }
-                         }
+                         }/*
                          this.$swal(
                             "Sucesso",
                             "Proposta criada com sucesso!!",
                              "success"
-                         );
-                         window.location.reload();
+                         );*/
+                         this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                          this.isLoading = false;
                          //this.$emit("incrementarBarraProgresso");
                          this.voltar();
@@ -1148,13 +1192,24 @@ export default {
                          if(propostaProponenteProfessor.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
                          }}}
-                      }
+                      }/*
                       this.$swal(
                          "Sucesso",
                          "Proposta editada com sucesso!!",
                          "success"
-                       );
-                       window.location.reload();
+                       );*/
+                       this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                          
                        this.isLoading = false;
                        //this.$emit("incrementarBarraProgresso");
@@ -1194,13 +1249,24 @@ export default {
                            }
                         }
                       });
-                  });
+                  });/*
                   this.$swal(
                      "Sucesso",
                      "Proposta editada com sucesso!!",
                      "success"
-                  );
-                  window.location.reload();
+                  );*/
+                  this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                   this.isLoading = false;
                   //this.$emit("incrementarBarraProgresso");
                   this.voltar();
@@ -1251,12 +1317,23 @@ export default {
                          }
                       }
                     });
-                });
+                });/*
                 this.$swal(
                     "Sucesso",
                     "Proposta editada com sucesso!!",
-                    "success");
-                window.location.reload();
+                    "success");*/
+                this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                 this.isLoading = false;
                 //this.$emit("incrementarBarraProgresso");
                 this.voltar();
@@ -1288,12 +1365,23 @@ export default {
                          if(propostaProponenteAssistente.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao).then(response => {});
                          }
-                      }
+                      }/*
                       this.$swal(
                           "Sucesso",
                           "Proposta editada com sucesso!!",
-                          "success");
-                      window.location.reload();
+                          "success");*/
+                      this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1373,11 +1461,22 @@ export default {
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
                          }}
                       }
-                      this.$swal(
+                      /*this.$swal(
                            "Sucesso",
                            "Proposta editada com sucesso!!",
-                           "success");
-                      window.location.reload();
+                           "success");*/
+                      this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1422,12 +1521,23 @@ export default {
                          }
                       }
                     });
-                });
+                });/*
                 this.$swal(
                     "Sucesso",
                     "Proposta editada com sucesso!!",
-                    "success");
-                window.location.reload();
+                    "success");*/
+                this.$swal.fire({
+                     title: "Success",
+                     text: "Proposta Guardada!",
+                     type: "warning",
+                     showCancelButton: false,
+                     confirmButtonColor: "#3085d6",
+                     confirmButtonText: "OK",
+                     })
+                     .then(result => {
+                       if (result.value) {
+                         window.location.reload();
+                }})
                 this.isLoading = false;
                 //this.$emit("incrementarBarraProgresso");
                 this.voltar();
@@ -1496,13 +1606,24 @@ export default {
                          if(propostaProponenteAssistente.fundamentacao == '1'){
                             axios.post("/api/ficheiro", this.ficheiro.fileFundamentacao) .then(response => {});
                          }}}
-                      }
+                      }/*
                       this.$swal(
                          "Sucesso",
                          "Proposta editada com sucesso!!",
                          "success"
-                       );
-                       window.location.reload();
+                       );*/
+                       this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                        this.isLoading = false;
                        //this.$emit("incrementarBarraProgresso");
                        this.voltar();
@@ -1546,11 +1667,22 @@ export default {
                                 .then(response => {});
                          }
                       }
-                      this.$swal(
+                      /*this.$swal(
                           "Sucesso",
                           "Proposta editada com sucesso!!",
-                          "success");
-                      window.location.reload();
+                          "success");*/
+                      this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1588,16 +1720,21 @@ export default {
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                         .then(response => {});
-                      }
-                      this.$swal(
-                         "Sucesso",
-                         "Proposta criada com sucesso!!",
-                         "success"
-                      );
-                      //window.location.reload();
-                      this.isLoading = false;
+                      }this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
+                      //this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
-                      this.voltar();
+                      //this.voltar();
                     });
                  });
        }else {
@@ -1619,15 +1756,21 @@ export default {
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                             .then(response => {});
                       }
-                      this.$swal(
-                         "Sucesso",
-                         "Proposta criada com sucesso!!",
-                         "success"
-                      );
-                      //window.location.reload();
-                      this.isLoading = false;
+                      this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
+                      //this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
-                      this.voltar();
+                      //this.voltar();
                     });
                 });       
        }
@@ -1692,12 +1835,22 @@ export default {
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }}
                       /**/
-                      this.$swal(
+                      /*this.$swal(
                          "Sucesso",
                          "Proposta editada com sucesso!!",
                          "success"
-                      );
-                      //window.location.reload();
+                      );*/this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1728,15 +1881,21 @@ export default {
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                         .then(response => {});
                       }
-                      this.$swal(
-                         "Sucesso",
-                         "Proposta criada com sucesso!!",
-                         "success"
-                      );
-                      //window.location.reload();
-                      this.isLoading = false;
+                      this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
+                      //this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
-                      this.voltar();
+                      //this.voltar();
                     });
                  });
                }
@@ -1788,13 +1947,18 @@ export default {
                       if(this.proposta.verificacao_serviço_docente_atribuido == 'sim'){
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares).then(response => {});
                       }}
-                      /**/
-                      this.$swal(
-                         "Sucesso",
-                         "Proposta editada com sucesso!!",
-                         "success"
-                      );
-                      //window.location.reload();
+                      /**/this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
                       this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
                       this.voltar();
@@ -1819,15 +1983,21 @@ export default {
                         axios.post("/api/ficheiro", this.ficheiro.fileUnidadesCurriculares)
                             .then(response => {});
                       }
-                      this.$swal(
-                         "Sucesso",
-                         "Proposta criada com sucesso!!",
-                         "success"
-                      );
-                      //window.location.reload();
-                      this.isLoading = false;
+                      this.$swal.fire({
+                            title: "Success",
+                            text: "Proposta Guardada!",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "OK",
+                          })
+                          .then(result => {
+                            if (result.value) {
+                                window.location.reload();
+                      }})
+                      //this.isLoading = false;
                       //this.$emit("incrementarBarraProgresso");
-                      this.voltar();
+                      //this.voltar();
                     });
                 });
               }
