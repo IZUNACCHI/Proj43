@@ -170,7 +170,7 @@
                                 <b>Avaliação do desempenho no periodo anterior</b><br>
                                 {{tipoPropostaRole.avaliacao_periodo_anterior}}
                     </td>
-                    <td rowspan="8" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior == null">
+                    <td rowspan="8" style='text-align:center' v-if="propostaSelecionada.tipo_contrato == 'contratacao_inicial'">
                                 <b>Avaliação do desempenho no periodo anterior</b><br>Não Aplicavel
                     </td>
                 </tr><tr>
@@ -264,7 +264,7 @@
                         <input type="checkbox" onclick="return false;"> Positiva
                         <input type="checkbox" onclick="return false;" checked> Negativa
                     </td>
-                    <td rowspan="8" style='text-align:center' v-if="tipoPropostaRole.avaliacao_periodo_anterior == null">
+                    <td rowspan="8" style='text-align:center' v-if="propostaSelecionada.tipo_contrato == 'contratacao_inicial'">
                         <b>Avaliação do desempenho no periodo anterior</b><br>
                         Não Aplicavel
                     </td>
