@@ -1,15 +1,15 @@
 {
   "ExpandedNodes": [
     "",
+    "\\app",
     "\\app\\Http",
+    "\\public",
     "\\resources",
     "\\resources\\js",
     "\\resources\\js\\components",
-    "\\resources\\js\\components\\CTC",
-    "\\resources\\js\\components\\Proponente",
-    "\\resources\\js\\components\\SecretariadoDirecao",
-    "\\resources\\js\\components\\utils",
-    "\\routes"
+    "\\resources\\js\\components\\auth",
+    "\\resources\\js\\components\\Backoffice",
+    "\\resources\\js\\components\\Proponente"
   ],
   "SelectedNode": "\\resources\\js\\components\\utils\\ResumoGeral.vue",
   "PreviewInSolutionExplorer": false

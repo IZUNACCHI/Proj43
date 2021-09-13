@@ -75,11 +75,11 @@
                         <input type="checkbox" id="scales" name="scales" onclick="return false;" checked>
                         <label for="scales">Visitante</label>
                     </td>
-                    <td rowspan="7" style='text-align:center' v-if="propostaProponenteProfessor.avaliacao_periodo_anterior != null">
+                    <td rowspan="7" style='text-align:center' v-if="proposta.tipo_contrato != 'contratacao_inicial'">
                                 <b>Avaliação do desempenho no periodo anterior</b><br>
                                 {{propostaProponenteProfessor.avaliacao_periodo_anterior}}
                     </td>
-                    <td rowspan="7" style='text-align:center' v-if="propostaProponenteProfessor.avaliacao_periodo_anterior == null">
+                    <td rowspan="7" style='text-align:center' v-if="proposta.tipo_contrato == 'contratacao_inicial'">
                                 <b>Avaliação do desempenho no periodo anterior</b><br>Não Aplicavel
                     </td>
                 </tr><tr>

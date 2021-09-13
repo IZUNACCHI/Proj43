@@ -120,7 +120,9 @@ class InitialMigration extends Migration
 
             //Signature???
             $table->integer('proposta_proponente_id')->unsigned();
-            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            //$table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente')->onDelete('cascade');
+
             $table->softDeletes();
             $table->timestamps();
         });
@@ -138,7 +140,8 @@ class InitialMigration extends Migration
             $table->string('duracao');
             $table->enum('avaliacao_periodo_anterior', ['positiva', 'negativa'])->nullable();
             $table->integer('proposta_proponente_id')->unsigned();
-            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            //$table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente')->onDelete('cascade');
 
             $table->string('descricao')->nullable();
             $table->decimal('remuneracao', 10, 2)->nullable();
@@ -166,8 +169,9 @@ class InitialMigration extends Migration
             $table->string('duracao');
             $table->string('ciclo');
             $table->integer('proposta_proponente_id')->unsigned();
-            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
-            
+            //$table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente')->onDelete('cascade');
+
             $table->string('descricao')->nullable();
             $table->decimal('remuneracao', 10, 2)->nullable();
             $table->string('escalao')->nullable();
@@ -192,7 +196,8 @@ class InitialMigration extends Migration
             $table->integer('departamento_id')->unsigned()->nullable(); //! Para jรก
             $table->foreign('departamento_id')->references('id')->on('departamento');
             $table->integer('proposta_proponente_id')->unsigned();
-            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            //$table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente');
+            $table->foreign('proposta_proponente_id')->references('id_proposta_proponente')->on('proposta_proponente')->onDelete('cascade');
             $table->string("turno");
             $table->integer('codigo_curso');
             $table->string('nome_curso');

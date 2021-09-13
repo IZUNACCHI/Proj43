@@ -550,6 +550,7 @@
         <div v-if="propostaSelecionada.status == 'finalizada'">
 		
                 <div v-if="ficheiroUnidadesCurriculares">
+                    wfseffeafafea
                     <pdf
 			            :src="fichUnidadesCurriculares"
         	            @num-pages="pageCount101 = $event"
@@ -563,8 +564,9 @@
 			            :page="aa"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                    </div>
-					<div v-if="ficheiroFundamentacao">
+                </div>
+				<div v-if="ficheiroFundamentacao">
+                    afsfsdf
                     <pdf
 			            :src="fichFundamentacao"
                         @num-pages="pageCount102 = $event"
@@ -577,8 +579,8 @@
 			            :src="fichFundamentacao"
 			            :page="bb"
 			            style="display: inline-block; width: 100%"
-		            ></pdf>
-                    <div v-if="ficheiroPropostaAssinadoUmProponente">
+		            ></pdf></div>
+                <div v-if="ficheiroPropostaAssinadoUmProponente">
                     <pdf
 			            :src="fichPropostaAssinadoCurso"
                         @num-pages="pageCount103 = $event"
@@ -754,7 +756,7 @@
 			            :page="nn"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroRegistoCriminal">
+                </div><div v-if="criminal">
                     <pdf
 			            :src="fichCertificadoRegistoCriminal"
                 
@@ -769,7 +771,7 @@
 			            :page="oo"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroDeclaracaoRobustezFisica">
+                </div><div v-if="robustez">
                     <pdf
                         :src="fichDeclaracaoRobustezFisica"
                 
@@ -784,7 +786,7 @@
                         :page="pp"
                         style="display: inline-block; width: 100%"
                     ></pdf>
-                </div><div v-if="ficheiroBoletimVacinas">
+                </div><div v-if="vacinas">
                     <pdf
 			            :src="fichBoletimVacinas"
                 
@@ -799,7 +801,7 @@
 			            :page="qq"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroIDentificacao">
+                </div><div v-if="identificacao">
                     <pdf
 			            :src="fichFichaIdentificacao"
                 
@@ -814,7 +816,7 @@
 			            :page="rr"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroDeclaracaRenuncia">
+                </div><div v-if="adse">
                     <pdf
 			            :src="fichDeclaracaoRenuncia"
                 
@@ -829,7 +831,7 @@
 			            :page="ss"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroArtigo999">
+                </div><div v-if="artigo">
                     <pdf
 			            :src="fichDeclaracaoArtigo99"
                 
@@ -844,7 +846,7 @@
 			            :page="tt"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroConsultaOutrasEscolas">
+                </div><div v-if="consulta">
                     <pdf
 			            :src="fichConsultaOutrasEscolas"
                 
@@ -859,9 +861,9 @@
 			            :page="uu"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroContratacaoComunicada">
+                </div><div v-if="contratacaoComunicada">
 					<pdf
-			            :src="fichContracaoComunicada"
+			            :src="fichContratacaoComunicada"
                 
 			            @num-pages="pageCount121 = $event"
 			            @page-loaded="currentPage2 = $event"
@@ -870,11 +872,11 @@
                     <pdf
 			            v-for="uu in pageCount121"
 			            :key="uu"
-			            :src="fichContracaoComunicada"
+			            :src="fichContratacaoComunicada"
 			            :page="uu"
 			            style="display: inline-block; width: 100%"
 		            ></pdf>
-                </div><div v-if="ficheiroContratoRedigido">
+                </div><div v-if="contratoRedigido">
                     <pdf
                         :src="fichContratoRedigido"
                 
@@ -889,7 +891,7 @@
                         :page="uu"
                         style="display: inline-block; width: 100%"
                     ></pdf>
-                </div><div v-if="ficheiroCessacaoSocial">
+                </div><div v-if="cessacao">
                     <pdf
                         :src="fichCessacaoSocial"
                 
@@ -904,7 +906,7 @@
                         :page="uu"
                         style="display: inline-block; width: 100%"
                     ></pdf>
-				</div><div v-if="ficheiroContrato">
+				</div><div v-if="contrato">
                     <pdf
                         :src="fichContrato"
                 
@@ -1801,22 +1803,10 @@
                         
                                 </td></tr>
                         
-
-
-
-
-
-
-
-
                         </tr><tr>
 
                 </tr>
           </table>
-
-
-       
-
           <br>
 </div>
 </div>          
@@ -2265,7 +2255,7 @@ export default {
 
          if(this.propostaSelecionada.tipo_contrato == "contratacao_inicial"){
             this.ficheiroCurriculo = this.ficheiros[this.contagemficheiro];
-            this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";vi
+            this.fichCurriculo = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Curriculo_do_docente_a_ser_contratado.pdf";
             this.contagemficheiro=this.contagemficheiro+1;
             this.ficheiroCertificadoHabilitacoes = this.ficheiros[this.contagemficheiro];
             this.fichCertificadoHabilitacoes = "storage/ficheiros/"+ this.propostaSelecionada.id_proposta_proponente +"/"+ this.propostaSelecionada.id_proposta_proponente +"_Habilitacoes_do_docente_a_ser_contratado.pdf";

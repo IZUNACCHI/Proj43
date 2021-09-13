@@ -60,7 +60,7 @@ class PropostaProponenteMonitorController extends Controller
 
     public function atualizarProposta($propostaProponenteID, Request $request)
     {
-        $propostaAAtualizar = PropostaProponenteProfessor::findOrFail($propostaProponenteID);
+        $propostaAAtualizar = PropostaProponenteMonitor::findOrFail($propostaProponenteID);
         $propostaAAtualizar->remuneracao = $request->remuneracao;
         $propostaAAtualizar->escalao = $request->escalao;
         $propostaAAtualizar->indice = $request->indice;

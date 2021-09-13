@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Proposta;
 use App\PropostaProponente;
 use App\PropostaProponenteAssistente;
 use App\PropostaProponenteMonitor;
@@ -187,6 +188,28 @@ class PropostaProponenteController extends Controller
 
         return response()->json("PropostasProponente apagadas com sucesso!", 200);
     }
+
+    public function apagarProposta($id, Request $request)
+    {
+        Proposta::where('proposta_proponente_id', $id)->delete();
+        
+        $role = $request->role;
+        if($role == 'professor') {
+            PropostaProponenteProfessor::where('proposta_proponente_id', $id)->delete();
+        } else if($role == 'assistente') {
+            PropostaProponenteAssistente::where('proposta_proponente_id', $id)->delete();
+        } else if($role == 'monitor') {
+            PropostaProponenteMonitor::where('proposta_proponente_id', $id)->delete();
+        }
+        
+		$proposta = PropostaProponente::where('id_proposta_proponente', $id)->delete();
+        return response()->json("Proposta apagadas com sucesso!", 200);
+    }
+
+    public function deleteProposta($id){
+		$proposta = PropostaProponente::where('id_proposta_proponente', $id)->delete();
+		return response()->json("Propostas apagadas com sucesso!", 200);
+	}
 
     //? FUNÇÕES ESTATISTICA
 

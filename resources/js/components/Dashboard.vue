@@ -158,7 +158,15 @@
                                     (user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso != null))) &&
                                     (propostaHistorico.contrato_assinado_curso != 1 && propostaHistorico.contrato_assinado_departamento != 1)"
                             >Editar</button>
-
+                            <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="eliminarProposta(propostaHistorico, index)"
+                              v-if="((user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento != null) ||
+                                   ((user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso == null) ||
+                                    (user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso != null))) &&
+                                    (propostaHistorico.contrato_assinado_curso != 1 && propostaHistorico.contrato_assinado_departamento != 1)"
+                            >Eliminar</button>
 
                             <!--<button
                               type="button"
@@ -253,6 +261,16 @@
                                     (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento != null))) &&
                                     (propostaHistorico.contrato_assinado_curso != 1 && propostaHistorico.contrato_assinado_departamento != 1)"
                             >Editar</button>
+
+                            <button
+                              type="button"
+                              class="btn btn-info"
+                              @click="eliminarProposta(propostaHistorico, index)"
+                              v-if="((user.roleDB == 'proponente_departamento' && propostaHistorico.fundamentacao_coordenador_curso != null) ||
+                                   ((user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento == null) ||
+                                    (user.roleDB == 'proponente_curso' && propostaHistorico.fundamentacao_coordenador_departamento != null))) &&
+                                    (propostaHistorico.contrato_assinado_curso != 1 && propostaHistorico.contrato_assinado_departamento != 1)"
+                            >Eliminar</button>
                           </td>
                           <!--<td>
                            <button
@@ -455,7 +473,51 @@ export default {
 
     },
 
-
+    
+    eliminarProposta(propostaParaEditar, index) {
+        this.propostaSelecionada= Object.assign(
+        {},
+        propostaParaEditar
+        );
+        axios.delete("/api/deleteFicheiros/" + this.propostaSelecionada.id_proposta_proponente).then(response => {
+            axios.put('/api/apagarPropostaProponente/'+this.propostaSelecionada.id_proposta_proponente, this.proposta).then(response => {
+                let key =this.propostaSelecionada.id_proposta_proponente;
+                //axios.delete('/api/propostaApagar/'+ key, this.proposta).then(response => {
+		            this.$swal("Success", "Proposta removida!", "success");});
+                    this.$nextTick(() => {
+                        if (this.$store.state.user.roleDB == "proponente_departamento") {
+                          this.isActiveProponente = true;
+                          axios
+                            .get("/api/coordenadorDepartamento/propostasPendentes")
+                            .then(response => {
+                              this.propostasPendentesCoordenadorDepartamento = response.data;
+                              this.propostasPendentesCoordenadorDepartamento.push();
+                              this.propostasPendentesCoordenadorDepartamento.splice(index, 1);
+                            });
+                          axios
+                            .get("/api/coordenadorDepartamento/historicoPropostas")
+                            .then(response => {
+                              this.historicoPropostasCoordenadorDepartamento = response.data;
+                              this.historicoPropostasCoordenadorDepartamento.push();
+                              this.historicoPropostasCoordenadorDepartamento.splice(index, 1);
+                            });
+                        } else if (this.$store.state.user.roleDB == "proponente_curso") {
+                          this.isActiveProponente = true;
+                          axios.get("/api/coordenadorCurso/propostasPendentes").then(response => {
+                            this.propostasPendentesCoordenadorCurso = response.data;
+                            this.propostasPendentesCoordenadorCurso.push();
+                            this.propostasPendentesCoordenadorCurso.splice(index, 1);
+                          });
+                          axios.get("/api/coordenadorCurso/historicoPropostas").then(response => {
+                            this.historicoPropostasCoordenadorCurso = response.data;
+                            this.historicoPropostasCoordenadorCurso.push();
+                            this.historicoPropostasCoordenadorCurso.splice(index, 1);
+                          });
+                        }
+                //});
+            });
+        });
+    },
     gerarPdfProposta(propostaID, index){
         let pdfName = propostaID.email;
        

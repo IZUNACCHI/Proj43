@@ -1,4 +1,4 @@
-F<template>
+<template>
   <div>
     <div class="jumbotron">
       <h3>Finalização da Proposta (Recursos Humanos)</h3>
@@ -450,15 +450,17 @@ export default {
                 this.ficheiro.cessacao_social.append("file", this.ficheiros["cessacaoSocial"]);
                 this.ficheiro.cessacao_social.append("descricao", "Cessacao Social");
             }
-            if(this.propostaSelecionada.role==assistente){
-                this.id_professor_assistente_monitor == this.tipoPropostaRole.id_proposta_proponente_assistente;
+            if(this.propostaSelecionada.role=="assistente"){
+                this.id_professor_assistente_monitor = this.tipoPropostaRole.id_proposta_proponente_assistente;
             }
-            if(this.propostaSelecionada.role==professor){
-                this.id_professor_assistente_monitor == this.tipoPropostaRole.id_proposta_proponente_professor;
+            if(this.propostaSelecionada.role=="professor"){
+                this.id_professor_assistente_monitor = this.tipoPropostaRole.id_proposta_proponente_professor;
             }
-            if(this.propostaSelecionada.role==monitor){
-                this.id_professor_assistente_monitor == this.tipoPropostaRole.id_proposta_proponente_monitor;
+            if(this.propostaSelecionada.role=="monitor"){
+                this.id_professor_assistente_monitor = this.tipoPropostaRole.id_proposta_proponente_monitor;
             }
+            console.log(this.propostaSelecionada.role);
+            console.log(this.tipoPropostaRole.id_proposta_proponente_monitor);
 
             axios.put('/api/'+this.propostaSelecionada.role+'/atualizarPropostaRemuneracao/'+
                 this.id_professor_assistente_monitor, this.tipoPropostaRole).then(response => {

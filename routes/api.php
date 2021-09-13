@@ -51,6 +51,7 @@ Route::put('/propostaProponente/fundamentacaoCoordenadorDepartamento/{propostaID
 Route::put('/propostaProponente/fundamentacaoCoordenadorCurso/{propostaID}', 'PropostaProponenteController@inserirFundamentacaoCoordenadorCurso');
 Route::get('/verificarSeJaExistemPropostasAtivasParaDocenteASerContratado/{email}', 'PropostaProponenteController@verificarSeJaExistemPropostasAtivasParaDocenteASerContratado');
 Route::put('/apagarPropostasProponente/{idProposta}', 'PropostaProponenteController@apagarPropostasProponente');
+Route::put('/apagarPropostaProponente/{idProposta}', 'PropostaProponenteController@apagarProposta');
 
 Route::put('/propostaProponente/propostaAssinadaCurso/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinadaCurso');
 Route::put('/propostaProponente/propostaAssinadaDepartamento/{propostaID}', 'PropostaProponenteController@inserirPropostaAssinadaDepartamento');
@@ -95,6 +96,9 @@ Route::patch('/propostaRecursosHumanos/{propostaRecursoHumanosID}/{propostaID}',
 Route::get('/propostas', 'PropostaController@all');
 Route::get('/propostaDePropostaProponente/{propostaID}', 'PropostaController@getPropostaDePropostaProponente');
 Route::put('updateFicheirosDocente/{propostaID}', 'PropostaController@updateFicheirosDocente');
+
+
+Route::delete('/propostaApagar/{proposta_id}', 'PropostaProponenteController@deleteProposta');
 
 //-----------------------Cursos---------------------------------------------------------------
 Route::get('/cursosDisponiveis', 'CursoController@getCursos');
